@@ -1,0 +1,32 @@
+{%- comment -%}
+  Turns a two-letter ISO country code into its emoji flag.
+
+  Flag emoji are two Regional Indicator Symbols, one per letter, so each
+  letter maps to its own character and the pair is concatenated. Shopify
+  exposes no flag images, and an external CDN would be blocked, so this
+  keeps the flag dependency-free.
+
+  Params: code (e.g. "FR")
+{%- endcomment -%}
+
+{%- liquid
+  assign alphabet = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ','
+  assign indicators = '🇦,🇧,🇨,🇩,🇪,🇫,🇬,🇭,🇮,🇯,🇰,🇱,🇲,🇳,🇴,🇵,🇶,🇷,🇸,🇹,🇺,🇻,🇼,🇽,🇾,🇿' | split: ','
+
+  assign upper = code | upcase
+  assign first = upper | slice: 0
+  assign second = upper | slice: 1
+  assign flag = ''
+
+  for letter in alphabet
+    if letter == first
+      assign flag = flag | append: indicators[forloop.index0]
+    endif
+  endfor
+  for letter in alphabet
+    if letter == second
+      assign flag = flag | append: indicators[forloop.index0]
+    endif
+  endfor
+-%}
+{{- flag -}}

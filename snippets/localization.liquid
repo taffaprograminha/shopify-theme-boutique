@@ -1,0 +1,43 @@
+{%- comment -%}
+  Country / currency picker. Only renders when the store actually sells to
+  more than one market, so a single-market shop shows no dead control.
+{%- endcomment -%}
+
+{%- if localization.available_countries.size > 1 -%}
+  {%- form 'localization', id: 'LocalizationForm', class: 'localization' -%}
+    <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}" data-country-input>
+
+    <button type="button"
+            class="localization__current"
+            data-localization-toggle
+            aria-expanded="false"
+            aria-controls="LocalizationList">
+      <span class="localization__flag">{% render 'flag', code: localization.country.iso_code %}</span>
+      <span class="localization__label">
+        {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
+        {{- localization.country.currency.symbol }})
+      </span>
+      <svg class="localization__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <ul class="localization__list" id="LocalizationList" data-localization-list hidden>
+      {%- for country in localization.available_countries -%}
+        <li>
+          <button type="button"
+                  class="localization__option"
+                  data-localization-option
+                  data-value="{{ country.iso_code }}"
+                  {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
+            <span class="localization__flag">{% render 'flag', code: country.iso_code %}</span>
+            <span>{{ country.name }}</span>
+            <span class="localization__currency">
+              {{ country.currency.iso_code }} {{ country.currency.symbol }}
+            </span>
+          </button>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endform -%}
+{%- endif -%}

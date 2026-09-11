@@ -657,6 +657,47 @@
     });
   }
 
+
+  /* ---------------------------------------------
+     Country / currency picker
+     --------------------------------------------- */
+  function initLocalization() {
+    const root = document.querySelector('.localization');
+    if (!root) return;
+
+    const toggle = root.querySelector('[data-localization-toggle]');
+    const list = root.querySelector('[data-localization-list]');
+    const input = root.querySelector('[data-country-input]');
+    const form = root.closest('form');
+    if (!toggle || !list || !form) return;
+
+    const close = () => {
+      list.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = list.hidden;
+      list.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+
+    list.addEventListener('click', (e) => {
+      const option = e.target.closest('[data-localization-option]');
+      if (!option) return;
+      if (input) input.value = option.dataset.value;
+      form.submit();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target)) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  }
+
   /* ---------------------------------------------
      Boot
      --------------------------------------------- */
@@ -673,6 +714,7 @@
       initMobileMenu();
       initStickyATC();
       initSizeGuide();
+      initLocalization();
     }
     initVariants();
     initGallery();

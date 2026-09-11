@@ -28,6 +28,10 @@
     </div>
 
     <div class="header__actions">
+      {%- if section.settings.show_localization -%}
+        {% render 'localization' %}
+      {%- endif -%}
+
       <a href="{{ routes.search_url }}" class="header__action" aria-label="{{ 'general.search.search' | t }}">
         {% render 'icon-search' %}
       </a>
@@ -75,7 +79,8 @@
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "range", "id": "logo_width", "label": "Logo width", "min": 80, "max": 320, "step": 10, "unit": "px", "default": 180 },
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
-    { "type": "checkbox", "id": "nav_below_logo", "label": "Place navigation below logo", "default": true }
+    { "type": "checkbox", "id": "nav_below_logo", "label": "Place navigation below logo", "default": true },
+    { "type": "checkbox", "id": "show_localization", "label": "Show country and currency picker", "default": true, "info": "Appears only when the store sells to more than one market. Markets are set up in Settings > Markets." }
   ]
 }
 {% endschema %}
