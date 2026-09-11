@@ -376,6 +376,20 @@
       }
       const variants = data.variants;
       const media = data.media || {};
+      const colourIndex = data.colourIndex;
+
+      // Only some variants of a colour were given an image in the admin, so
+      // picking a different size of a colour that does have a photo left the
+      // gallery frozen. Borrow the image from a sibling of the same colour.
+      function mediaIdForColour(colour) {
+        if (colourIndex == null || colour == null) return null;
+        const v = variants.find((x) => x.media_id && x.options[colourIndex] === colour);
+        return v ? v.media_id : null;
+      }
+
+      function mediaIdFor(variant) {
+        return variant.media_id || mediaIdForColour(variant.options[colourIndex]);
+      }
 
       const form = picker.closest('[data-product-form]') || document.querySelector('[data-product-form]');
       const idInput = form ? form.querySelector('[name="id"]') : null;
@@ -386,10 +400,17 @@
 
         picker.querySelectorAll('[data-option-label]').forEach((label) => {
           const idx = parseInt(label.dataset.optionLabel, 10);
-          if (selected[idx]) label.textContent = selected[idx];
+          // Liquid rendered this translated; writing selected[idx] straight
+          // back put the raw English value on screen at the first click.
+          if (selected[idx]) label.textContent = translateOption('value', selected[idx]);
         });
 
         if (!match) {
+          // Colours here do not all come in every size, so a shopper clicking
+          // a colour often lands on a combination that does not exist. The
+          // colour they asked for should still be the one on screen; bailing
+          // out left the gallery showing the previous one.
+          updateImage(mediaIdForColour(selected[colourIndex]), media);
           updateBuyButton(form, null);
           return;
         }
@@ -398,7 +419,7 @@
         updatePrice(picker, match);
         updateBuyButton(form, match);
         updateStockNote(match);
-        updateImage(match, media);
+        updateImage(mediaIdFor(match), media);
 
         const url = new URL(window.location);
         url.searchParams.set('variant', match.id);
@@ -477,14 +498,14 @@
     note.innerHTML = '<span class="stock-note__dot"></span>' + escapeHTML(label);
   }
 
-  function updateImage(variant, media) {
-    if (!variant.media_id) return;
-    const thumb = document.querySelector('[data-product-thumb][data-media-id="' + variant.media_id + '"]');
+  function updateImage(mediaId, media) {
+    if (!mediaId) return;
+    const thumb = document.querySelector('[data-product-thumb][data-media-id="' + mediaId + '"]');
     if (thumb) {
       thumb.click();
       return;
     }
-    const src = media[variant.media_id];
+    const src = media[mediaId];
     const main = document.querySelector('[data-product-main-image]');
     if (!src || !main) return;
     main.src = src;

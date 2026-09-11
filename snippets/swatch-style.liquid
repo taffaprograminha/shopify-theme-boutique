@@ -28,11 +28,29 @@
     endfor
     if swatch_url == blank
       comment
-        CSS colour keywords are single words, so "Light blue" only matches once
-        the spaces are removed. Names with no keyword at all ("Army green")
-        fall through to the neutral colour declared before this one.
+        No photo exists for this colour anywhere on the product, so the chip
+        has to carry the meaning. CSS keywords alone were not enough: 19 of
+        the 34 colours in this catalogue have no keyword at all ("Apricot",
+        "Champagne", "Army green") and went grey, and some that do match are
+        simply wrong, CSS "khaki" being a pale yellow rather than the cloth.
+        Named values are resolved here first and the keyword is the fallback.
       endcomment
-      assign swatch_color = value | downcase | replace: ' ', '' | replace: '-', ''
+      assign key = value | downcase | strip
+      assign hex_from = 'apricot,army green,navy blue,brick red,wine red,burgundy,champagne,coffee,coffee color,mocha brown,dark brown,yellow brown,khaki,khaki color,milky white,off white,lotus color,orange red,royal blue,camel,cream,beige,ivory,sky blue,light blue,dark green,rose red,light gray,light grey,dark gray,dark grey,gray,grey,white,black,silver,gold'
+      assign hex_to = '#f2b880,#4b5320,#1b2a4a,#8c3a2b,#6e2639,#6e2639,#e8d5a9,#6b4a32,#6b4a32,#7b5e4b,#4a2f22,#a67b3b,#c3b091,#c3b091,#f7f3ec,#f3f0e8,#e6b7c1,#e04a24,#2b4fa2,#c19a6b,#fffdd0,#f5f5dc,#fffff0,#87ceeb,#add8e6,#1d4a2b,#c21e56,#d3d3d3,#d3d3d3,#a9a9a9,#a9a9a9,#808080,#808080,#ffffff,#111111,#c0c0c0,#d4af37'
+
+      assign hf = hex_from | split: ','
+      assign ht = hex_to | split: ','
+      for name in hf
+        if name == key
+          assign swatch_color = ht[forloop.index0]
+          break
+        endif
+      endfor
+
+      if swatch_color == blank
+        assign swatch_color = value | downcase | replace: ' ', '' | replace: '-', ''
+      endif
     endif
   endif
 -%}

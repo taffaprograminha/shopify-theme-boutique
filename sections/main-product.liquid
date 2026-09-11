@@ -180,6 +180,22 @@
                       {%- unless forloop.last %},{% endunless -%}
                     {%- endfor -%}
                   },
+                  {%- comment -%}
+                    Which option is the colour, so the script can fall back to
+                    another variant of the same colour when the chosen one has
+                    no image of its own.
+                  {%- endcomment -%}
+                  {%- liquid
+                    assign colour_index = null
+                    for o in product.options_with_values
+                      assign n = o.name | downcase
+                      if n == 'color' or n == 'colour' or n == 'couleur' or n == 'cor'
+                        assign colour_index = forloop.index0
+                        break
+                      endif
+                    endfor
+                  -%}
+                  "colourIndex": {% if colour_index != null %}{{ colour_index }}{% else %}null{% endif %},
                   "variants": [
                     {%- for v in product.variants -%}
                       {
