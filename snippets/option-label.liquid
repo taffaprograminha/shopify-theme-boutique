@@ -1,0 +1,35 @@
+{%- comment -%}
+  Translates option names and colour values for display.
+
+  The catalogue was imported with English option data and inconsistent
+  casing ("Black" and "black", "Navy Blue" and "Navy blue"), so matching is
+  done on a lowercased key. Anything unmapped falls through unchanged, which
+  keeps new products working without a theme edit.
+
+  Params: value, kind (name|colour)
+{%- endcomment -%}
+
+{%- liquid
+  assign key = value | downcase | strip
+
+  if kind == 'name'
+    assign from = 'color,colour,size,shoe size,top size,bottom size,style,material,length'
+    assign to = 'Couleur,Couleur,Taille,Pointure,Taille haut,Taille bas,Style,Matière,Longueur'
+  else
+    assign from = 'black,white,pink,khaki,blue,apricot,brown,yellow,red,purple,wine red,green,gray,grey,navy blue,navy,army green,coffee,sky blue,light blue,light gray,light grey,orange,dark green,royal blue,rose red,beige,cream,ivory,silver,gold,dark blue,light green,dark gray,dark grey,camel,burgundy,lotus color,khaki color,off white,brick red,orange red,multicolor,multicolour'
+    assign to = 'Noir,Blanc,Rose,Kaki,Bleu,Abricot,Marron,Jaune,Rouge,Violet,Bordeaux,Vert,Gris,Gris,Bleu marine,Bleu marine,Vert armée,Café,Bleu ciel,Bleu clair,Gris clair,Gris clair,Orange,Vert foncé,Bleu roi,Rose vif,Beige,Crème,Ivoire,Argent,Doré,Bleu foncé,Vert clair,Gris foncé,Gris foncé,Camel,Bordeaux,Lotus,Kaki,Blanc cassé,Rouge brique,Rouge orangé,Multicolore,Multicolore'
+  endif
+
+  assign from_list = from | split: ','
+  assign to_list = to | split: ','
+  assign translated = ''
+
+  for item in from_list
+    if item == key
+      assign translated = to_list[forloop.index0]
+      break
+    endif
+  endfor
+-%}
+
+{%- if translated != blank -%}{{ translated }}{%- else -%}{{ value }}{%- endif -%}

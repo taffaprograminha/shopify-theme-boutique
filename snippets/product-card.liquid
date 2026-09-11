@@ -99,7 +99,8 @@
         {%- assign colour_index = colour_option.position | minus: 1 -%}
         <div class="card__swatches">
           {%- for value in colour_option.values limit: 5 -%}
-            <span class="card__swatch" title="{{ value | escape }}">
+            {%- capture sw_title -%}{% render 'option-label', value: value, kind: 'colour' %}{%- endcapture -%}
+            <span class="card__swatch" title="{{ sw_title | strip | escape }}">
               {% render 'swatch-style',
                  value: value,
                  option_index: colour_index,

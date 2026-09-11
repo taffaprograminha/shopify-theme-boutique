@@ -118,10 +118,12 @@
                 -%}
                 <div class="variant-group">
                   <span class="variant-group__label">
-                    {{ option.name }}:
+                    {% render 'option-label', value: option.name, kind: 'name' %}:
                     <strong data-option-label="{{ option_index }}">
                       {%- if is_size and block.settings.size_format != 'plain' -%}
                         {% render 'size-label', value: option.selected_value, mode: block.settings.size_format %}
+                      {%- elsif is_colour -%}
+                        {% render 'option-label', value: option.selected_value, kind: 'colour' %}
                       {%- else -%}
                         {{ option.selected_value }}
                       {%- endif -%}
@@ -138,7 +140,14 @@
                                name="option-{{ option.position }}"
                                value="{{ value | escape }}"
                                {% if value == option.selected_value %}checked{% endif %}>
-                        <label for="opt-{{ option.position }}-{{ forloop.index }}" title="{{ value | escape }}">
+                        {%- capture option_title -%}
+                          {%- if is_colour -%}
+                            {% render 'option-label', value: value, kind: 'colour' %}
+                          {%- else -%}
+                            {{ value }}
+                          {%- endif -%}
+                        {%- endcapture -%}
+                        <label for="opt-{{ option.position }}-{{ forloop.index }}" title="{{ option_title | strip | escape }}">
                           {%- if is_colour -%}
                             {% render 'swatch-style',
                                value: value,
