@@ -1,0 +1,46 @@
+<section class="newsletter" style="background: {{ section.settings.bg }}; color: {{ section.settings.fg }}" {{ section.shopify_attributes }}>
+  <div class="newsletter__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="h3">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subtext != blank -%}
+      <p style="font-size: .875rem; opacity: .8">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+
+    {% form 'customer' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">
+        {{ 'general.newsletter.email' | t }}
+      </label>
+      <div class="newsletter__form">
+        <input type="email"
+               id="NewsletterEmail-{{ section.id }}"
+               name="contact[email]"
+               class="newsletter__input"
+               placeholder="{{ 'general.newsletter.placeholder' | t }}"
+               required>
+        <button type="submit" class="btn">{{ 'general.newsletter.button' | t }}</button>
+      </div>
+      {%- if form.posted_successfully? -%}
+        <p class="form-success">{{ 'general.newsletter.success' | t }}</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <p class="form-error">{{ form.errors.messages.form }}</p>
+      {%- endif -%}
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Background", "default": "#f5f2ec" },
+    { "type": "color", "id": "fg", "label": "Text", "default": "#212121" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join our list" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "New arrivals, exclusive offers, and stories from the studio." }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

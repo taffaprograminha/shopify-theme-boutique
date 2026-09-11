@@ -1,0 +1,51 @@
+{%- if section.settings.enabled and product != blank -%}
+  {%- assign variant = product.selected_or_first_available_variant -%}
+  <div class="sticky-atc" data-sticky-atc aria-hidden="true">
+    <div class="sticky-atc__inner page-width">
+      <div class="sticky-atc__info">
+        {%- if product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 100 }}"
+               alt=""
+               class="sticky-atc__img"
+               loading="lazy"
+               width="44" height="44">
+        {%- endif -%}
+        <span class="sticky-atc__title">{{ product.title }}</span>
+        <span class="sticky-atc__price" data-sticky-price>
+          {%- if variant.compare_at_price > variant.price -%}
+            <span class="price__sale">{{ variant.price | money }}</span>
+            <s class="price__compare">{{ variant.compare_at_price | money }}</s>
+          {%- else -%}
+            <span class="price__regular">{{ variant.price | money }}</span>
+          {%- endif -%}
+        </span>
+      </div>
+
+      <button type="button"
+              class="btn sticky-atc__btn"
+              data-sticky-atc-submit
+              {% unless variant.available %}disabled{% endunless %}>
+        {%- if variant.available -%}
+          {{ 'products.product.add_to_cart' | t }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </button>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sticky add to cart",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Show sticky bar",
+      "default": true,
+      "info": "Appears once the main add-to-cart button scrolls out of view."
+    }
+  ]
+}
+{% endschema %}

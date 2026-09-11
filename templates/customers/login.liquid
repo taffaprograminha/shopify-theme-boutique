@@ -1,0 +1,51 @@
+<div class="section page-width" style="max-width: 460px">
+  <h1 class="h3 text-center">{{ 'customer.login.title' | t }}</h1>
+
+  {% form 'customer_login' %}
+    {{ form.errors | default_errors }}
+
+    <div class="variant-group" style="margin-bottom: 1rem">
+      <label class="variant-group__label" for="CustomerEmail">{{ 'customer.login.email' | t }}</label>
+      <input type="email" id="CustomerEmail" name="customer[email]" class="newsletter__input" autocomplete="email" required>
+    </div>
+
+    {%- if form.password_needed -%}
+      <div class="variant-group" style="margin-bottom: 1rem">
+        <label class="variant-group__label" for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+        <input type="password" id="CustomerPassword" name="customer[password]" class="newsletter__input" autocomplete="current-password" required>
+      </div>
+      <p style="margin-bottom: 1rem">
+        <a href="#recover" class="section-header__link">{{ 'customer.login.forgot_password' | t }}</a>
+      </p>
+    {%- endif -%}
+
+    <button type="submit" class="btn btn--full btn--large">{{ 'customer.login.sign_in' | t }}</button>
+  {% endform %}
+
+  {%- if shop.customer_accounts_enabled -%}
+    <p class="text-center" style="margin-top: 1.5rem; font-size: .8125rem">
+      <a href="{{ routes.account_register_url }}" class="section-header__link">
+        {{ 'customer.login.create_account' | t }}
+      </a>
+    </p>
+  {%- endif -%}
+
+  <div id="recover" style="margin-top: 3rem">
+    <h2 class="h4 text-center">{{ 'customer.recover_password.title' | t }}</h2>
+    <p class="text-center" style="font-size: .8125rem; color: var(--color-muted)">
+      {{ 'customer.recover_password.subtext' | t }}
+    </p>
+
+    {% form 'recover_customer_password' %}
+      {{ form.errors | default_errors }}
+      {%- if form.posted_successfully? -%}
+        <p class="form-success text-center">{{ 'customer.recover_password.success' | t }}</p>
+      {%- endif -%}
+      <div class="variant-group" style="margin: 1rem 0">
+        <label class="variant-group__label" for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>
+        <input type="email" id="RecoverEmail" name="email" class="newsletter__input" autocomplete="email" required>
+      </div>
+      <button type="submit" class="btn btn--outline btn--full">{{ 'customer.recover_password.submit' | t }}</button>
+    {% endform %}
+  </div>
+</div>

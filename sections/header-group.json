@@ -1,0 +1,41 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "a1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Soldes exceptionnelles jusqu'à -80%"
+          }
+        }
+      },
+      "block_order": [
+        "a1"
+      ],
+      "settings": {
+        "auto_rotate": false,
+        "rotate_speed": 5
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "nav_below_logo": true,
+        "logo_width": 180
+      }
+    },
+    "volume-bar": {
+      "type": "volume-bar",
+      "settings": {}
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header",
+    "volume-bar"
+  ]
+}

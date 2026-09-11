@@ -1,0 +1,75 @@
+<section class="section-tight" style="background: {{ section.settings.background }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    <div class="trust-columns">
+      {%- for block in section.blocks -%}
+        <div class="trust-column" {{ block.shopify_attributes }}>
+          <div class="trust-column__icon">
+            {% render 'trust-badge',
+               badge: block.settings.badge,
+               image: block.settings.logo,
+               days: settings.guarantee_days,
+               alt: block.settings.title %}
+          </div>
+          <h3 class="trust-column__title">{{ block.settings.title }}</h3>
+          <p class="trust-column__text">{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_payment_icons -%}
+      <div class="trust-columns__payments">
+        {% render 'payment-icons', align: 'center' %}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust columns",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#f5f2ec" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "select",
+          "id": "badge",
+          "label": "Badge",
+          "options": [
+            { "value": "delivery", "label": "Delivery" },
+            { "value": "guarantee", "label": "Money-back seal" },
+            { "value": "secure", "label": "Secure checkout" },
+            { "value": "returns", "label": "Easy returns" }
+          ],
+          "default": "delivery"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Custom logo",
+          "info": "Overrides the badge. Use for a carrier logo you are entitled to display."
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Livraison gratuite" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Orders are delivered free and insured with track & trace." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust columns",
+      "blocks": [
+        { "type": "column", "settings": { "badge": "delivery", "title": "Livraison gratuite" } },
+        { "type": "column", "settings": { "badge": "guarantee", "title": "Satisfait ou remboursé 30 jours" } },
+        { "type": "column", "settings": { "badge": "secure", "title": "Paiement sécurisé" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

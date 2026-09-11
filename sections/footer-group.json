@@ -1,0 +1,84 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "trust-columns": {
+      "type": "trust-columns",
+      "blocks": {
+        "t1": {
+          "type": "column",
+          "settings": {
+            "badge": "delivery",
+            "title": "Livraison gratuite",
+            "text": "Toutes les commandes sont livrées gratuitement et assurées avec suivi."
+          }
+        },
+        "t2": {
+          "type": "column",
+          "settings": {
+            "badge": "guarantee",
+            "title": "Satisfait ou remboursé 30 jours",
+            "text": "Achetez en toute sérénité grâce à notre garantie de 30 jours."
+          }
+        },
+        "t3": {
+          "type": "column",
+          "settings": {
+            "badge": "secure",
+            "title": "Paiement sécurisé",
+            "text": "Payez en toute sécurité par carte, Apple Pay, Google Pay ou PayPal."
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "background": "#f5f2ec",
+        "show_payment_icons": true
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "f1": {
+          "type": "menu",
+          "settings": {
+            "title": "Informations",
+            "menu": "footer"
+          }
+        },
+        "f2": {
+          "type": "text",
+          "settings": {
+            "title": "Contact",
+            "text": "<p>Une question sur votre commande ? Nous répondons sous un jour ouvré.</p>"
+          }
+        },
+        "f3": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Newsletter",
+            "text": "<p>Nouveautés et actualités de la boutique.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "settings": {
+        "background": "#ffffff",
+        "text_color": "#212121",
+        "show_payment_icons": true
+      }
+    }
+  },
+  "order": [
+    "trust-columns",
+    "footer"
+  ]
+}

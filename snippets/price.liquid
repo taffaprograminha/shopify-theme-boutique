@@ -1,0 +1,38 @@
+{%- liquid
+  assign target = product | default: variant
+  if target.price_varies
+    assign price = target.price_min
+  else
+    assign price = target.price
+  endif
+  assign compare = target.compare_at_price
+  assign on_sale = false
+  if compare and compare > price
+    assign on_sale = true
+    assign save_pct = compare | minus: price | times: 100.0 | divided_by: compare | round
+  endif
+-%}
+
+<div class="price {% if large %}price--large{% endif %}">
+  {%- if on_sale -%}
+    <s class="price__compare">{{ compare | money }}</s>
+    <span class="price__sale">
+      {%- if target.price_varies -%}{{ 'products.price.from' | t }} {% endif -%}
+      {{ price | money }}
+    </span>
+    {%- if show_save -%}
+      <span class="price__save">{{ 'products.price.save' | t }} {{ save_pct }}%</span>
+    {%- endif -%}
+  {%- else -%}
+    <span class="price__regular">
+      {%- if target.price_varies -%}{{ 'products.price.from' | t }} {% endif -%}
+      {{ price | money }}
+    </span>
+  {%- endif -%}
+
+  {%- if target.unit_price_measurement -%}
+    <span class="price__unit">
+      {{ target.unit_price | money }}/{% if target.unit_price_measurement.reference_value != 1 %}{{ target.unit_price_measurement.reference_value }}{% endif %}{{ target.unit_price_measurement.reference_unit }}
+    </span>
+  {%- endif -%}
+</div>

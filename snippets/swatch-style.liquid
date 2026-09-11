@@ -1,0 +1,53 @@
+{%- comment -%}
+  Renders the inside of a colour swatch, choosing the best available source:
+    1. swatch configured in Shopify admin (image, then colour)
+    2. the featured image of the first variant using that value
+    3. the value name as a CSS colour
+
+  Step 3 alone is unreliable — "Light blue" and "Khaki color" are not CSS
+  keywords and render as invisible chips.
+
+  Params: value, option_index, product, size (px), label (bool)
+{%- endcomment -%}
+
+{%- liquid
+  assign swatch_url = ''
+  assign swatch_color = ''
+  assign px = size | default: 120
+
+  if value.swatch.image
+    assign swatch_url = value.swatch.image | image_url: width: px
+  elsif value.swatch.color
+    assign swatch_color = value.swatch.color
+  else
+    for v in product.variants
+      if v.options[option_index] == value and v.featured_media
+        assign swatch_url = v.featured_media | image_url: width: px
+        break
+      endif
+    endfor
+    if swatch_url == blank
+      comment
+        CSS colour keywords are single words, so "Light blue" only matches once
+        the spaces are removed. Names with no keyword at all ("Army green")
+        fall through to the neutral colour declared before this one.
+      endcomment
+      assign swatch_color = value | downcase | replace: ' ', '' | replace: '-', ''
+    endif
+  endif
+-%}
+
+{%- if swatch_url != blank -%}
+  <img src="{{ swatch_url }}"
+       alt="{{ value | escape }}"
+       loading="lazy"
+       width="{{ px | divided_by: 2 }}"
+       height="{{ px | divided_by: 2 }}">
+{%- else -%}
+  {%- comment -%}
+    Two declarations on purpose: an invalid colour keyword is dropped by the
+    browser and the neutral one before it survives, so the chip is never blank.
+  {%- endcomment -%}
+  <span class="swatch-fill" style="background-color: #ddd9d2; background-color: {{ swatch_color }}"></span>
+{%- endif -%}
+{%- if label -%}<span class="visually-hidden">{{ value }}</span>{%- endif -%}

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="{{ settings.color_background }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- comment -%}
+      request.page_type is used rather than comparing page_title to shop.name:
+      typographic apostrophes make that comparison fail and duplicate the name.
+    {%- endcomment -%}
+    <title>
+      {%- if request.page_type == 'index' -%}
+        {{ shop.name }}{% if page_description %} &ndash; {{ page_description | truncate: 60 }}{% endif %}
+      {%- else -%}
+        {{ page_title }}
+        {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+        &ndash; {{ shop.name }}
+      {%- endif -%}
+    </title>
+
+    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+
+    {% render 'meta-tags' %}
+    {% render 'structured-data' %}
+
+    {%- liquid
+      assign body_font = settings.font_body
+      assign heading_font = settings.font_heading
+      assign button_font = settings.font_button
+      assign body_bold = body_font | font_modify: 'weight', 'bold'
+      assign body_italic = body_font | font_modify: 'style', 'italic'
+    -%}
+
+    <style>
+      {{ body_font | font_face: font_display: 'swap' }}
+      {{ body_bold | font_face: font_display: 'swap' }}
+      {{ body_italic | font_face: font_display: 'swap' }}
+      {{ heading_font | font_face: font_display: 'swap' }}
+      {{ button_font | font_face: font_display: 'swap' }}
+
+      :root{
+        --color-bg: {{ settings.color_background }};
+        --color-bg-accent: {{ settings.color_bg_accent }};
+        --color-text: {{ settings.color_text }};
+        --color-text-a50: {{ settings.color_text | color_modify: 'alpha', 0.5 }};
+        --color-text-a80: {{ settings.color_text | color_modify: 'alpha', 0.8 }};
+        --color-muted: {{ settings.color_muted }};
+        --color-border: {{ settings.color_border }};
+        --color-accent: {{ settings.color_accent }};
+        --color-accent-hover: {{ settings.color_accent_hover }};
+        --color-accent-light: {{ settings.color_accent_light }};
+        --color-accent-fade: {{ settings.color_accent | color_modify: 'alpha', 0.06 }};
+        --color-btn-bg: {{ settings.color_btn_bg }};
+        --color-btn-text: {{ settings.color_btn_text }};
+        --color-btn-bg-hover: {{ settings.color_btn_bg | color_lighten: 8 }};
+        --color-sale: {{ settings.color_sale }};
+        --color-sale-fade: {{ settings.color_sale | color_modify: 'alpha', 0.08 }};
+
+        --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
+        --font-body-weight: {{ body_font.weight }};
+        --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+        --font-heading-weight: {{ heading_font.weight }};
+        --font-button: {{ button_font.family }}, {{ button_font.fallback_families }};
+        --font-button-weight: {{ button_font.weight }};
+        --heading-transform: {% if settings.heading_uppercase %}uppercase{% else %}none{% endif %};
+        --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
+        --base-size: {{ settings.base_font_size }}px;
+
+        --page-width: {{ settings.page_width }}px;
+        --content-max: {{ settings.content_width }}px;
+        --section-spacing: {{ settings.spacing_sections }}px;
+        --gutter: {{ settings.grid_gutter }}px;
+        --outer: 50px;
+        --radius: {{ settings.corner_radius }}px;
+        --drawer-width: 380px;
+        --header-height: 80px;
+        {%- liquid
+          case settings.swatch_shape
+            when 'circle'
+              assign swatch_radius = '50%'
+            when 'rounded'
+              assign swatch_radius = '6px'
+            else
+              assign swatch_radius = '0px'
+          endcase
+        -%}
+        --swatch-photo-radius: {{ swatch_radius }};
+        --swatch-photo-size: {{ settings.swatch_size }}px;
+      }
+      @media (max-width: 900px){
+        :root{ --outer: 16px; --gutter: 16px; }
+      }
+    </style>
+
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      window.theme = {
+        cartType: {{ settings.cart_type | json }},
+        moneyFormat: {{ shop.money_format | json }},
+        cartTimer: {
+          enabled: {{ settings.cart_timer_enabled | json }},
+          minutes: {{ settings.cart_timer_minutes | json }}
+        },
+        freeShipping: {
+          enabled: {{ settings.cart_free_shipping_enabled | json }},
+          threshold: {{ settings.cart_free_shipping_threshold | times: 100 | json }}
+        },
+        strings: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          adding: {{ 'products.product.adding' | t | json }},
+          inStock: {{ 'products.product.in_stock' | t | json }},
+          lowStock: {{ 'products.product.low_stock' | t: count: '__COUNT__' | json }}
+        }
+      };
+    </script>
+    <script src="{{ 'global.js' | asset_url }}" defer></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}">
+    <a class="skip-to-content" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {% section 'cart-drawer' %}
+  </body>
+</html>

@@ -1,0 +1,43 @@
+{%- comment -%}
+  Titles accept **bold** markers so the key phrase can be emphasised inline,
+  e.g. "**Livraison gratuite** avec Colissimo".
+{%- endcomment -%}
+
+<div class="trust-list">
+  {%- for i in (1..3) -%}
+    {%- liquid
+      case i
+        when 1
+          assign title = settings.trust_1_title
+          assign badge = 'delivery'
+          assign logo = settings.carrier_logo
+          assign asset_file = settings.carrier_logo_asset
+        when 2
+          assign title = settings.trust_2_title
+          assign badge = 'guarantee'
+          assign logo = null
+          assign asset_file = null
+        else
+          assign title = settings.trust_3_title
+          assign badge = 'secure'
+          assign logo = null
+          assign asset_file = null
+      endcase
+    -%}
+
+    {%- if title != blank -%}
+      <div class="trust-list__item">
+        <span class="trust-list__icon">
+          {% render 'trust-badge', badge: badge, image: logo, asset_file: asset_file, days: settings.guarantee_days, alt: title %}
+        </span>
+        <span class="trust-list__text">
+          {%- assign parts = title | split: '**' -%}
+          {%- for part in parts -%}
+            {%- assign odd = forloop.index0 | modulo: 2 -%}
+            {%- if odd == 1 -%}<strong>{{ part }}</strong>{%- else -%}{{ part }}{%- endif -%}
+          {%- endfor -%}
+        </span>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>

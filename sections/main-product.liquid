@@ -1,0 +1,462 @@
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+-%}
+
+<div class="section page-width">
+  <div class="product" data-product-gallery>
+
+    {%- comment -%} ---------- GALLERY ---------- {%- endcomment -%}
+    <div class="product__gallery">
+      {%- if product.media.size > 1 -%}
+        <div class="product__thumbs">
+          {%- for media in product.media -%}
+            <button type="button"
+                    class="product__thumb"
+                    data-product-thumb
+                    data-media-id="{{ media.id }}"
+                    data-full="{{ media | image_url: width: 1200 }}"
+                    data-srcset="{{ media | image_url: width: 600 }} 600w, {{ media | image_url: width: 1200 }} 1200w"
+                    data-alt="{{ media.alt | escape }}"
+                    aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                    aria-label="{{ 'products.product.view_image' | t }} {{ forloop.index }}">
+              <img src="{{ media | image_url: width: 160 }}" alt="" loading="lazy" width="76" height="76">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <div class="product__main-image">
+        {%- if product.featured_media -%}
+          <img src="{{ product.featured_media | image_url: width: 1200 }}"
+               srcset="{{ product.featured_media | image_url: width: 600 }} 600w,
+                       {{ product.featured_media | image_url: width: 1200 }} 1200w"
+               sizes="(max-width: 900px) 100vw, 50vw"
+               alt="{{ product.featured_media.alt | escape }}"
+               width="{{ product.featured_media.width }}"
+               height="{{ product.featured_media.height }}"
+               data-product-main-image
+               fetchpriority="high">
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- INFO ---------- {%- endcomment -%}
+    <div class="product__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+
+        {%- when 'rating' -%}
+          {%- if product.metafields.reviews.rating.value != blank -%}
+            {%- liquid
+              assign rating = product.metafields.reviews.rating.value.rating
+              assign count = product.metafields.reviews.rating_count
+            -%}
+            <div class="rating-bar" {{ block.shopify_attributes }}>
+              <div class="rating-bar__stars">
+                {%- for i in (1..5) -%}
+                  {%- if i <= rating -%}
+                    <span class="rating-bar__star">{% render 'icons', icon: 'star' %}</span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              <span class="rating-bar__label">{{ rating }}</span>
+              <span class="rating-bar__count">
+                {{ 'products.product.review_count' | t: count: count }}
+              </span>
+            </div>
+          {%- endif -%}
+
+        {%- when 'vendor' -%}
+          {%- if product.vendor != blank -%}
+            <p class="product__vendor" {{ block.shopify_attributes }}>{{ product.vendor }}</p>
+          {%- endif -%}
+
+        {%- when 'title' -%}
+          <h1 class="product__title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+
+        {%- when 'price' -%}
+          <div data-product-price {{ block.shopify_attributes }}>
+            {% render 'price', variant: variant, large: true, show_save: true %}
+          </div>
+
+        {%- when 'stock' -%}
+          {%- comment -%}
+            Uses real Shopify inventory. Nothing is shown unless inventory is
+            actually tracked, so the message can never overstate scarcity.
+          {%- endcomment -%}
+          {%- liquid
+            assign tracked = false
+            if variant.inventory_management != blank and variant.inventory_policy == 'deny'
+              assign tracked = true
+            endif
+            assign qty = variant.inventory_quantity
+          -%}
+          {%- unless variant.available -%}
+            <p class="stock-note stock-note--out" data-stock-note data-low-threshold="{{ block.settings.low_stock_threshold }}" {{ block.shopify_attributes }}>
+              <span class="stock-note__dot"></span>{{ 'products.product.sold_out' | t }}
+            </p>
+          {%- else -%}
+            {%- if tracked and qty > 0 and qty <= block.settings.low_stock_threshold -%}
+              <p class="stock-note stock-note--low" data-stock-note data-low-threshold="{{ block.settings.low_stock_threshold }}" {{ block.shopify_attributes }}>
+                <span class="stock-note__dot"></span>
+                {{ 'products.product.low_stock' | t: count: qty }}
+              </p>
+            {%- else -%}
+              <p class="stock-note stock-note--in" data-stock-note data-low-threshold="{{ block.settings.low_stock_threshold }}" {{ block.shopify_attributes }}>
+                <span class="stock-note__dot"></span>{{ 'products.product.in_stock' | t }}
+              </p>
+            {%- endif -%}
+          {%- endunless -%}
+
+        {%- when 'trust' -%}
+          <div {{ block.shopify_attributes }}>{% render 'trust-list' %}</div>
+
+        {%- when 'carrier' -%}
+          <div {{ block.shopify_attributes }}>{% render 'carrier-badge' %}</div>
+
+        {%- when 'variants' -%}
+          {%- unless product.has_only_default_variant -%}
+            <div data-variant-picker {{ block.shopify_attributes }}>
+              {%- for option in product.options_with_values -%}
+                {%- liquid
+                  assign name = option.name | downcase
+                  assign is_colour = false
+                  assign is_size = false
+                  if name == 'color' or name == 'colour' or name == 'couleur' or name == 'cor'
+                    assign is_colour = true
+                  endif
+                  if name == 'size' or name == 'taille' or name == 'tamanho'
+                    assign is_size = true
+                  endif
+                  assign option_index = forloop.index0
+                -%}
+                <div class="variant-group">
+                  <span class="variant-group__label">
+                    {{ option.name }}:
+                    <strong data-option-label="{{ option_index }}">
+                      {%- if is_size and block.settings.size_format != 'plain' -%}
+                        {% render 'size-label', value: option.selected_value, mode: block.settings.size_format %}
+                      {%- else -%}
+                        {{ option.selected_value }}
+                      {%- endif -%}
+                    </strong>
+                    {%- if is_size and block.settings.show_size_guide -%}
+                      {% render 'size-guide', block: block %}
+                    {%- endif -%}
+                  </span>
+                  <div class="variant-options {% if is_colour %}variant-options--swatches{% endif %}">
+                    {%- for value in option.values -%}
+                      <div class="variant-option {% if is_colour %}variant-option--swatch{% endif %}">
+                        <input type="radio"
+                               id="opt-{{ option.position }}-{{ forloop.index }}"
+                               name="option-{{ option.position }}"
+                               value="{{ value | escape }}"
+                               {% if value == option.selected_value %}checked{% endif %}>
+                        <label for="opt-{{ option.position }}-{{ forloop.index }}" title="{{ value | escape }}">
+                          {%- if is_colour -%}
+                            {% render 'swatch-style',
+                               value: value,
+                               option_index: option_index,
+                               product: product,
+                               size: 140,
+                               label: true %}
+                          {%- elsif is_size and block.settings.size_format != 'plain' -%}
+                            {% render 'size-label', value: value, mode: block.settings.size_format %}
+                          {%- else -%}
+                            {{ value }}
+                          {%- endif -%}
+                        </label>
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endfor -%}
+
+              {%- comment -%}
+                Image URLs live in a media map keyed by id rather than repeated
+                on every variant — variants commonly share the same image, and
+                inlining the full CDN URL per variant bloats the HTML.
+              {%- endcomment -%}
+              <script type="application/json" data-variant-json>
+                {
+                  "media": {
+                    {%- for media in product.media -%}
+                      "{{ media.id }}": {{ media | image_url: width: 1200 | json }}
+                      {%- unless forloop.last %},{% endunless -%}
+                    {%- endfor -%}
+                  },
+                  "variants": [
+                    {%- for v in product.variants -%}
+                      {
+                        "id": {{ v.id }},
+                        "options": {{ v.options | json }},
+                        "price": {{ v.price }},
+                        "compare_at_price": {{ v.compare_at_price | default: 0 }},
+                        "available": {{ v.available | json }},
+                        "inventory_quantity": {{ v.inventory_quantity | default: 0 }},
+                        "tracked": {% if v.inventory_management != blank and v.inventory_policy == "deny" %}true{% else %}false{% endif %},
+                        "media_id": {% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}
+                      }{% unless forloop.last %},{% endunless %}
+                    {%- endfor -%}
+                  ]
+                }
+              </script>
+            </div>
+          {%- endunless -%}
+
+        {%- when 'buy' -%}
+          <div class="product__buy" {{ block.shopify_attributes }}>
+            <form method="post" action="{{ routes.cart_add_url }}" data-product-form>
+              <input type="hidden" name="id" value="{{ variant.id }}">
+              <div class="product__buy-row">
+                {%- if block.settings.show_quantity -%}
+                  {% render 'quantity-input', input_name: 'quantity', value: 1, min: 1 %}
+                {%- endif -%}
+                <button type="submit" class="btn btn--large btn--full" {% unless variant.available %}disabled{% endunless %}>
+                  {%- if variant.available -%}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- endif -%}
+                </button>
+              </div>
+              <p class="form-error" data-form-error hidden></p>
+            </form>
+
+            {%- if settings.show_payment_icons_product -%}
+              {% render 'payment-icons', align: 'center', size: 'small' %}
+            {%- endif -%}
+          </div>
+
+        {%- when 'delivery' -%}
+          {%- comment -%}
+            Estimated dispatch is computed from a real processing window that the
+            merchant sets, not a fixed countdown.
+          {%- endcomment -%}
+          {%- liquid
+            assign days = block.settings.processing_days
+            assign seconds = days | times: 86400
+            assign now_ts = 'now' | date: '%s' | plus: 0
+            assign ship_ts = now_ts | plus: seconds
+            assign ship_date = ship_ts | date: format: block.settings.date_format
+          -%}
+          <div class="delivery-bar" {{ block.shopify_attributes }}>
+            <span class="delivery-bar__item">
+              <span class="delivery-bar__dot"></span>
+              {{ 'products.product.dispatched' | t }} <strong>{{ ship_date }}</strong>
+            </span>
+            {%- if block.settings.free_delivery_label != blank -%}
+              <span class="delivery-bar__item delivery-bar__item--right">
+                {%- if block.settings.free_delivery_flag != blank -%}
+                  <span class="delivery-bar__flag">{{ block.settings.free_delivery_flag }}</span>
+                {%- endif -%}
+                <strong>{{ block.settings.free_delivery_label }}</strong>
+              </span>
+            {%- endif -%}
+          </div>
+
+        {%- when 'reassurance' -%}
+          <div class="reassurance" {{ block.shopify_attributes }}>
+            {%- if block.settings.title != blank -%}
+              <p class="reassurance__title">{{ block.settings.title }}</p>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="reassurance__text">{{ block.settings.text }}</p>
+            {%- endif -%}
+          </div>
+
+        {%- when 'description' -%}
+          {%- if product.description != blank -%}
+            <details class="accordion" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary class="accordion__summary">
+                {{ block.settings.title | default: 'Description' }}
+                <span class="accordion__icon">{% render 'icons', icon: 'plus' %}</span>
+              </summary>
+              <div class="accordion__content rte">{{ product.description }}</div>
+            </details>
+          {%- endif -%}
+
+        {%- when 'accordion' -%}
+          {%- if block.settings.content != blank -%}
+            <details class="accordion" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary class="accordion__summary">
+                {{ block.settings.title }}
+                <span class="accordion__icon">{% render 'icons', icon: 'plus' %}</span>
+              </summary>
+              <div class="accordion__content rte">{{ block.settings.content }}</div>
+            </details>
+          {%- endif -%}
+
+        {%- when 'share' -%}
+          <div {{ block.shopify_attributes }}>
+            <a href="https://www.facebook.com/sharer.php?u={{ shop.url }}{{ product.url }}"
+               class="section-header__link" target="_blank" rel="noopener">
+              {{ 'general.social.share_on_facebook' | t }}
+            </a>
+          </div>
+
+        {%- when '@app' -%}
+          {% render block %}
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product",
+  "tag": "section",
+  "blocks": [
+    { "type": "rating", "name": "Rating", "limit": 1 },
+    { "type": "vendor", "name": "Vendor", "limit": 1 },
+    { "type": "title", "name": "Title", "limit": 1 },
+    { "type": "price", "name": "Price", "limit": 1 },
+    {
+      "type": "stock",
+      "name": "Stock level",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows real inventory. Nothing appears unless the variant tracks inventory and does not allow overselling."
+        },
+        {
+          "type": "range",
+          "id": "low_stock_threshold",
+          "label": "Low stock threshold",
+          "min": 1,
+          "max": 25,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    },
+    { "type": "trust", "name": "Trust badges", "limit": 1 },
+    {
+      "type": "carrier",
+      "name": "Carrier",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Carrier name, logo and note are set in Theme settings > Trust signals." }
+      ]
+    },
+    {
+      "type": "variants",
+      "name": "Variant pickers",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Sizes" },
+        {
+          "type": "select",
+          "id": "size_format",
+          "label": "Size format",
+          "options": [
+            { "value": "combined", "label": "French + letter (38 M)" },
+            { "value": "fr", "label": "French only (38)" },
+            { "value": "plain", "label": "As entered (M)" }
+          ],
+          "default": "combined",
+          "info": "Letter sizes are converted; numeric shoe sizes are left as they are."
+        },
+        { "type": "checkbox", "id": "show_size_guide", "label": "Show size guide link", "default": true },
+        { "type": "checkbox", "id": "shoe_table", "label": "Include shoe size table", "default": true },
+        {
+          "type": "text",
+          "id": "intro",
+          "label": "Size guide intro",
+          "default": "Mesures du corps en centimètres. En cas d'hésitation, choisissez la taille au-dessus."
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Size guide note",
+          "default": "Les tailles peuvent varier légèrement selon la coupe du modèle."
+        }
+      ]
+    },
+    {
+      "type": "buy",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_quantity", "label": "Show quantity selector", "default": false }
+      ]
+    },
+    {
+      "type": "delivery",
+      "name": "Dispatch estimate",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "processing_days",
+          "label": "Processing days",
+          "min": 0,
+          "max": 14,
+          "step": 1,
+          "default": 2,
+          "info": "Set this to your real dispatch time."
+        },
+        { "type": "text", "id": "date_format", "label": "Date format", "default": "dispatch", "info": "Name of a format in your locale file (dispatch, abbreviated_date, basic, date)." },
+        { "type": "text", "id": "free_delivery_label", "label": "Delivery label", "default": "Livraison gratuite" },
+        { "type": "text", "id": "free_delivery_flag", "label": "Flag emoji", "default": "🇫🇷", "info": "Leave empty to hide" }
+      ]
+    },
+    {
+      "type": "reassurance",
+      "name": "Reassurance box",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Our promise" },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Every order is packed by hand and covered by our 30-day money-back guarantee."
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Description" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": true }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion row",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Delivery & returns" },
+        { "type": "richtext", "id": "content", "label": "Content" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+      ]
+    },
+    { "type": "share", "name": "Share", "limit": 1 }
+  ],
+  "presets": [
+    {
+      "name": "Product",
+      "blocks": [
+        { "type": "rating" },
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "stock" },
+        { "type": "trust" },
+        { "type": "variants" },
+        { "type": "buy" },
+        { "type": "delivery" },
+        { "type": "reassurance" },
+        { "type": "description" },
+        { "type": "accordion" }
+      ]
+    }
+  ]
+}
+{% endschema %}

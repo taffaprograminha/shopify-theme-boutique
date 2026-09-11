@@ -1,0 +1,81 @@
+<header class="header header--stacked" {{ section.shopify_attributes }}>
+  <div class="header__inner">
+    <div class="header__left">
+      <button type="button" class="header__action header__menu-toggle" data-menu-open aria-label="{{ 'general.accessibility.menu' | t }}">
+        {% render 'icons', icon: 'menu' %}
+      </button>
+
+      {%- unless section.settings.nav_below_logo -%}
+        <nav class="nav" aria-label="Primary">
+          {% render 'nav-list', menu: section.settings.menu %}
+        </nav>
+      {%- endunless -%}
+    </div>
+
+    <div class="header__logo">
+      {%- if section.settings.logo != blank -%}
+        <a href="{{ routes.root_url }}">
+          <img src="{{ section.settings.logo | image_url: width: 600 }}"
+               alt="{{ shop.name | escape }}"
+               width="{{ section.settings.logo.width }}"
+               height="{{ section.settings.logo.height }}"
+               style="width: {{ section.settings.logo_width }}px; height: auto"
+               loading="eager">
+        </a>
+      {%- else -%}
+        <a href="{{ routes.root_url }}" class="header__logo-text">{{ shop.name }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="header__actions">
+      <a href="{{ routes.search_url }}" class="header__action" aria-label="{{ 'general.search.search' | t }}">
+        {% render 'icon-search' %}
+      </a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="header__action" aria-label="{{ 'customer.account.title' | t }}">
+          {% render 'icon-user' %}
+        </a>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" class="header__action" data-cart-open aria-label="{{ 'general.cart.title' | t }}">
+        {% render 'icon-bag' %}
+        <span class="header__cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+          {{ cart.item_count }}
+        </span>
+      </a>
+    </div>
+  </div>
+
+  {%- if section.settings.nav_below_logo -%}
+    <div class="header__nav-row">
+      <nav class="nav" aria-label="Primary">
+        {% render 'nav-list', menu: section.settings.menu %}
+      </nav>
+    </div>
+  {%- endif -%}
+</header>
+
+<nav class="mobile-menu" data-mobile-menu aria-hidden="true" aria-label="Mobile">
+  <button type="button" class="mobile-menu__close" data-menu-close aria-label="{{ 'general.accessibility.close' | t }}">
+    {% render 'icons', icon: 'close' %}
+  </button>
+  {%- for link in linklists[section.settings.menu].links -%}
+    <a href="{{ link.url }}" class="mobile-menu__link">{{ link.title }}</a>
+    {%- for child in link.links -%}
+      <a href="{{ child.url }}" class="mobile-menu__link" style="padding-left: 1rem; font-size: .8125rem">
+        {{ child.title }}
+      </a>
+    {%- endfor -%}
+  {%- endfor -%}
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 80, "max": 320, "step": 10, "unit": "px", "default": 180 },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "nav_below_logo", "label": "Place navigation below logo", "default": true }
+  ]
+}
+{% endschema %}

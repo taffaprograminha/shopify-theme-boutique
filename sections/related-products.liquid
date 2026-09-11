@@ -1,0 +1,61 @@
+<section class="section" id="Related-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-header section-header--center">
+        <h2 class="section-header__title h3">{{ section.settings.heading }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="carousel" data-carousel>
+      <button type="button" class="carousel__nav carousel__nav--prev" data-carousel-prev aria-label="{{ 'general.accessibility.previous' | t }}">
+        {% render 'icons', icon: 'arrow-left' %}
+      </button>
+      <button type="button" class="carousel__nav carousel__nav--next" data-carousel-next aria-label="{{ 'general.accessibility.next' | t }}">
+        {% render 'icons', icon: 'arrow-right' %}
+      </button>
+
+      <div class="product-scroll" data-carousel-track>
+        {%- for product in recommendations.products -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- unless recommendations.performed -%}
+  <script>
+    (function () {
+      var root = document.getElementById('Related-{{ section.id }}');
+      if (!root) return;
+      var track = root.querySelector('[data-carousel-track]');
+      var url = '{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}';
+
+      fetch(url)
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          var next = doc.querySelector('[data-carousel-track]');
+          if (next && next.children.length) {
+            track.innerHTML = next.innerHTML;
+            document.dispatchEvent(new CustomEvent('shopify:section:load'));
+          } else {
+            root.hidden = true;
+          }
+        })
+        .catch(function () { root.hidden = true; });
+    })();
+  </script>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Related products",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Combine and save more" },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 8 }
+  ],
+  "presets": [{ "name": "Related products" }]
+}
+{% endschema %}

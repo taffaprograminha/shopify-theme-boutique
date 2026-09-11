@@ -1,0 +1,31 @@
+<div class="section page-width" style="max-width: 460px">
+  <h1 class="h3 text-center">{{ 'customer.register.title' | t }}</h1>
+
+  {% form 'create_customer' %}
+    {{ form.errors | default_errors }}
+
+    <div class="variant-group" style="margin-bottom: 1rem">
+      <label class="variant-group__label" for="RegisterFirstName">{{ 'customer.register.first_name' | t }}</label>
+      <input type="text" id="RegisterFirstName" name="customer[first_name]" class="newsletter__input" autocomplete="given-name">
+    </div>
+    <div class="variant-group" style="margin-bottom: 1rem">
+      <label class="variant-group__label" for="RegisterLastName">{{ 'customer.register.last_name' | t }}</label>
+      <input type="text" id="RegisterLastName" name="customer[last_name]" class="newsletter__input" autocomplete="family-name">
+    </div>
+    <div class="variant-group" style="margin-bottom: 1rem">
+      <label class="variant-group__label" for="RegisterEmail">{{ 'customer.register.email' | t }}</label>
+      <input type="email" id="RegisterEmail" name="customer[email]" class="newsletter__input" autocomplete="email" required>
+    </div>
+    <div class="variant-group" style="margin-bottom: 1.5rem">
+      <label class="variant-group__label" for="RegisterPassword">{{ 'customer.register.password' | t }}</label>
+      <input type="password" id="RegisterPassword" name="customer[password]" class="newsletter__input" autocomplete="new-password" required>
+    </div>
+
+    <button type="submit" class="btn btn--full btn--large">{{ 'customer.register.submit' | t }}</button>
+  {% endform %}
+
+  <p class="text-center" style="margin-top: 1.5rem; font-size: .8125rem">
+    {{ 'customer.register.have_account' | t }}
+    <a href="{{ routes.account_login_url }}" class="section-header__link">{{ 'customer.login.sign_in' | t }}</a>
+  </p>
+</div>

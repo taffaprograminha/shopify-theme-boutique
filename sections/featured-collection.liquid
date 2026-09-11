@@ -1,0 +1,103 @@
+{%- liquid
+  assign coll = collections[section.settings.collection]
+  assign limit = section.settings.products_to_show
+  assign is_scroll = false
+  if section.settings.layout == 'scroll'
+    assign is_scroll = true
+  endif
+-%}
+
+<section class="section" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-header {% if section.settings.header_align == 'center' %}section-header--center{% else %}section-header--inline{% endif %}">
+        <h2 class="section-header__title h3">{{ section.settings.heading }}</h2>
+        {%- if section.settings.view_all and coll.url and section.settings.header_align != 'center' -%}
+          <a href="{{ coll.url }}" class="section-header__link">{{ 'collections.general.view_all' | t }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if coll.products.size > 0 -%}
+      <div class="carousel" data-carousel>
+        {%- if is_scroll -%}
+          <button type="button" class="carousel__nav carousel__nav--prev" data-carousel-prev aria-label="{{ 'general.accessibility.previous' | t }}">
+            {% render 'icons', icon: 'arrow-left' %}
+          </button>
+          <button type="button" class="carousel__nav carousel__nav--next" data-carousel-next aria-label="{{ 'general.accessibility.next' | t }}">
+            {% render 'icons', icon: 'arrow-right' %}
+          </button>
+        {%- endif -%}
+
+        <div class="{% if is_scroll %}product-scroll{% else %}product-grid{% endif %}"
+             {% if is_scroll %}data-carousel-track{% endif %}
+             style="--cols: {{ section.settings.columns_desktop }}">
+          {%- for product in coll.products limit: limit -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- if section.settings.view_all and coll.url and section.settings.header_align == 'center' -%}
+        <div class="text-center" style="margin-top: 2rem">
+          <a href="{{ coll.url }}" class="btn btn--outline">{{ 'collections.general.view_all' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="product-grid" style="--cols: {{ section.settings.columns_desktop }}">
+        {%- for i in (1..4) -%}
+          <div class="card" style="--card-ratio: 100%">
+            <div class="card__media">{{ 'product-1' | placeholder_svg_tag: 'card__img card__img--main' }}</div>
+            <div class="card__info"><h3 class="card__title">Example product</h3></div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Bestsellers" },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 24, "step": 1, "default": 8 },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "scroll", "label": "Horizontal scroll" }
+      ],
+      "default": "scroll"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" }
+      ],
+      "default": "4"
+    },
+    { "type": "checkbox", "id": "view_all", "label": "Show 'view all' link", "default": true }
+  ],
+  "presets": [{ "name": "Featured collection" }]
+}
+{% endschema %}

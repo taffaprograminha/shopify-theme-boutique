@@ -1,0 +1,23 @@
+{%- comment -%}
+  Shared stepper. Pass ajax_key for the drawer (JS-driven) or name+key for a
+  form-submitted cart page.
+{%- endcomment -%}
+<div class="qty">
+  <button type="button"
+          class="qty__btn"
+          {% if ajax_key %}data-cart-qty-step="-1"{% else %}data-qty-step="-1"{% endif %}
+          aria-label="{{ 'general.cart.decrease' | t }}">&minus;</button>
+
+  <input class="qty__input"
+         type="number"
+         {% if name %}name="{{ name }}{{ key }}]"{% elsif input_name %}name="{{ input_name }}"{% endif %}
+         value="{{ value | default: 1 }}"
+         min="{{ min | default: 1 }}"
+         {% if ajax_key %}data-cart-qty-input data-key="{{ ajax_key }}"{% endif %}
+         aria-label="{{ 'general.cart.quantity' | t }}">
+
+  <button type="button"
+          class="qty__btn"
+          {% if ajax_key %}data-cart-qty-step="1"{% else %}data-qty-step="1"{% endif %}
+          aria-label="{{ 'general.cart.increase' | t }}">+</button>
+</div>

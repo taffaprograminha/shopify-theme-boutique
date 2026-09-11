@@ -1,0 +1,17 @@
+{%- comment -%}
+  Renders Shopify's own payment icons for the methods actually enabled on the
+  store, so the row can never advertise a method the customer cannot use.
+  Enable Cartes Bancaires, MB WAY, Klarna etc. under Settings > Payments and
+  they appear here automatically.
+
+  Params: limit (int), align (left|center|right), size (small|medium)
+{%- endcomment -%}
+
+{%- assign icon_limit = limit | default: 12 -%}
+{%- if shop.enabled_payment_types.size > 0 -%}
+  <div class="payment-icons payment-icons--{{ align | default: 'center' }} payment-icons--{{ size | default: 'medium' }}">
+    {%- for type in shop.enabled_payment_types limit: icon_limit -%}
+      {{ type | payment_type_svg_tag: class: 'payment-icons__item' }}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

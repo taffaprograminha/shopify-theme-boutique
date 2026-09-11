@@ -1,0 +1,32 @@
+{%- comment -%}
+  Converts a letter size to the French dress size, e.g. "M" -> "38".
+  Numeric values (shoe sizes) and anything unmapped are returned untouched.
+  The catalogue mixes 2XL/XXL and 3XL/XXXL, so both spellings are handled.
+
+  Params: value, mode (fr|combined|plain)
+{%- endcomment -%}
+
+{%- liquid
+  assign key = value | upcase | replace: ' ', '' | replace: '-', ''
+
+  assign letters = 'XS,S,M,L,XL,XXL,2XL,XXXL,3XL,XXXXL,4XL,XXXXXL,5XL,0XL,1XL' | split: ','
+  assign fr_sizes = '34,36,38,40,42,44,44,46,46,48,48,50,50,42,42' | split: ','
+
+  assign fr = ''
+  for l in letters
+    if l == key
+      assign fr = fr_sizes[forloop.index0]
+      break
+    endif
+  endfor
+-%}
+
+{%- if fr != blank -%}
+  {%- case mode -%}
+    {%- when 'fr' -%}{{ fr }}
+    {%- when 'plain' -%}{{ value }}
+    {%- else -%}{{ fr }} <span class="size-alt">{{ value }}</span>
+  {%- endcase -%}
+{%- else -%}
+  {{ value }}
+{%- endif -%}

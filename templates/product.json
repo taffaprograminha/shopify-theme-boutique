@@ -1,0 +1,174 @@
+{
+  "sections": {
+    "category-pills": {
+      "type": "category-pills",
+      "blocks": {
+        "c1": {
+          "type": "category"
+        },
+        "c2": {
+          "type": "category"
+        },
+        "c3": {
+          "type": "category"
+        },
+        "c4": {
+          "type": "category"
+        },
+        "c5": {
+          "type": "category"
+        },
+        "c6": {
+          "type": "category"
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ],
+      "settings": {
+        "heading": "Categories"
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "rating": {
+          "type": "rating"
+        },
+        "title": {
+          "type": "title"
+        },
+        "price": {
+          "type": "price"
+        },
+        "stock": {
+          "type": "stock",
+          "settings": {
+            "low_stock_threshold": 5
+          }
+        },
+        "trust": {
+          "type": "trust"
+        },
+        "variants": {
+          "type": "variants",
+          "settings": {
+            "size_format": "combined",
+            "show_size_guide": true,
+            "shoe_table": true,
+            "intro": "Mesures du corps en centimètres. En cas d'hésitation, choisissez la taille au-dessus.",
+            "note": "Les tailles peuvent varier légèrement selon la coupe du modèle."
+          }
+        },
+        "buy": {
+          "type": "buy",
+          "settings": {
+            "show_quantity": false
+          }
+        },
+        "delivery": {
+          "type": "delivery",
+          "settings": {
+            "processing_days": 2,
+            "date_format": "dispatch",
+            "free_delivery_label": "Livraison gratuite",
+            "free_delivery_flag": "🇫🇷"
+          }
+        },
+        "reassurance": {
+          "type": "reassurance",
+          "settings": {
+            "title": "Notre engagement",
+            "text": "Chaque commande est préparée à la main et couverte par notre garantie satisfait ou remboursé de 30 jours."
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "title": "Description",
+            "open": true
+          }
+        },
+        "delivery-accordion": {
+          "type": "accordion",
+          "settings": {
+            "title": "Livraison & commandes",
+            "content": "<p>Les commandes sont expédiées sous 2 jours ouvrés. Vous recevrez le suivi par e-mail dès que votre colis quitte nos entrepôts.</p>",
+            "open": false
+          }
+        },
+        "returns-accordion": {
+          "type": "accordion",
+          "settings": {
+            "title": "Satisfait ou remboursé 30 jours",
+            "content": "<p>Cet article ne vous convient pas ? Retournez-le sous 30 jours après réception pour un remboursement intégral.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "rating",
+        "title",
+        "price",
+        "stock",
+        "trust",
+        "variants",
+        "buy",
+        "delivery",
+        "reassurance",
+        "description",
+        "delivery-accordion",
+        "returns-accordion"
+      ],
+      "settings": {}
+    },
+    "story": {
+      "type": "story",
+      "settings": {
+        "eyebrow": "Notre histoire",
+        "heading": "Voilà à quoi ressemblent vingt-cinq ans.",
+        "body": "<p>Racontez ici l'histoire de votre boutique : qui l'a créée, pourquoi elle existe, et ce qu'elle représente pour vos clientes.</p>",
+        "show_tiers": true,
+        "tier_note": "Les remises sont appliquées automatiquement au paiement et cumulables entre collections."
+      }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {
+        "heading": "Combinez et économisez jusqu'à 20%",
+        "products_to_show": 8
+      }
+    },
+    "sticky-atc": {
+      "type": "sticky-atc",
+      "settings": {
+        "enabled": true
+      }
+    },
+    "more-products": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Vous aimerez aussi",
+        "header_align": "center",
+        "collection": "robes-soldes",
+        "products_to_show": 10,
+        "layout": "scroll",
+        "columns_desktop": "5",
+        "view_all": true
+      }
+    }
+  },
+  "order": [
+    "category-pills",
+    "main",
+    "story",
+    "related",
+    "more-products",
+    "sticky-atc"
+  ]
+}

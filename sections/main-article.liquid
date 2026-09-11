@@ -1,0 +1,14 @@
+<article class="section main-article">
+  <div class="content-width">
+    <h1>{{ article.title }}</h1>
+    <p class="article__meta">{{ article.published_at | date: '%b %d, %Y' }} &middot; {{ article.author }}</p>
+    {%- if article.image -%}
+      <img src="{{ article.image | image_url: width: 1400 }}" alt="{{ article.title | escape }}" width="{{ article.image.width }}" height="{{ article.image.height }}">
+    {%- endif -%}
+    <div class="rte">{{ article.content }}</div>
+  </div>
+</article>
+
+{% schema %}
+{ "name": "Article", "settings": [] }
+{% endschema %}

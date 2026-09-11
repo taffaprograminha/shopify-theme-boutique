@@ -1,0 +1,14 @@
+<section class="section gift-card">
+  <div class="container container--narrow" style="text-align:center;">
+    <h1>{{ shop.name }} Gift Card</h1>
+    <p>Value: <strong>{{ gift_card.initial_value | money }}</strong></p>
+    {%- if gift_card.expired -%}<p>This gift card has expired.</p>{%- endif -%}
+    <div class="gift-card__code">
+      <code>{{ gift_card.code | format_code }}</code>
+    </div>
+    {%- if gift_card.qr_identifier -%}
+      <div id="QrCode" data-identifier="{{ gift_card.qr_identifier }}"></div>
+    {%- endif -%}
+    <p>Balance: {{ gift_card.balance | money }}</p>
+  </div>
+</section>

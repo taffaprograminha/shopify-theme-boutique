@@ -1,0 +1,104 @@
+<div class="section page-width" style="max-width: 720px">
+  <div class="section-header section-header--inline">
+    <h1 class="section-header__title h3">{{ 'customer.addresses.title' | t }}</h1>
+    <a href="{{ routes.account_url }}" class="section-header__link">{{ 'customer.account.return' | t }}</a>
+  </div>
+
+  {% form 'customer_address', customer.new_address %}
+    {{ form.errors | default_errors }}
+    <h2 class="h5">{{ 'customer.addresses.add_new' | t }}</h2>
+
+    <div class="variant-group" style="margin-bottom:.75rem">
+      <label class="variant-group__label" for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+      <input type="text" id="AddressFirstNameNew" name="address[first_name]" class="newsletter__input" autocomplete="given-name">
+    </div>
+    <div class="variant-group" style="margin-bottom:.75rem">
+      <label class="variant-group__label" for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}</label>
+      <input type="text" id="AddressLastNameNew" name="address[last_name]" class="newsletter__input" autocomplete="family-name">
+    </div>
+    <div class="variant-group" style="margin-bottom:.75rem">
+      <label class="variant-group__label" for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
+      <input type="text" id="AddressCompanyNew" name="address[company]" class="newsletter__input" autocomplete="organization">
+    </div>
+    <div class="variant-group" style="margin-bottom:.75rem">
+      <label class="variant-group__label" for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}</label>
+      <input type="text" id="AddressAddress1New" name="address[address1]" class="newsletter__input" autocomplete="address-line1">
+    </div>
+    <div class="variant-group" style="margin-bottom:.75rem">
+      <label class="variant-group__label" for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
+      <input type="text" id="AddressAddress2New" name="address[address2]" class="newsletter__input" autocomplete="address-line2">
+    </div>
+    <div class="variant-group" style="margin-bottom:.75rem">
+      <label class="variant-group__label" for="AddressCityNew">{{ 'customer.addresses.city' | t }}</label>
+      <input type="text" id="AddressCityNew" name="address[city]" class="newsletter__input" autocomplete="address-level2">
+    </div>
+    <div class="variant-group" style="margin-bottom:.75rem">
+      <label class="variant-group__label" for="AddressZipNew">{{ 'customer.addresses.zip' | t }}</label>
+      <input type="text" id="AddressZipNew" name="address[zip]" class="newsletter__input" autocomplete="postal-code">
+    </div>
+    <div class="variant-group" style="margin-bottom:.75rem">
+      <label class="variant-group__label" for="AddressCountryNew">{{ 'customer.addresses.country' | t }}</label>
+      <select id="AddressCountryNew" name="address[country]" class="collection-sort" data-default="{{ form.country }}">
+        {{ country_option_tags }}
+      </select>
+    </div>
+    <div class="variant-group" style="margin-bottom:.75rem" id="AddressProvinceContainerNew">
+      <label class="variant-group__label" for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}</label>
+      <select id="AddressProvinceNew" name="address[province]" class="collection-sort" data-default="{{ form.province }}"></select>
+    </div>
+    <div class="variant-group" style="margin-bottom:1rem">
+      <label class="variant-group__label" for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}</label>
+      <input type="tel" id="AddressPhoneNew" name="address[phone]" class="newsletter__input" autocomplete="tel">
+    </div>
+
+    <label style="display:flex;gap:.5rem;align-items:center;font-size:.8125rem;margin-bottom:1rem">
+      {{ form.set_as_default_checkbox }}
+      {{ 'customer.addresses.set_default' | t }}
+    </label>
+
+    <button type="submit" class="btn">{{ 'customer.addresses.save' | t }}</button>
+  {% endform %}
+
+  <div style="margin-top:3rem">
+    {%- if customer.addresses.size > 0 -%}
+      {%- for address in customer.addresses -%}
+        <div style="border-top:1px solid var(--color-border);padding:1.25rem 0">
+          {%- if address == customer.default_address -%}
+            <p class="card__vendor">{{ 'customer.addresses.default' | t }}</p>
+          {%- endif -%}
+          <div style="font-size:.875rem;line-height:1.8">{{ address | format_address }}</div>
+          <div style="display:flex;gap:1rem;margin-top:.5rem">
+            <a href="{{ address.url }}" class="section-header__link">{{ 'customer.addresses.edit' | t }}</a>
+            <a href="{{ address.url }}"
+               class="section-header__link"
+               data-confirm-message="{{ 'customer.addresses.delete_confirm' | t | escape }}"
+               data-address-delete>
+              {{ 'customer.addresses.delete' | t }}
+            </a>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <p style="color:var(--color-muted);font-size:.875rem">{{ 'customer.addresses.none' | t }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.Shopify && Shopify.CountryProvinceSelector) {
+      new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
+        hideElement: 'AddressProvinceContainerNew'
+      });
+    }
+    document.querySelectorAll('[data-address-delete]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (confirm(link.dataset.confirmMessage)) {
+          Shopify.postLink(link.href, { parameters: { _method: 'delete' } });
+        }
+      });
+    });
+  });
+</script>

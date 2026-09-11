@@ -1,0 +1,49 @@
+{%- if settings.volume_bar_enabled -%}
+  {%- liquid
+    assign tag = 'div'
+    if settings.volume_bar_link != blank
+      assign tag = 'a'
+    endif
+  -%}
+  <{{ tag }}
+    class="volume-bar"
+    {% if tag == 'a' %}href="{{ settings.volume_bar_link }}"{% endif %}
+    {{ section.shopify_attributes }}>
+    {%- for i in (1..3) -%}
+      {%- liquid
+        case i
+          when 1
+            assign value = settings.volume_tier_1_value
+            assign label = settings.volume_tier_1_label
+          when 2
+            assign value = settings.volume_tier_2_value
+            assign label = settings.volume_tier_2_label
+          else
+            assign value = settings.volume_tier_3_value
+            assign label = settings.volume_tier_3_label
+        endcase
+      -%}
+      {%- if value != blank -%}
+        <div class="volume-bar__tier">
+          <span class="volume-bar__value">{{ value }}</span>
+          <span class="volume-bar__label">{{ label }}</span>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </{{ tag }}>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Volume discount bar",
+  "tag": "section",
+  "class": "volume-bar-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Values are set globally in Theme settings > Volume discounts. Create matching automatic discounts under Discounts so they apply at checkout."
+    }
+  ],
+  "presets": [{ "name": "Volume discount bar" }]
+}
+{% endschema %}

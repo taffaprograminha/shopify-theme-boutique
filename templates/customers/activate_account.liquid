@@ -1,0 +1,22 @@
+<div class="section page-width" style="max-width: 460px">
+  <h1 class="h3 text-center">{{ 'customer.activate_account.title' | t }}</h1>
+  <p class="text-center" style="font-size:.8125rem;color:var(--color-muted)">
+    {{ 'customer.activate_account.subtext' | t }}
+  </p>
+
+  {% form 'activate_customer_password' %}
+    {{ form.errors | default_errors }}
+    <div class="variant-group" style="margin:1rem 0">
+      <label class="variant-group__label" for="ActivatePassword">{{ 'customer.activate_account.password' | t }}</label>
+      <input type="password" id="ActivatePassword" name="customer[password]" class="newsletter__input" autocomplete="new-password" required>
+    </div>
+    <div class="variant-group" style="margin-bottom:1.5rem">
+      <label class="variant-group__label" for="ActivatePasswordConfirm">{{ 'customer.activate_account.password_confirm' | t }}</label>
+      <input type="password" id="ActivatePasswordConfirm" name="customer[password_confirmation]" class="newsletter__input" autocomplete="new-password" required>
+    </div>
+    <button type="submit" class="btn btn--full btn--large">{{ 'customer.activate_account.submit' | t }}</button>
+    <button type="submit" name="decline" class="btn btn--outline btn--full" style="margin-top:.65rem">
+      {{ 'customer.activate_account.cancel' | t }}
+    </button>
+  {% endform %}
+</div>

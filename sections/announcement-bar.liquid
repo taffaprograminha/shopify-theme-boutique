@@ -1,0 +1,55 @@
+{%- if section.blocks.size > 0 -%}
+  <div class="announcement"
+       style="--announcement-bg: {{ section.settings.bg }}; --announcement-text: {{ section.settings.fg }}"
+       {% if section.settings.auto_rotate and section.blocks.size > 1 %}data-announcement-rotate data-speed="{{ section.settings.rotate_speed }}"{% endif %}
+       {{ section.shopify_attributes }}>
+    {%- for block in section.blocks -%}
+      <span data-announcement-item {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
+        {%- if block.settings.link != blank -%}
+          <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+        {%- else -%}
+          {{ block.settings.text }}
+        {%- endif -%}
+      </span>
+    {%- endfor -%}
+  </div>
+
+  {%- if section.settings.auto_rotate and section.blocks.size > 1 -%}
+    <script>
+      (function () {
+        var bar = document.querySelector('[data-announcement-rotate]');
+        if (!bar) return;
+        var items = bar.querySelectorAll('[data-announcement-item]');
+        var i = 0;
+        setInterval(function () {
+          items[i].hidden = true;
+          i = (i + 1) % items.length;
+          items[i].hidden = false;
+        }, (parseInt(bar.dataset.speed, 10) || 5) * 1000);
+      })();
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Background", "default": "#000000" },
+    { "type": "color", "id": "fg", "label": "Text", "default": "#ffffff" },
+    { "type": "checkbox", "id": "auto_rotate", "label": "Auto rotate", "default": false },
+    { "type": "range", "id": "rotate_speed", "label": "Seconds per message", "min": 2, "max": 10, "step": 1, "default": 5 }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Message",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Free delivery on every order" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 6
+}
+{% endschema %}

@@ -1,0 +1,60 @@
+<div class="section page-width">
+  <div class="section-header section-header--inline">
+    <h1 class="section-header__title h3">{{ 'customer.account.title' | t }}</h1>
+    <a href="{{ routes.account_logout_url }}" class="section-header__link">{{ 'customer.account.logout' | t }}</a>
+  </div>
+
+  <div class="product" style="gap: 3rem">
+    <div>
+      <h2 class="h4">{{ 'customer.orders.title' | t }}</h2>
+      {%- paginate customer.orders by 20 -%}
+        {%- if customer.orders.size > 0 -%}
+          <table>
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:8px 0">{{ 'customer.orders.order_number' | t }}</th>
+                <th style="text-align:left;padding:8px 0">{{ 'customer.orders.date' | t }}</th>
+                <th style="text-align:left;padding:8px 0">{{ 'customer.orders.payment_status' | t }}</th>
+                <th style="text-align:right;padding:8px 0">{{ 'customer.orders.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr style="border-top:1px solid var(--color-border);font-size:.8125rem">
+                  <td style="padding:10px 0"><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                  <td style="padding:10px 0">{{ order.created_at | date: '%d/%m/%Y' }}</td>
+                  <td style="padding:10px 0">{{ order.financial_status_label }}</td>
+                  <td style="padding:10px 0;text-align:right">{{ order.total_price | money }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" aria-label="Pagination">
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}">{{ part.title }}</a>
+                {%- else -%}
+                  <span{% if part.title == paginate.current_page %} class="is-current"{% endif %}>{{ part.title }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <p style="color:var(--color-muted);font-size:.875rem">{{ 'customer.orders.none' | t }}</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
+    <div>
+      <h2 class="h4">{{ 'customer.account.details' | t }}</h2>
+      <div style="font-size:.875rem;line-height:1.8">
+        {{ customer.default_address | format_address }}
+      </div>
+      <a href="{{ routes.account_addresses_url }}" class="btn btn--outline" style="margin-top:1rem">
+        {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+      </a>
+    </div>
+  </div>
+</div>

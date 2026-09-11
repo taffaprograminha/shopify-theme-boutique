@@ -1,0 +1,126 @@
+<footer class="footer" style="--footer-bg: {{ section.settings.background }}; --footer-text: {{ section.settings.text_color }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    <div class="footer__grid">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+
+        {%- when 'menu' -%}
+          <div {{ block.shopify_attributes }}>
+            <h3 class="footer__heading">{{ block.settings.title }}</h3>
+            <ul class="footer__links">
+              {%- for link in linklists[block.settings.menu].links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+
+        {%- when 'text' -%}
+          <div {{ block.shopify_attributes }}>
+            <h3 class="footer__heading">{{ block.settings.title }}</h3>
+            <div class="rte" style="font-size: .8125rem; opacity: .75">{{ block.settings.text }}</div>
+          </div>
+
+        {%- when 'newsletter' -%}
+          <div {{ block.shopify_attributes }}>
+            <h3 class="footer__heading">{{ block.settings.title }}</h3>
+            <div class="rte" style="font-size: .8125rem; opacity: .75; margin-bottom: 1rem">{{ block.settings.text }}</div>
+            {% form 'customer' %}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="newsletter__form" style="margin-top: 0">
+                <input type="email"
+                       name="contact[email]"
+                       class="newsletter__input"
+                       placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                       aria-label="{{ 'general.newsletter.email' | t }}"
+                       required>
+                <button type="submit" class="btn">{{ 'general.newsletter.button' | t }}</button>
+              </div>
+              {%- if form.posted_successfully? -%}
+                <p class="form-success">{{ 'general.newsletter.success' | t }}</p>
+              {%- endif -%}
+              {%- if form.errors -%}
+                <p class="form-error">{{ form.errors.messages.form }}</p>
+              {%- endif -%}
+            {% endform %}
+          </div>
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+
+      <div class="footer__social">
+        {%- if settings.social_instagram != blank -%}
+          <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+        {%- endif -%}
+        {%- if settings.social_facebook != blank -%}
+          <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+        {%- endif -%}
+        {%- if settings.social_tiktok != blank -%}
+          <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">TikTok</a>
+        {%- endif -%}
+        {%- if settings.social_pinterest != blank -%}
+          <a href="{{ settings.social_pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest">Pinterest</a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_payment_icons -%}
+        <div class="footer__payment">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#f5f2ec" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#212121" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Information" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "About" },
+        { "type": "richtext", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Join our list" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>New arrivals and stories from the studio.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "menu" },
+        { "type": "text" },
+        { "type": "newsletter" }
+      ]
+    }
+  ]
+}
+{% endschema %}

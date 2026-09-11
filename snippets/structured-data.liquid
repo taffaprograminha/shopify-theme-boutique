@@ -1,0 +1,145 @@
+{%- comment -%}
+  JSON-LD for rich results. Only emits fields backed by real store data —
+  Google penalises review or price markup that the page does not show.
+{%- endcomment -%}
+
+{%- if template.name == 'product' -%}
+  {%- liquid
+    assign variant = product.selected_or_first_available_variant
+    assign rating = product.metafields.reviews.rating.value
+    assign rating_count = product.metafields.reviews.rating_count
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "url": {{ request.origin | append: product.url | json }},
+      {% if product.featured_image -%}
+        "image": {{ product.featured_image | image_url: width: 1200 | prepend: request.origin | json }},
+      {%- endif %}
+      "description": {{ product.description | strip_html | truncate: 500 | json }},
+      {% if product.vendor != blank -%}
+        "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+      {%- endif %}
+      {% if variant.sku != blank -%}"sku": {{ variant.sku | json }},{%- endif %}
+      {% if variant.barcode != blank -%}"gtin": {{ variant.barcode | json }},{%- endif %}
+      {% if rating and rating_count > 0 -%}
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": {{ rating.rating | json }},
+          "bestRating": {{ rating.scale_max | json }},
+          "ratingCount": {{ rating_count | json }}
+        },
+      {%- endif %}
+      "offers": [
+        {%- for v in product.variants -%}
+          {
+            "@type": "Offer",
+            "url": {{ request.origin | append: product.url | append: '?variant=' | append: v.id | json }},
+            "price": {{ v.price | divided_by: 100.0 | json }},
+            "priceCurrency": {{ cart.currency.iso_code | json }},
+            "availability": "https://schema.org/{% if v.available %}InStock{% else %}OutOfStock{% endif %}",
+            {% if v.sku != blank -%}"sku": {{ v.sku | json }},{%- endif %}
+            "itemCondition": "https://schema.org/NewCondition"
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ request.origin | json }} },
+        {% if collection -%}
+          { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ request.origin | append: collection.url | json }} },
+          { "@type": "ListItem", "position": 3, "name": {{ product.title | json }} }
+        {%- else -%}
+          { "@type": "ListItem", "position": 2, "name": {{ product.title | json }} }
+        {%- endif %}
+      ]
+    }
+  </script>
+
+{%- elsif template.name == 'collection' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ request.origin | json }} },
+        { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }} }
+      ]
+    }
+  </script>
+
+{%- elsif template.name == 'article' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Article",
+      "headline": {{ article.title | json }},
+      "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
+      {% if article.image -%}
+        "image": {{ article.image | image_url: width: 1200 | prepend: request.origin | json }},
+      {%- endif %}
+      "author": { "@type": "Person", "name": {{ article.author | json }} },
+      "publisher": { "@type": "Organization", "name": {{ shop.name | json }} }
+    }
+  </script>
+
+{%- elsif request.page_type == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": {{ request.origin | json }},
+      {% if settings.logo -%}
+        "logo": {{ settings.logo | image_url: width: 500 | prepend: request.origin | json }},
+      {%- endif %}
+      {%- liquid
+        assign social_raw = ''
+        assign social_raw = social_raw | append: settings.social_instagram | append: '|'
+        assign social_raw = social_raw | append: settings.social_facebook | append: '|'
+        assign social_raw = social_raw | append: settings.social_tiktok | append: '|'
+        assign social_raw = social_raw | append: settings.social_pinterest
+        assign socials = social_raw | split: '|'
+      -%}
+      "sameAs": [
+        {%- assign first = true -%}
+        {%- for s in socials -%}
+          {%- if s != blank -%}
+            {%- unless first %},{% endunless -%}{{ s | json }}{%- assign first = false -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "url": {{ request.origin | json }},
+      {%- comment -%}
+        The braces are appended rather than written inline: Shopify's Liquid
+        parser treats a literal {search_term_string} inside an output tag as an
+        unterminated variable.
+      {%- endcomment -%}
+      {%- liquid
+        assign lb = '{'
+        assign rb = '}'
+        assign search_target = request.origin | append: '/search?q=' | append: lb | append: 'search_term_string' | append: rb
+      -%}
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ search_target | json }},
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+{%- endif -%}

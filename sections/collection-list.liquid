@@ -1,0 +1,108 @@
+{%- liquid
+  case section.settings.ratio
+    when 'square'
+      assign pad = '100%'
+    when 'landscape'
+      assign pad = '75%'
+    else
+      assign pad = '133%'
+  endcase
+-%}
+
+<section class="section" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-header section-header--{{ section.settings.header_align }}">
+        <h2 class="section-header__title h3">{{ section.settings.heading }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="collection-list" style="--cols: {{ section.settings.columns }}">
+      {%- for block in section.blocks -%}
+        {%- assign coll = collections[block.settings.collection] -%}
+        <a href="{{ coll.url | default: '#' }}" class="collection-card" {{ block.shopify_attributes }}>
+          <div class="collection-card__media" style="--ratio: {{ pad }}">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ coll.title | escape }}" loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+            {%- elsif coll.image != blank -%}
+              <img src="{{ coll.image | image_url: width: 800 }}" alt="{{ coll.title | escape }}" loading="lazy" width="{{ coll.image.width }}" height="{{ coll.image.height }}">
+            {%- elsif coll.products.first.featured_image -%}
+              <img src="{{ coll.products.first.featured_image | image_url: width: 800 }}" alt="{{ coll.title | escape }}" loading="lazy" width="{{ coll.products.first.featured_image.width }}" height="{{ coll.products.first.featured_image.height }}">
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+            <span class="collection-card__overlay"></span>
+          </div>
+          <h3 class="collection-card__title">
+            {{ block.settings.title | default: coll.title | default: 'Collection' }}
+          </h3>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by category" },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "landscape", "label": "Landscape" }
+      ],
+      "default": "portrait"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "title", "label": "Custom title" },
+        { "type": "image_picker", "id": "image", "label": "Custom image" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Collection list",
+      "blocks": [
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

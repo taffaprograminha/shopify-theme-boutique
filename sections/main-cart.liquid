@@ -1,0 +1,41 @@
+<section class="section" {{ section.shopify_attributes }}>
+  <div class="page-width" style="max-width: 900px">
+    <div class="section-header section-header--inline">
+      <h1 class="section-header__title h3">{{ 'general.cart.title' | t }}</h1>
+      <a href="{{ routes.all_products_collection_url }}" class="section-header__link">
+        {{ 'general.cart.continue_shopping' | t }}
+      </a>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post">
+        {%- for item in cart.items -%}
+          {% render 'cart-item', item: item, wide: true, form_input: true %}
+        {%- endfor -%}
+
+        <div class="cart-drawer__foot" style="border-top: 1px solid var(--color-border); padding: 1.5rem 0 0">
+          <div class="cart-total">
+            <span class="cart-total__label">{{ 'general.cart.subtotal' | t }}</span>
+            <span class="cart-total__price">{{ cart.total_price | money }}</span>
+          </div>
+          <p class="cart-drawer__note" style="text-align: left">{{ 'general.cart.taxes_note' | t }}</p>
+          <div class="product__buy-row">
+            <button type="submit" name="update" class="btn btn--outline">Update</button>
+            <button type="submit" name="checkout" class="btn btn--large">{{ 'general.cart.checkout' | t }}</button>
+          </div>
+        </div>
+      </form>
+    {%- else -%}
+      <div class="empty-state">
+        <h2 class="empty-state__title h3">{{ 'general.cart.empty' | t }}</h2>
+        <a href="{{ routes.all_products_collection_url }}" class="btn">
+          {{ 'general.cart.continue_shopping' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Cart", "tag": "section", "settings": [] }
+{% endschema %}

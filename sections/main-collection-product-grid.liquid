@@ -1,0 +1,80 @@
+{%- paginate collection.products by section.settings.products_per_page -%}
+<section class="section" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    <div class="collection-toolbar">
+      <p class="collection-count">
+        {{ 'products.facets.product_count' | t: count: collection.products_count }}
+      </p>
+      {%- if collection.sort_options.size > 0 -%}
+        <form>
+          <label class="visually-hidden" for="SortBy">{{ 'products.facets.sort_by' | t }}</label>
+          <select name="sort_by" id="SortBy" class="collection-sort" onchange="this.form.submit()">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}"{% if option.value == collection.sort_by %} selected{% endif %}>{{ option.name }}</option>
+            {%- endfor -%}
+          </select>
+          {%- for f in collection.filters -%}
+            {%- for v in f.active_values -%}
+              <input type="hidden" name="{{ v.param_name }}" value="{{ v.value }}">
+            {%- endfor -%}
+          {%- endfor -%}
+        </form>
+      {%- endif -%}
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <div class="product-grid" style="--cols: {{ section.settings.columns }}">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="Pagination">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {%- else -%}
+              <span{% if part.title == paginate.current_page %} class="is-current"{% endif %}>{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <div class="empty-state">
+        <h2 class="empty-state__title h3">{{ 'collections.general.no_products' | t }}</h2>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline">
+          {{ 'collections.general.view_all' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Product grid",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns on desktop",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" }
+      ],
+      "default": "4"
+    },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 12, "max": 48, "step": 4, "default": 24 }
+  ]
+}
+{% endschema %}

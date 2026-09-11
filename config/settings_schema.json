@@ -1,0 +1,563 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Boutique Revival",
+    "theme_version": "2.0.0",
+    "theme_author": "Custom",
+    "theme_documentation_url": "https://shopify.dev/themes",
+    "theme_support_url": "https://help.shopify.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Base"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_accent",
+        "label": "Accent background",
+        "default": "#f5f2ec",
+        "info": "Cream tone used in story and trust blocks"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#212121"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted text",
+        "default": "#6b6b6b"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border",
+        "default": "#d1cdc4"
+      },
+      {
+        "type": "header",
+        "content": "Accent"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (gold)",
+        "default": "#ab8c52"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_hover",
+        "label": "Accent hover",
+        "default": "#806430"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_light",
+        "label": "Accent light",
+        "default": "#e8d4ae"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_bg",
+        "label": "Primary button background",
+        "default": "#212121"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_text",
+        "label": "Primary button text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Sale"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale price / badge",
+        "default": "#d60000"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "tenor_sans_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "montserrat_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_button",
+        "label": "Button font",
+        "default": "karla_n7"
+      },
+      {
+        "type": "checkbox",
+        "id": "heading_uppercase",
+        "label": "Uppercase headings",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "base_font_size",
+        "label": "Base font size",
+        "min": 13,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "label": "Heading scale",
+        "min": 90,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page width",
+        "min": 1100,
+        "max": 1800,
+        "step": 20,
+        "unit": "px",
+        "default": 1400
+      },
+      {
+        "type": "range",
+        "id": "content_width",
+        "label": "Text content width",
+        "min": 700,
+        "max": 1200,
+        "step": 20,
+        "unit": "px",
+        "default": 1100
+      },
+      {
+        "type": "range",
+        "id": "spacing_sections",
+        "label": "Section spacing",
+        "min": 20,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "grid_gutter",
+        "label": "Grid gutter",
+        "min": 8,
+        "max": 48,
+        "step": 2,
+        "unit": "px",
+        "default": 32
+      },
+      {
+        "type": "range",
+        "id": "corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 16,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "info": "0 keeps the sharp editorial look"
+      }
+    ]
+  },
+  {
+    "name": "Volume discounts",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Displays the tiered discount bar. Create matching automatic discounts in Shopify Admin > Discounts so the amounts actually apply at checkout."
+      },
+      {
+        "type": "checkbox",
+        "id": "volume_bar_enabled",
+        "label": "Show discount tier bar",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "volume_tier_1_value",
+        "label": "Tier 1 value",
+        "default": "-10%"
+      },
+      {
+        "type": "text",
+        "id": "volume_tier_1_label",
+        "label": "Tier 1 label",
+        "default": "Buy 2 & save"
+      },
+      {
+        "type": "text",
+        "id": "volume_tier_2_value",
+        "label": "Tier 2 value",
+        "default": "-15%"
+      },
+      {
+        "type": "text",
+        "id": "volume_tier_2_label",
+        "label": "Tier 2 label",
+        "default": "Buy 3 & save"
+      },
+      {
+        "type": "text",
+        "id": "volume_tier_3_value",
+        "label": "Tier 3 value",
+        "default": "-20%"
+      },
+      {
+        "type": "text",
+        "id": "volume_tier_3_label",
+        "label": "Tier 3 label",
+        "default": "Buy 4 & save"
+      },
+      {
+        "type": "url",
+        "id": "volume_bar_link",
+        "label": "Link"
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Image aspect ratio",
+        "options": [
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait (3:4)"
+          },
+          {
+            "value": "tall",
+            "label": "Tall (2:3)"
+          }
+        ],
+        "default": "square"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_second_image",
+        "label": "Show second image on hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_quick_add",
+        "label": "Show quick add button",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_sale_badge",
+        "label": "Show discount badge",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_swatches",
+        "label": "Show colour swatches",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Colour swatches"
+      },
+      {
+        "type": "select",
+        "id": "swatch_shape",
+        "label": "Swatch shape",
+        "options": [
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "rounded",
+            "label": "Rounded"
+          },
+          {
+            "value": "circle",
+            "label": "Circle"
+          }
+        ],
+        "default": "square",
+        "info": "Swatches use the variant photo when one exists, otherwise the colour name."
+      },
+      {
+        "type": "range",
+        "id": "swatch_size",
+        "label": "Swatch size on product page",
+        "min": 40,
+        "max": 88,
+        "step": 4,
+        "unit": "px",
+        "default": 56
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Slide-out drawer"
+          },
+          {
+            "value": "page",
+            "label": "Cart page"
+          }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "header",
+        "content": "Reservation timer"
+      },
+      {
+        "type": "paragraph",
+        "content": "Only enable this if items are genuinely held. A countdown that reserves nothing is a misleading commercial practice under UK CPRs and the EU Omnibus Directive."
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_timer_enabled",
+        "label": "Show reservation countdown",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "cart_timer_minutes",
+        "label": "Reservation length",
+        "min": 5,
+        "max": 60,
+        "step": 5,
+        "unit": "min",
+        "default": 15
+      },
+      {
+        "type": "header",
+        "content": "Free shipping bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_free_shipping_enabled",
+        "label": "Show free shipping progress",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "default": 0,
+        "info": "In your store currency, e.g. 50. Set 0 if shipping is always free."
+      }
+    ]
+  },
+  {
+    "name": "Trust signals",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Carrier"
+      },
+      {
+        "type": "text",
+        "id": "carrier_name",
+        "label": "Carrier name",
+        "default": "Colissimo"
+      },
+      {
+        "type": "text",
+        "id": "carrier_note",
+        "label": "Carrier note",
+        "default": "Livraison 2 à 4 jours ouvrés"
+      },
+      {
+        "type": "image_picker",
+        "id": "carrier_logo",
+        "label": "Carrier logo",
+        "info": "Carrier logos are trademarks. Upload the official file from your La Poste / Colissimo merchant area. do not copy it from a website. Leave empty to show the carrier name as text."
+      },
+      {
+        "type": "text",
+        "id": "carrier_logo_asset",
+        "label": "Carrier logo file (assets)",
+        "info": "Filename of a logo bundled in the theme's assets folder, e.g. la-poste.png. Used when no image is uploaded above. Clear this to show the generic delivery icon."
+      },
+      {
+        "type": "header",
+        "content": "Guarantee"
+      },
+      {
+        "type": "range",
+        "id": "guarantee_days",
+        "label": "Guarantee length",
+        "min": 7,
+        "max": 90,
+        "step": 1,
+        "unit": "d",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Badge text"
+      },
+      {
+        "type": "text",
+        "id": "trust_1_title",
+        "label": "Badge 1 title",
+        "default": "Livraison gratuite avec Colissimo",
+        "info": "Wrap words in ** to bold them, e.g. **Livraison gratuite** avec Colissimo"
+      },
+      {
+        "type": "text",
+        "id": "trust_1_text",
+        "label": "Badge 1 text",
+        "default": "Orders are delivered free and insured with track & trace."
+      },
+      {
+        "type": "text",
+        "id": "trust_2_title",
+        "label": "Badge 2 title",
+        "default": "Satisfait ou remboursé 30 jours",
+        "info": "Wrap words in ** to bold them, e.g. **Livraison gratuite** avec Colissimo"
+      },
+      {
+        "type": "text",
+        "id": "trust_2_text",
+        "label": "Badge 2 text",
+        "default": "Shop with peace of mind thanks to our 30-day money-back guarantee."
+      },
+      {
+        "type": "text",
+        "id": "trust_3_title",
+        "label": "Badge 3 title",
+        "default": "Paiement sécurisé CB",
+        "info": "Wrap words in ** to bold them, e.g. **Livraison gratuite** avec Colissimo"
+      },
+      {
+        "type": "text",
+        "id": "trust_3_text",
+        "label": "Badge 3 text",
+        "default": "Pay securely by card, Apple Pay, Google Pay or PayPal."
+      },
+      {
+        "type": "header",
+        "content": "Payment icons"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons_product",
+        "label": "Show payment icons on product page",
+        "default": true
+      },
+      {
+        "type": "paragraph",
+        "content": "Icons come from the methods enabled in Settings > Payments. To show Cartes Bancaires for France, enable it there first."
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest URL"
+      }
+    ]
+  },
+  {
+    "name": "Search engines & sharing",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32×32 recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Default social sharing image",
+        "info": "1200×630 recommended. Used when a page has no image of its own."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo for search results",
+        "info": "Used in Organization structured data. Square, at least 112×112."
+      }
+    ]
+  }
+]

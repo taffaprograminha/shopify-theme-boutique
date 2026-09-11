@@ -1,0 +1,44 @@
+<section class="section rich-text rich-text--{{ section.settings.align }}">
+  <div class="content-width">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'eyebrow' -%}
+          <p class="story__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+        {%- when 'heading' -%}
+          <h2 class="rich-text__heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+        {%- when 'text' -%}
+          <div class="rte" {{ block.shopify_attributes }}>{{ block.settings.body }}</div>
+        {%- when 'button' -%}
+          <a class="btn btn" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    {
+      "type": "select", "id": "align", "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    }
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Eyebrow", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "About us" } ] },
+    { "type": "heading", "name": "Heading", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "A short statement about your brand" } ] },
+    { "type": "text", "name": "Text", "settings": [ { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Add supporting copy here.</p>" } ] },
+    { "type": "button", "name": "Button", "settings": [ { "type": "text", "id": "label", "label": "Label", "default": "Learn more" }, { "type": "url", "id": "link", "label": "Link" } ] }
+  ],
+  "presets": [
+    {
+      "name": "Rich text",
+      "blocks": [ { "type": "heading" }, { "type": "text" } ]
+    }
+  ]
+}
+{% endschema %}

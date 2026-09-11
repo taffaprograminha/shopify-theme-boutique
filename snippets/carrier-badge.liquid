@@ -1,0 +1,29 @@
+{%- comment -%}
+  Carrier strip for the product page.
+
+  Carrier logos are registered trademarks. Upload the file your carrier
+  supplies (La Poste and Colissimo provide one in the merchant area) via
+  Theme settings > Trust signals > Carrier logo. Until then the badge falls
+  back to naming the carrier in text, which is plain factual use.
+{%- endcomment -%}
+
+{%- if settings.carrier_name != blank or settings.carrier_logo != blank -%}
+  <div class="carrier-badge">
+    <span class="carrier-badge__label">{{ 'products.product.shipped_with' | t }}</span>
+
+    {%- if settings.carrier_logo != blank -%}
+      <img src="{{ settings.carrier_logo | image_url: width: 240 }}"
+           alt="{{ settings.carrier_name | default: 'Carrier' | escape }}"
+           class="carrier-badge__logo"
+           loading="lazy"
+           width="{{ settings.carrier_logo.width }}"
+           height="{{ settings.carrier_logo.height }}">
+    {%- else -%}
+      <span class="carrier-badge__name">{{ settings.carrier_name }}</span>
+    {%- endif -%}
+
+    {%- if settings.carrier_note != blank -%}
+      <span class="carrier-badge__note">{{ settings.carrier_note }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

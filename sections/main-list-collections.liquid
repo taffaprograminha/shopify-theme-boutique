@@ -1,0 +1,23 @@
+<section class="section main-list-collections">
+  <div class="page-width">
+    <h1>Collections</h1>
+    <div class="collection-list__grid collection-list__grid--3">
+      {%- for coll in collections -%}
+        <a href="{{ coll.url }}" class="collection-card">
+          <div class="collection-card__media collection-card__media--portrait">
+            {%- if coll.image != blank -%}
+              <img src="{{ coll.image | image_url: width: 800 }}" alt="{{ coll.title | escape }}" loading="lazy" width="{{ coll.image.width }}" height="{{ coll.image.height }}">
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <h3 class="collection-card__title">{{ coll.title }}</h3>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Collections list", "settings": [] }
+{% endschema %}

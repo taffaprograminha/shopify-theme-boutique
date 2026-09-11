@@ -1,0 +1,78 @@
+<div class="drawer-overlay" data-drawer-overlay aria-hidden="true"></div>
+
+<aside
+  class="cart-drawer"
+  data-cart-drawer
+  aria-hidden="true"
+  aria-label="{{ 'general.cart.title' | t }}"
+  data-empty-text="{{ 'general.cart.empty' | t | escape }}"
+  data-continue-text="{{ 'general.cart.continue_shopping' | t | escape }}">
+
+  <div class="cart-drawer__head">
+    <h2 class="cart-drawer__title">
+      {{ 'general.cart.title' | t }}
+      <span class="cart-drawer__count" data-cart-drawer-count>{{ cart.item_count }}</span>
+    </h2>
+    <button type="button" class="header__action" data-cart-close aria-label="{{ 'general.accessibility.close' | t }}">
+      {% render 'icons', icon: 'close' %}
+    </button>
+  </div>
+
+  {%- if settings.cart_timer_enabled -%}
+    <div class="cart-timer" data-cart-timer hidden>
+      {{ 'general.cart.reserved_for' | t }}
+      <strong data-cart-timer-value>--:--</strong>
+    </div>
+  {%- endif -%}
+
+  <div class="cart-drawer__body">
+    {%- if settings.cart_free_shipping_enabled and settings.cart_free_shipping_threshold > 0 -%}
+      <div class="free-shipping" data-free-shipping>
+        <p class="free-shipping__text" data-free-shipping-text></p>
+        <div class="free-shipping__track">
+          <div class="free-shipping__fill" data-free-shipping-fill style="width: 0%"></div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div data-cart-items>
+      {%- if cart.item_count == 0 -%}
+        <div class="cart-empty">
+          <p class="cart-empty__text">{{ 'general.cart.empty' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline">
+            {{ 'general.cart.continue_shopping' | t }}
+          </a>
+        </div>
+      {%- else -%}
+        {%- for item in cart.items -%}
+          {% render 'cart-item', item: item %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="cart-drawer__foot" data-cart-foot {% if cart.item_count == 0 %}hidden{% endif %}>
+    <div class="cart-total">
+      <span class="cart-total__label">{{ 'general.cart.subtotal' | t }}</span>
+      <span class="cart-total__price" data-cart-total>{{ cart.total_price | money }}</span>
+    </div>
+    <form action="{{ routes.cart_url }}" method="post">
+      <button type="submit" name="checkout" class="btn btn--full btn--large">
+        {{ 'general.cart.checkout' | t }}
+      </button>
+    </form>
+    <p class="cart-drawer__note">{{ 'general.cart.taxes_note' | t }}</p>
+  </div>
+</aside>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Cart type, reservation timer and free shipping bar are configured in Theme settings > Cart."
+    }
+  ]
+}
+{% endschema %}

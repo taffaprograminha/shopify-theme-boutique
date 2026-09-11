@@ -1,0 +1,48 @@
+{%- comment -%}
+  Single source of truth for cart line markup. The drawer renders its updates
+  client-side, so global.js mirrors this structure — keep the two in step.
+{%- endcomment -%}
+<div class="cart-item"{% if wide %} style="grid-template-columns: 96px 1fr"{% endif %}>
+  <div class="cart-item__img">
+    <a href="{{ item.url }}">
+      {%- if item.image -%}
+        {%- assign size = 160 -%}
+        {%- if wide -%}{%- assign size = 200 -%}{%- endif -%}
+        <img src="{{ item.image | image_url: width: size }}"
+             alt="{{ item.image.alt | escape }}"
+             loading="lazy"
+             width="{% if wide %}96{% else %}72{% endif %}"
+             height="{% if wide %}96{% else %}72{% endif %}">
+      {%- endif -%}
+    </a>
+  </div>
+
+  <div class="cart-item__info">
+    <a href="{{ item.url }}" class="cart-item__title">{{ item.product_title | default: item.product.title }}</a>
+
+    {%- unless item.product_has_only_default_variant or item.product.has_only_default_variant -%}
+      <span class="cart-item__variant">{{ item.variant.title }}</span>
+    {%- endunless -%}
+
+    <div class="price">
+      {%- if item.original_line_price > item.final_line_price -%}
+        <s class="price__compare">{{ item.original_line_price | money }}</s>
+        <span class="price__sale">{{ item.final_line_price | money }}</span>
+      {%- else -%}
+        <span class="price__regular">{{ item.final_line_price | money }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="cart-item__foot">
+      {%- if form_input -%}
+        {% render 'quantity-input', name: 'updates[', key: item.key, value: item.quantity, min: 0 %}
+        <a href="{{ item.url_to_remove }}" class="cart-item__remove">{{ 'general.cart.remove' | t }}</a>
+      {%- else -%}
+        {% render 'quantity-input', ajax_key: item.key, value: item.quantity, min: 0 %}
+        <button type="button" class="cart-item__remove" data-cart-remove data-key="{{ item.key }}">
+          {{ 'general.cart.remove' | t }}
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
