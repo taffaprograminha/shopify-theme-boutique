@@ -426,7 +426,7 @@
         "type": "text",
         "id": "carrier_name",
         "label": "Carrier name",
-        "default": "Colissimo"
+        "default": "La Poste"
       },
       {
         "type": "text",
@@ -468,8 +468,8 @@
         "type": "text",
         "id": "trust_1_title",
         "label": "Badge 1 title",
-        "default": "Livraison gratuite avec Colissimo",
-        "info": "Wrap words in ** to bold them, e.g. **Livraison gratuite** avec Colissimo"
+        "default": "Livraison offerte par La Poste",
+        "info": "Wrap words in ** to bold them, e.g. **Livraison offerte** par La Poste"
       },
       {
         "type": "text",
@@ -482,7 +482,7 @@
         "id": "trust_2_title",
         "label": "Badge 2 title",
         "default": "Satisfait ou remboursé 30 jours",
-        "info": "Wrap words in ** to bold them, e.g. **Livraison gratuite** avec Colissimo"
+        "info": "Wrap words in ** to bold them, e.g. **Livraison offerte** par La Poste"
       },
       {
         "type": "text",
@@ -495,7 +495,7 @@
         "id": "trust_3_title",
         "label": "Badge 3 title",
         "default": "Paiement sécurisé CB",
-        "info": "Wrap words in ** to bold them, e.g. **Livraison gratuite** avec Colissimo"
+        "info": "Wrap words in ** to bold them, e.g. **Livraison offerte** par La Poste"
       },
       {
         "type": "text",

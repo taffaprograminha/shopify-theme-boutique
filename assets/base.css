@@ -726,9 +726,6 @@ p:last-child{margin-bottom:0}
   text-align:center;
 }
 @media (max-width:749px){.trust-columns{grid-template-columns:1fr;gap:1.75rem}}
-.trust-column__icon{
-  width:30px;height:30px;margin:0 auto .75rem;color:var(--color-accent);
-}
 .trust-column__icon .icon{width:30px;height:30px}
 .trust-column__title{
   font-family:var(--font-heading);
@@ -948,7 +945,7 @@ p:last-child{margin-bottom:0}
   margin:0 auto .85rem;color:var(--color-accent);
 }
 .trust-column__icon .trust-badge__mark{width:50px;height:50px}
-.trust-column__icon .trust-badge__logo{max-height:50px}
+.trust-column__icon .trust-badge__logo{max-height:50px;max-width:76px}
 
 .payment-icons{
   display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-top:.85rem;

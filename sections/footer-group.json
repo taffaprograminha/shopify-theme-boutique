@@ -9,8 +9,8 @@
           "type": "column",
           "settings": {
             "badge": "delivery",
-            "title": "Livraison gratuite",
-            "text": "Toutes les commandes sont livrées gratuitement et assurées avec suivi."
+            "title": "Livraison offerte par La Poste",
+            "text": "Toutes les commandes sont expédiées par La Poste, livrées gratuitement et assurées avec suivi."
           }
         },
         "t2": {

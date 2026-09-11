@@ -3,10 +3,22 @@
     <div class="trust-columns">
       {%- for block in section.blocks -%}
         <div class="trust-column" {{ block.shopify_attributes }}>
+          {%- comment -%}
+            The delivery column takes the carrier logo from theme settings,
+            the same one snippets/trust-list.liquid uses on the product page,
+            so the carrier is named in one place rather than per section.
+          {%- endcomment -%}
+          {%- liquid
+            assign badge_asset = null
+            if block.settings.badge == 'delivery'
+              assign badge_asset = settings.carrier_logo_asset
+            endif
+          -%}
           <div class="trust-column__icon">
             {% render 'trust-badge',
                badge: block.settings.badge,
                image: block.settings.logo,
+               asset_file: badge_asset,
                days: settings.guarantee_days,
                alt: block.settings.title %}
           </div>
