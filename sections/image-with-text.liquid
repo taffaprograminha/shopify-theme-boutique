@@ -5,7 +5,22 @@
            alt="{{ section.settings.image.alt | escape }}"
            loading="lazy"
            width="{{ section.settings.image.width }}"
-           height="{{ section.settings.image.height }}">
+           height="{{ section.settings.image.height }}" style="object-position: {{ section.settings.focal_x }}% {{ section.settings.focal_y }}%">
+    {%- elsif section.settings.image_asset != blank -%}
+      {%- comment -%}
+        A theme asset, for an image shipped with the theme rather than picked
+        from the Files library. The picker above still wins. No width/height:
+        Liquid cannot read an asset's dimensions, and .image-text__media img
+        is absolutely positioned with object-fit, so no layout shift.
+      {%- endcomment -%}
+      {% # theme-check-disable ImgWidthAndHeight %}
+      <img src="{{ section.settings.image_asset | asset_img_url: '1400x' }}"
+           srcset="{{ section.settings.image_asset | asset_img_url: '700x' }} 700w,
+                   {{ section.settings.image_asset | asset_img_url: '1400x' }} 1400w"
+           sizes="(min-width: 900px) 50vw, 100vw"
+           alt="{{ section.settings.image_asset_alt | escape }}"
+           loading="lazy" style="object-position: {{ section.settings.focal_x }}% {{ section.settings.focal_y }}%">
+      {% # theme-check-enable ImgWidthAndHeight %}
     {%- else -%}
       {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
     {%- endif -%}
@@ -37,6 +52,26 @@
   "tag": "section",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "text",
+      "id": "image_asset",
+      "label": "Image from theme assets",
+      "info": "Filename in assets/, e.g. story-boutique.jpg. Only used when no image is picked above."
+    },
+    { "type": "text", "id": "image_asset_alt", "label": "Alt text for the theme asset image" },
+    {
+      "type": "range",
+      "id": "focal_x",
+      "label": "Focal point (horizontal)",
+      "info": "Which part of the image stays visible once it is cropped to the column. 50 is the centre.",
+      "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50
+    },
+    {
+      "type": "range",
+      "id": "focal_y",
+      "label": "Focal point (vertical)",
+      "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50
+    },
     {
       "type": "select",
       "id": "layout",

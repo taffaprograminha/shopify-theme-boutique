@@ -8,16 +8,15 @@
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
     {%- comment -%}
-      A picked favicon wins. Otherwise the theme's own monogram is used, so
-      the tab is never the browser's blank globe. The SVG is served first for
-      browsers that take one and stays sharp on any display; the PNG covers
-      Safari before 16, which ignores SVG favicons entirely.
+      A picked favicon wins. Otherwise the shop's own logo is used, so the
+      tab is never the browser's blank globe. It is the LA monogram cropped
+      out of the full logo: at a 16px tab size the circle and the wordmark
+      turn to mush, while the monogram still reads.
     {%- endcomment -%}
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
       <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
     {%- else -%}
-      <link rel="icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
       <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon-32.png' | asset_url }}">
       <link rel="apple-touch-icon" href="{{ 'apple-touch-icon.png' | asset_url }}">
     {%- endif -%}

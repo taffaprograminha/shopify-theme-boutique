@@ -97,12 +97,17 @@
       }
     },
     "story-main": {
-      "type": "story",
+      "type": "image-with-text",
       "settings": {
+        "image_asset": "story-boutique.jpg",
+        "image_asset_alt": "Une femme tenant son petit-fils dans les bras devant la boutique L'Allure de Marseille",
+        "focal_x": 35,
+        "focal_y": 50,
+        "layout": "image-left",
+        "bg": "#ffffff",
         "eyebrow": "Notre histoire",
         "heading": "Voilà à quoi ressemblent vingt-cinq ans.",
         "body": "<p>Grâce à vous, une petite idée est devenue réalité.</p><p>Remplacez ce texte par la véritable histoire de votre boutique.</p>",
-        "show_tiers": false,
         "button_label": "Notre histoire",
         "button_link": "/pages/about-us"
       }
