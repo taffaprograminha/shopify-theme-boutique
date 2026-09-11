@@ -5,13 +5,17 @@
       "settings": {
         "height": "large",
         "align": "center",
-        "overlay_opacity": 25,
+        "overlay_opacity": 40,
         "text_color": "#ffffff",
         "eyebrow": "",
         "heading": "Jusqu'à -80%",
         "subtext": "Pas d'adieu. Pas encore.",
         "button_label": "Découvrir la collection",
-        "button_link": "/collections/all"
+        "button_link": "/collections/all",
+        "image_asset": "hero-boutique.jpg",
+        "image_asset_alt": "Une famille devant une boutique de mode dans une rue pavée française",
+        "focal_x": 30,
+        "focal_y": 50
       }
     },
     "story-intro": {
