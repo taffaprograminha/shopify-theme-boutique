@@ -21,7 +21,19 @@
     <a href="{{ item.url }}" class="cart-item__title">{{ item.product_title | default: item.product.title }}</a>
 
     {%- unless item.product_has_only_default_variant or item.product.has_only_default_variant -%}
-      <span class="cart-item__variant">{{ item.variant.title }}</span>
+      {%- comment -%}
+        Built from options rather than variant.title, which is the raw
+        "White / 36 S" string, and so it matches what the drawer prints.
+      {%- endcomment -%}
+      <span class="cart-item__variant">
+        {%- for opt in item.options_with_values -%}
+          {%- unless opt.value == 'Default Title' -%}
+            {%- render 'option-label', value: opt.name, kind: 'name' -%}:
+            {% render 'option-label', value: opt.value, kind: 'colour' -%}
+            {%- unless forloop.last %} &middot; {% endunless -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      </span>
     {%- endunless -%}
 
     <div class="price">

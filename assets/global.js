@@ -192,7 +192,12 @@
       const options = item.options_with_values
         ? item.options_with_values
             .filter((o) => o.value !== 'Default Title')
-            .map((o) => escapeHTML(o.name) + ': ' + escapeHTML(o.value))
+            .map(
+              (o) =>
+                escapeHTML(translateOption('name', o.name)) +
+                ': ' +
+                escapeHTML(translateOption('value', o.value))
+            )
             .join(' &middot; ')
         : '';
       const compare =
@@ -281,6 +286,16 @@
   };
 
   const ESCAPE_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+
+  // The cart comes back from /cart.js with the catalogue's raw English
+  // option data. Same dictionary as snippets/option-label.liquid, handed
+  // over by the layout so there is only one copy to maintain.
+  function translateOption(kind, value) {
+    const maps = theme.optionLabels || {};
+    const dict = kind === 'name' ? maps.names : maps.values;
+    if (!dict || value == null) return value;
+    return dict[String(value).trim().toLowerCase()] || value;
+  }
 
   function escapeHTML(str) {
     if (str == null) return '';
@@ -397,19 +412,28 @@
     const priceEl = root.querySelector('[data-product-price]');
     if (!priceEl) return;
 
+    const strings = theme.strings || {};
     const onSale = variant.compare_at_price && variant.compare_at_price > variant.price;
-    let html = '';
+
+    let inner;
     if (onSale) {
-      html =
-        '<s class="price__compare">' + formatMoney(variant.compare_at_price) + '</s>' +
-        '<span class="price__sale">' + formatMoney(variant.price) + '</span>' +
-        '<span class="price__save">Save ' +
-        Math.round(((variant.compare_at_price - variant.price) / variant.compare_at_price) * 100) +
-        '%</span>';
+      const pct = Math.round(
+        ((variant.compare_at_price - variant.price) / variant.compare_at_price) * 100
+      );
+      inner =
+        '<s class="price__compare">' + escapeHTML(formatMoney(variant.compare_at_price)) + '</s>' +
+        '<span class="price__sale">' + escapeHTML(formatMoney(variant.price)) + '</span>' +
+        '<span class="price__save">' + escapeHTML(strings.save || 'Save') + ' ' + pct + '%</span>';
     } else {
-      html = '<span class="price__regular">' + formatMoney(variant.price) + '</span>';
+      inner = '<span class="price__regular">' + escapeHTML(formatMoney(variant.price)) + '</span>';
     }
-    priceEl.innerHTML = html;
+
+    // Keep the wrapper snippets/price.liquid rendered: it carries the flex
+    // layout and the large sizing, and rebuilding without it reflowed the
+    // whole block on every variant change.
+    const existing = priceEl.querySelector('.price');
+    const cls = existing ? existing.className : 'price price--large';
+    priceEl.innerHTML = '<div class="' + cls + '">' + inner + '</div>';
   }
 
   function updateBuyButton(form, variant) {

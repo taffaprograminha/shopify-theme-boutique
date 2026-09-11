@@ -132,9 +132,15 @@
           inStock: {{ 'products.product.in_stock' | t | json }},
           lowStock: {{ 'products.product.low_stock' | t: count: '__COUNT__' | json }},
           unavailable: {{ 'products.product.unavailable' | t | json }},
+          save: {{ 'products.price.save' | t | json }},
           freeShippingProgress: {{ 'general.cart.free_shipping_progress' | t: amount: '__AMOUNT__' | json }},
           freeShippingReached: {{ 'general.cart.free_shipping_reached' | t | json }}
-        }
+        },
+        {%- comment -%}
+          /cart.js returns the raw imported English option data, so the cart
+          drawer needs the same dictionary the Liquid side uses.
+        {%- endcomment -%}
+        optionLabels: {% render 'option-label', kind: 'map' %}
       };
     </script>
     <script src="{{ 'global.js' | asset_url }}" defer></script>

@@ -1,5 +1,10 @@
 {%- liquid
-  assign target = product | default: variant
+  comment
+    The passed-in variant wins. product is a global on a product page, so
+    putting it first made it shadow the variant every time and the price
+    kept showing the whole product's range instead of the chosen one.
+  endcomment
+  assign target = variant | default: product
   if target.price_varies
     assign price = target.price_min
   else
