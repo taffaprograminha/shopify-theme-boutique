@@ -106,7 +106,9 @@
       "verified": "Avis vérifié",
       "sample_author": "Cliente",
       "sample_date": "Exemple",
-      "sample_body": "Emplacement de l'avis client. Ce texte sera remplacé par les avis réels une fois votre application d'avis connectée."
+      "sample_body": "Emplacement de l'avis client. Ce texte sera remplacé par les avis réels une fois votre application d'avis connectée.",
+      "score_label": "Note",
+      "reviews_word": "avis"
     }
   },
   "collections": {

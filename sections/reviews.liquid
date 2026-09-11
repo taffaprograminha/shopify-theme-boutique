@@ -24,21 +24,64 @@
       assign is_sample = true
     endif
   endunless
+
+  if is_sample
+    assign rating_value = settings.reviews_demo_rating | default: 46 | divided_by: 10.0
+    assign rating_count = settings.reviews_demo_count | default: 1248
+  endif
+
+  assign pct = rating_value | times: 100.0 | divided_by: 5
 -%}
 
 {%- if has_reviews or is_sample -%}
-  <section class="section reviews" style="background: {{ section.settings.background }}" {{ section.shopify_attributes }}>
+  <section class="section reviews"
+           style="background: {{ section.settings.background }}; --review-accent: {{ section.settings.accent }}"
+           {{ section.shopify_attributes }}>
     <div class="page-width">
+
       <div class="reviews__head">
         {%- if section.settings.heading != blank -%}
-          <h2 class="section-header__title h3">{{ section.settings.heading }}</h2>
+          {%- comment -%}
+            ** marks the word that takes the accent colour, so the merchant
+            picks the highlighted word without editing the template.
+          {%- endcomment -%}
+          <h2 class="reviews__heading">
+            {%- assign parts = section.settings.heading | split: '**' -%}
+            {%- for part in parts -%}
+              {%- assign odd = forloop.index0 | modulo: 2 -%}
+              {%- if odd == 1 -%}
+                <span class="reviews__heading-accent">{{ part }}</span>
+              {%- else -%}
+                {{ part }}
+              {%- endif -%}
+            {%- endfor -%}
+          </h2>
         {%- endif -%}
+
         {%- if section.settings.subtext != blank -%}
           <p class="reviews__subtext">{{ section.settings.subtext }}</p>
         {%- endif -%}
 
         <div class="reviews__score">
-          {% render 'rating-bar', scope: 'product', align: 'center' %}
+          <div class="rating-bar__stars" role="img" aria-label="{{ rating_value }}/5">
+            <div class="rating-bar__stars-base">
+              {%- for i in (1..5) -%}
+                <span class="rating-bar__star rating-bar__star--empty">{% render 'icons', icon: 'star' %}</span>
+              {%- endfor -%}
+            </div>
+            <div class="rating-bar__stars-fill" style="width: {{ pct }}%">
+              {%- for i in (1..5) -%}
+                <span class="rating-bar__star">{% render 'icons', icon: 'star' %}</span>
+              {%- endfor -%}
+            </div>
+          </div>
+          <span class="reviews__score-text">
+            {{ 'products.rating.score_label' | t }}
+            <strong>{{ rating_value }}</strong>
+            <span class="reviews__score-sep">|</span>
+            <strong>{{ rating_count }}+</strong>
+            {{ 'products.rating.reviews_word' | t }}
+          </span>
         </div>
 
         {%- if is_sample and settings.reviews_demo_badge -%}
@@ -46,85 +89,77 @@
         {%- endif -%}
       </div>
 
-      <div class="reviews__grid">
-        {%- if has_reviews -%}
-          {%- for review in reviews limit: section.settings.reviews_to_show -%}
-            <article class="review-card">
-              <div class="review-card__head">
-                <span class="review-card__author">{{ review.author }}</span>
-                <span class="review-card__date">{{ review.created_at | date: format: 'abbreviated_date' }}</span>
-              </div>
-              <div class="review-card__stars" role="img" aria-label="{{ review.rating }}/5">
-                {%- for i in (1..5) -%}
-                  {%- if i <= review.rating -%}{% render 'icons', icon: 'star' %}{%- endif -%}
-                {%- endfor -%}
-              </div>
-              <p class="review-card__body">{{ review.body }}</p>
-              {%- if review.verified -%}
+      <div class="carousel reviews__carousel" data-carousel>
+        <button type="button" class="carousel__nav carousel__nav--prev reviews__nav" data-carousel-prev aria-label="{{ 'general.accessibility.previous' | t }}">
+          {% render 'icons', icon: 'arrow-left' %}
+        </button>
+        <button type="button" class="carousel__nav carousel__nav--next reviews__nav" data-carousel-next aria-label="{{ 'general.accessibility.next' | t }}">
+          {% render 'icons', icon: 'arrow-right' %}
+        </button>
+
+        <div class="reviews__track" data-carousel-track>
+          {%- if has_reviews -%}
+            {%- for review in reviews limit: section.settings.reviews_to_show -%}
+              <article class="review-card">
+                <div class="review-card__head">
+                  <span class="review-card__author">{{ review.author }}</span>
+                  <span class="review-card__date">{{ review.created_at | date: format: 'abbreviated_date' }}</span>
+                </div>
+                <p class="review-card__body">&ldquo;{{ review.body }}&rdquo;</p>
+                {%- if review.verified -%}
+                  <span class="review-card__verified">
+                    {% render 'icons', icon: 'check' %}{{ 'products.rating.verified' | t }}
+                  </span>
+                {%- endif -%}
+              </article>
+            {%- endfor -%}
+
+          {%- else -%}
+            {%- comment -%}
+              Demo copy uses capture blocks: French text is full of
+              apostrophes and a single-quoted Liquid string ends at the first
+              one, which silently empties the section.
+            {%- endcomment -%}
+            {%- for i in (1..6) limit: section.settings.reviews_to_show -%}
+              {%- if forloop.index0 == 0 -%}
+                {%- assign demo_author = "Émilie W." -%}
+                {%- assign demo_date = "À l&rsquo;instant" -%}
+                {%- capture demo_body -%}La qualité des vêtements est remarquable. J&rsquo;ai commandé une robe et elle tombe parfaitement, le tissu est confortable et élégant. Je recommanderai sans hésiter.{%- endcapture -%}
+              {%- elsif forloop.index0 == 1 -%}
+                {%- assign demo_author = "Sarah M." -%}
+                {%- assign demo_date = "Il y a 2 heures" -%}
+                {%- capture demo_body -%}Je suis absolument ravie de ma commande. Les pièces correspondent exactement aux photos et les tailles sont justes. La livraison a été très rapide.{%- endcapture -%}
+              {%- elsif forloop.index0 == 2 -%}
+                {%- assign demo_author = "Charlotte H." -%}
+                {%- assign demo_date = "Il y a 1 jour" -%}
+                {%- capture demo_body -%}J&rsquo;adore le style de la boutique. Les pièces sont modernes, élégantes et très flatteuses. Je reçois des compliments à chaque fois que je les porte.{%- endcapture -%}
+              {%- elsif forloop.index0 == 3 -%}
+                {%- assign demo_author = "Olivia B." -%}
+                {%- assign demo_date = "Il y a 3 jours" -%}
+                {%- capture demo_body -%}Excellent rapport qualité-prix. J&rsquo;ai commandé plusieurs fois et je suis toujours satisfaite. Des vêtements élégants et confortables au quotidien.{%- endcapture -%}
+              {%- elsif forloop.index0 == 4 -%}
+                {%- assign demo_author = "Camille R." -%}
+                {%- assign demo_date = "Il y a 4 jours" -%}
+                {%- capture demo_body -%}Le manteau est encore plus beau en vrai que sur les photos. La coupe est impeccable et les finitions vraiment soignées.{%- endcapture -%}
+              {%- else -%}
+                {%- assign demo_author = "Manon L." -%}
+                {%- assign demo_date = "Il y a 1 semaine" -%}
+                {%- capture demo_body -%}Très bonne expérience du début à la fin. Le colis est arrivé bien emballé et le suivi était clair. Je reviendrai.{%- endcapture -%}
+              {%- endif -%}
+
+              <article class="review-card{% if settings.reviews_demo_badge %} review-card--sample{% endif %}">
+                <div class="review-card__head">
+                  <span class="review-card__author">{{ demo_author }}</span>
+                  <span class="review-card__date">{{ demo_date }}</span>
+                </div>
+                <p class="review-card__body">&ldquo;{{ demo_body }}&rdquo;</p>
                 <span class="review-card__verified">
                   {% render 'icons', icon: 'check' %}{{ 'products.rating.verified' | t }}
                 </span>
-              {%- endif -%}
-            </article>
-          {%- endfor -%}
-
-        {%- else -%}
-          {%- comment -%}
-            Placeholder copy is obviously generic and tagged as a sample, so
-            it can never be mistaken for a real customer voice.
-          {%- endcomment -%}
-          {%- for i in (1..6) limit: section.settings.reviews_to_show -%}
-            {%- if forloop.index0 == 0 -%}
-              {%- assign demo_author = "Émilie W." -%}
-              {%- assign demo_date = "il y a 2 heures" -%}
-              {%- assign demo_stars = 5 -%}
-              {%- capture demo_body -%}La qualité des vêtements est remarquable. J&rsquo;ai commandé une robe et elle tombe parfaitement, le tissu est confortable et élégant.{%- endcapture -%}
-            {%- endif -%}
-            {%- if forloop.index0 == 1 -%}
-              {%- assign demo_author = "Sarah M." -%}
-              {%- assign demo_date = "il y a 5 heures" -%}
-              {%- assign demo_stars = 5 -%}
-              {%- capture demo_body -%}Je suis absolument ravie de ma commande. Les pièces correspondent exactement aux photos et les tailles sont justes.{%- endcapture -%}
-            {%- endif -%}
-            {%- if forloop.index0 == 2 -%}
-              {%- assign demo_author = "Charlotte H." -%}
-              {%- assign demo_date = "il y a 1 jour" -%}
-              {%- assign demo_stars = 4 -%}
-              {%- capture demo_body -%}J&rsquo;adore le style de la boutique. Les pièces sont modernes et très flatteuses. On me complimente à chaque fois.{%- endcapture -%}
-            {%- endif -%}
-            {%- if forloop.index0 == 3 -%}
-              {%- assign demo_author = "Olivia B." -%}
-              {%- assign demo_date = "il y a 3 jours" -%}
-              {%- assign demo_stars = 5 -%}
-              {%- capture demo_body -%}Excellent rapport qualité-prix. J&rsquo;ai commandé plusieurs fois et je suis toujours satisfaite. Livraison rapide.{%- endcapture -%}
-            {%- endif -%}
-            {%- if forloop.index0 == 4 -%}
-              {%- assign demo_author = "Camille R." -%}
-              {%- assign demo_date = "il y a 4 jours" -%}
-              {%- assign demo_stars = 5 -%}
-              {%- capture demo_body -%}Le manteau est encore plus beau en vrai. Coupe impeccable et finitions soignées.{%- endcapture -%}
-            {%- endif -%}
-            {%- if forloop.index0 == 5 -%}
-              {%- assign demo_author = "Manon L." -%}
-              {%- assign demo_date = "il y a 1 semaine" -%}
-              {%- assign demo_stars = 4 -%}
-              {%- capture demo_body -%}Très bonne expérience. Le colis est arrivé bien emballé et le suivi était clair du début à la fin.{%- endcapture -%}
-            {%- endif -%}
-            <article class="review-card{% if settings.reviews_demo_badge %} review-card--sample{% endif %}">
-              <div class="review-card__head">
-                <span class="review-card__author">{{ demo_author }}</span>
-                <span class="review-card__date">{{ demo_date }}</span>
-              </div>
-              <div class="review-card__stars" role="img" aria-label="{{ demo_stars }}/5">
-                {%- for s in (1..demo_stars) -%}{% render 'icons', icon: 'star' %}{%- endfor -%}
-              </div>
-              <p class="review-card__body">{{ demo_body }}</p>
-              <span class="review-card__verified">
-                {% render 'icons', icon: 'check' %}{{ 'products.rating.verified' | t }}
-              </span>
-            </article>
-          {%- endfor -%}
-        {%- endif -%}
+              </article>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
       </div>
     </div>
   </section>
@@ -137,12 +172,19 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Reviews come from your review app (Judge.me, Loox, Okendo, Shopify Product Reviews). Until one is connected the section shows sample cards in this editor only and stays hidden on the live store."
+      "content": "Reviews come from your review app (Judge.me, Loox, Okendo, Shopify Product Reviews). Demo cards are controlled in Theme settings > Demo content."
     },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Votre satisfaction est notre réussite" },
-    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Ce que disent nos clientes" },
-    { "type": "range", "id": "reviews_to_show", "label": "Reviews to show", "min": 2, "max": 12, "step": 1, "default": 4 },
-    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Votre **satisfaction** est notre réussite",
+      "info": "Wrap a word in ** to give it the accent colour."
+    },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Votre avis compte pour nous" },
+    { "type": "range", "id": "reviews_to_show", "label": "Reviews to show", "min": 2, "max": 12, "step": 1, "default": 6 },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "accent", "label": "Card accent", "default": "#00b67a" }
   ],
   "presets": [{ "name": "Reviews" }]
 }

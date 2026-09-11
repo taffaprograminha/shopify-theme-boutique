@@ -165,10 +165,11 @@
     "reviews": {
       "type": "reviews",
       "settings": {
-        "heading": "Votre satisfaction est notre réussite",
-        "subtext": "Ce que disent nos clientes",
-        "reviews_to_show": 4,
-        "background": "#ffffff"
+        "heading": "Votre **satisfaction** est notre réussite",
+        "subtext": "Votre avis compte pour nous",
+        "reviews_to_show": 6,
+        "background": "#ffffff",
+        "accent": "#00b67a"
       }
     }
   },

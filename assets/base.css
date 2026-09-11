@@ -1078,48 +1078,77 @@ p:last-child{margin-bottom:0}
 /* ============================================
    REVIEWS
    ============================================ */
-.reviews__head{text-align:center;margin-bottom:2.25rem}
-.reviews__subtext{
-  font-size:.875rem;color:var(--color-muted);margin:.35rem 0 0;
+.reviews__head{text-align:center;margin-bottom:2.5rem}
+.reviews__heading{
+  font-size:calc(2rem * var(--heading-scale));
+  margin:0 0 .6rem;line-height:1.2;
 }
-.reviews__score{display:flex;justify-content:center;margin-top:.85rem}
+.reviews__heading-accent{color:var(--review-accent,#00b67a)}
+.reviews__subtext{
+  font-size:1.0625rem;color:var(--color-muted);margin:0 0 1.1rem;
+  font-family:var(--font-body);
+}
+.reviews__score{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  flex-wrap:wrap;font-size:.9375rem;
+}
+.reviews__score-text strong{font-weight:700;color:var(--color-text)}
+.reviews__score-sep{color:var(--color-border);margin:0 .15rem}
 .reviews__sample-note{
-  display:inline-block;margin:.85rem 0 0;
+  display:inline-block;margin:1rem 0 0;
   font-size:.625rem;letter-spacing:.06em;text-transform:uppercase;
   background:#fff3cd;color:#8a6d00;border:1px solid #ffe08a;
   padding:3px 9px;border-radius:3px;
 }
-.reviews__grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:var(--gutter);
+
+/* Cards scroll horizontally so a long review list stays one row deep */
+.reviews__carousel{position:relative}
+.reviews__track{
+  display:grid;grid-auto-flow:column;
+  grid-auto-columns:minmax(300px,1fr);
+  gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:4px 4px 1.25rem;
+  scrollbar-width:thin;
+}
+.reviews__track > *{scroll-snap-align:start}
+.reviews__track::-webkit-scrollbar{height:6px}
+.reviews__track::-webkit-scrollbar-thumb{
+  background:var(--color-border);border-radius:99px;
 }
 @media (min-width:1100px){
-  .reviews__grid{grid-template-columns:repeat(4,1fr)}
-}
-@media (max-width:1099px) and (min-width:750px){
-  .reviews__grid{grid-template-columns:repeat(2,1fr)}
+  .reviews__track{grid-auto-columns:minmax(0,1fr);grid-auto-flow:row;
+    grid-template-columns:repeat(3,1fr);overflow:visible;padding-bottom:0}
+  .reviews__nav{display:none}
 }
 @media (max-width:749px){
-  .reviews__grid{grid-template-columns:1fr}
+  .reviews__track{grid-auto-columns:minmax(270px,1fr)}
 }
+
 .review-card{
-  border:1px solid var(--color-border);padding:1.35rem;
-  border-radius:var(--radius);background:var(--color-bg);
-  display:flex;flex-direction:column;gap:.6rem;
+  background:var(--color-bg);
+  border:1px solid var(--color-border);
+  border-left:4px solid var(--review-accent,#00b67a);
+  border-radius:10px;
+  padding:1.5rem 1.6rem;
+  display:flex;flex-direction:column;gap:.9rem;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
-.review-card--sample{opacity:.9;border-style:dashed}
-.review-card__head{
-  display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;
+.review-card--sample{border-left-style:dashed}
+.review-card__head{display:flex;flex-direction:column;gap:.15rem}
+.review-card__author{
+  font-weight:700;font-size:1.0625rem;color:var(--color-text);
 }
-.review-card__author{font-weight:600;font-size:.875rem}
-.review-card__date{font-size:.6875rem;color:var(--color-muted);white-space:nowrap}
-.review-card__stars{display:flex;gap:2px;color:#e8b931}
-.review-card__stars .icon{width:14px;height:14px;fill:currentColor;stroke:none}
+.review-card__date{font-size:.8125rem;color:var(--color-muted)}
 .review-card__body{
-  font-size:.875rem;line-height:1.65;margin:0;color:var(--color-text-a80);
+  font-size:.9375rem;line-height:1.7;margin:0;color:var(--color-text-a80);
 }
 .review-card__verified{
-  display:flex;align-items:center;gap:.3rem;
-  font-size:.6875rem;color:#0a7a3d;margin-top:auto;
+  display:flex;align-items:center;gap:.35rem;margin-top:auto;
+  font-size:.875rem;font-weight:600;color:#00a862;
 }
-.review-card__verified .icon{width:13px;height:13px}
+.review-card__verified .icon{width:15px;height:15px;stroke-width:3}
+
+.reviews__nav{top:50%}
+.reviews__nav.carousel__nav--prev{left:-16px}
+.reviews__nav.carousel__nav--next{right:-16px}
+

@@ -106,7 +106,9 @@
       "verified": "Verified review",
       "sample_author": "Customer",
       "sample_date": "Sample",
-      "sample_body": "Customer review placeholder. This text is replaced by real reviews once your review app is connected."
+      "sample_body": "Customer review placeholder. This text is replaced by real reviews once your review app is connected.",
+      "score_label": "Rating",
+      "reviews_word": "reviews"
     }
   },
   "collections": {
