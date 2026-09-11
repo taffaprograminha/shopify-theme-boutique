@@ -36,7 +36,6 @@ h2,.h2{font-size:calc(2.1rem * var(--heading-scale))}
 h3,.h3{font-size:calc(1.5rem * var(--heading-scale))}
 h4,.h4{font-size:calc(1.2rem * var(--heading-scale))}
 h5,.h5{font-size:calc(1rem * var(--heading-scale))}
-h6,.h6{font-size:calc(.85rem * var(--heading-scale))}
 @media (max-width:749px){
   h1,.h1{font-size:calc(1.9rem * var(--heading-scale))}
   h2,.h2{font-size:calc(1.5rem * var(--heading-scale))}
@@ -64,7 +63,6 @@ p:last-child{margin-bottom:0}
 .section{padding-block:var(--section-spacing)}
 .section-tight{padding-block:calc(var(--section-spacing) * .5)}
 .text-center{text-align:center}
-.text-left{text-align:left}
 
 .section-header{margin-bottom:2rem}
 .section-header--center{text-align:center}
@@ -103,8 +101,6 @@ p:last-child{margin-bottom:0}
 .btn[disabled],.btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
 .btn--full{width:100%}
 .btn--large{padding:18px 40px;font-size:.9375rem}
-.btn--accent{background:var(--color-accent);border-color:var(--color-accent);color:#fff}
-.btn--accent:hover{background:var(--color-accent-hover);border-color:var(--color-accent-hover)}
 .btn--outline{background:transparent;color:var(--color-text);border-color:var(--color-text)}
 .btn--outline:hover{background:var(--color-text);color:var(--color-bg)}
 .btn--white{background:#fff;border-color:#fff;color:#000}
@@ -355,7 +351,6 @@ p:last-child{margin-bottom:0}
 }
 .badge--sale{background:var(--color-sale);color:#fff}
 .badge--soldout{background:#fff;color:#212121;border:1px solid var(--color-border)}
-.badge--new{background:var(--color-accent);color:#fff}
 
 .card__quick-add{
   position:absolute;left:10px;right:10px;bottom:10px;z-index:2;
@@ -513,19 +508,6 @@ p:last-child{margin-bottom:0}
   border-color:transparent;
 }
 /* Photo swatches are larger and square so the garment is readable */
-.variant-option--photo label{
-  width:var(--swatch-photo-size,56px);height:var(--swatch-photo-size,56px);
-  border-radius:var(--swatch-photo-radius,0px);
-  background:var(--color-bg-accent);
-}
-.variant-option--photo img{
-  width:100%;height:100%;object-fit:cover;display:block;
-}
-.variant-option--photo input:checked + label{
-  box-shadow:0 0 0 1px var(--color-bg),0 0 0 2px var(--color-text);
-}
-.variant-option--photo input:disabled + label{background-image:none}
-.variant-option--photo input:disabled + label img{opacity:.4}
 
 /* Quantity */
 .qty{display:inline-flex;align-items:center;border:1px solid var(--color-border);border-radius:var(--radius)}
@@ -541,12 +523,6 @@ p:last-child{margin-bottom:0}
 .product__buy-row .btn{flex:1}
 
 /* Delivery estimate */
-.delivery-estimate{
-  display:flex;align-items:center;gap:.5rem;justify-content:center;
-  font-size:.8125rem;color:var(--color-muted);
-}
-.delivery-estimate .icon{width:16px;height:16px;color:var(--color-accent)}
-.delivery-estimate strong{color:var(--color-text);font-weight:500}
 
 /* Reassurance box */
 .reassurance{
@@ -576,31 +552,6 @@ p:last-child{margin-bottom:0}
 .accordion__content{padding:0 0 18px;font-size:.875rem;line-height:1.7;color:var(--color-text-a80)}
 .accordion__content ul{list-style:disc;padding-left:1.2em;margin:.5em 0}
 .accordion__content li{margin-bottom:.35em}
-
-/* ============================================
-   REVIEWS
-   ============================================ */
-.reviews__head{text-align:center;margin-bottom:2rem}
-.reviews__score{
-  display:flex;align-items:center;justify-content:center;gap:.6rem;
-  font-size:.875rem;margin-top:.5rem;
-}
-.reviews__grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;
-}
-.review-card{
-  border:1px solid var(--color-border);padding:1.25rem;border-radius:var(--radius);
-  display:flex;flex-direction:column;gap:.6rem;background:var(--color-bg);
-}
-.review-card__head{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.review-card__author{font-weight:600;font-size:.8125rem}
-.review-card__date{font-size:.6875rem;color:var(--color-muted)}
-.review-card__stars{display:flex;gap:2px;color:#e8b931}
-.review-card__stars svg{width:13px;height:13px;fill:currentColor;stroke:none}
-.review-card__body{font-size:.8125rem;line-height:1.65;margin:0;color:var(--color-text-a80)}
-.review-card__verified{
-  font-size:.6875rem;color:#0a7a3d;display:flex;align-items:center;gap:.3rem;
-}
 
 /* ============================================
    STORY BLOCK
@@ -825,7 +776,6 @@ p:last-child{margin-bottom:0}
 .collection-banner{
   padding:var(--section-spacing) 0;text-align:center;background:var(--color-bg-accent);
 }
-.collection-banner__title{margin-bottom:.5rem}
 .collection-banner__desc{
   color:var(--color-muted);max-width:620px;margin:0 auto;font-size:.875rem;
 }
@@ -850,7 +800,6 @@ p:last-child{margin-bottom:0}
 
 .empty-state{text-align:center;padding:4rem var(--outer)}
 .empty-state__title{margin-bottom:.75rem}
-.empty-state__text{color:var(--color-muted);margin-bottom:1.75rem}
 
 /* ============================================
    RTE (rich text from admin)
@@ -890,10 +839,6 @@ p:last-child{margin-bottom:0}
 .no-scroll{overflow:hidden}
 [hidden]{display:none!important}
 .loading{opacity:.5;pointer-events:none}
-.spinner{
-  width:15px;height:15px;border:2px solid currentColor;border-top-color:transparent;
-  border-radius:50%;animation:spin .6s linear infinite;
-}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}

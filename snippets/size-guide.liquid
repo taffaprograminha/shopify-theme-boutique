@@ -54,7 +54,32 @@
         </table>
       </div>
 
-      {%- if block.settings.shoe_table -%}
+      {%- comment -%}
+        The shoe table is only relevant when the product actually uses numeric
+        sizes. Rendering it on a coat page is both confusing and dead DOM.
+      {%- endcomment -%}
+      {%- liquid
+        assign has_numeric_sizes = false
+        for opt in product.options_with_values
+          assign opt_name = opt.name | downcase
+          if opt_name == 'size' or opt_name == 'taille' or opt_name == 'tamanho'
+            for v in opt.values
+              comment
+                plus: 0 reads the leading digits, so "2XL" would pass as 2.
+                Round-tripping the number back to a string keeps only values
+                that are numeric in full, which is what a shoe size is.
+              endcomment
+              assign round_trip = v | plus: 0 | append: ''
+              if round_trip == v
+                assign has_numeric_sizes = true
+                break
+              endif
+            endfor
+          endif
+        endfor
+      -%}
+
+      {%- if block.settings.shoe_table and has_numeric_sizes -%}
         <h3 class="size-guide__subtitle">{{ 'products.product.shoe_sizes' | t }}</h3>
         <div class="size-guide__scroll">
           <table class="size-table">
