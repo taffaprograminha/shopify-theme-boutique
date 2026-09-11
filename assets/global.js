@@ -230,13 +230,17 @@
       }
       wrap.hidden = false;
       const remaining = cfg.threshold - totalPrice;
+      const strings = theme.strings || {};
       const text = wrap.querySelector('[data-free-shipping-text]');
       const fill = wrap.querySelector('[data-free-shipping-fill]');
       if (remaining > 0) {
-        if (text) text.innerHTML = 'Spend <strong>' + formatMoney(remaining) + '</strong> more for free delivery';
+        // The amount is injected as markup so it can be bolded inside the sentence;
+        // word order differs by language, so the placeholder has to travel with the string.
+        if (text) text.innerHTML = escapeHTML(strings.freeShippingProgress || '')
+          .replace('__AMOUNT__', '<strong>' + escapeHTML(formatMoney(remaining)) + '</strong>');
         if (fill) fill.style.width = Math.min(100, (totalPrice / cfg.threshold) * 100) + '%';
       } else {
-        if (text) text.innerHTML = '<strong>You have earned free delivery</strong>';
+        if (text) text.innerHTML = '<strong>' + escapeHTML(strings.freeShippingReached || '') + '</strong>';
         if (fill) fill.style.width = '100%';
       }
     },
@@ -416,7 +420,7 @@
 
     if (!variant) {
       btn.disabled = true;
-      btn.textContent = 'Unavailable';
+      btn.textContent = strings.unavailable || 'Unavailable';
     } else if (!variant.available) {
       btn.disabled = true;
       btn.textContent = strings.soldOut || 'Sold out';

@@ -10,7 +10,7 @@
         "eyebrow": "",
         "heading": "Up to -80%",
         "subtext": "Not goodbye. Not yet.",
-        "button_label": "Shop now",
+        "button_label": "Découvrir la collection",
         "button_link": "/collections/all"
       }
     },
@@ -21,8 +21,8 @@
         "heading": "We're not ready to say goodbye.",
         "body": "<p>Some boutiques close quietly. We're not going quietly.</p><p>Tell the story behind your shop here. Who started it, why it exists, and what it means to the people who buy from you.</p>",
         "show_tiers": true,
-        "tier_note": "Discounts are applied automatically at checkout and can be combined across collections.",
-        "button_label": "Shop the sale",
+        "tier_note": "Les remises sont appliquées automatiquement au paiement et se cumulent sur toutes les collections.",
+        "button_label": "Profiter des soldes",
         "button_link": "/collections/all"
       }
     },
@@ -40,14 +40,31 @@
     "collection-list": {
       "type": "collection-list",
       "blocks": {
-        "c1": { "type": "collection", "settings": {} },
-        "c2": { "type": "collection", "settings": {} },
-        "c3": { "type": "collection", "settings": {} },
-        "c4": { "type": "collection", "settings": {} }
+        "c1": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c2": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c3": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c4": {
+          "type": "collection",
+          "settings": {}
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
       "settings": {
-        "heading": "Shop by category",
+        "heading": "Acheter par catégorie",
         "columns": "4",
         "ratio": "portrait",
         "header_align": "center"
@@ -82,7 +99,7 @@
         "heading": "This is what twenty-five years looks like.",
         "body": "<p>Because of you, a small idea became something real.</p><p>Replace this with the real story behind your shop.</p>",
         "show_tiers": false,
-        "button_label": "About us",
+        "button_label": "Notre histoire",
         "button_link": "/pages/about-us"
       }
     },
@@ -111,8 +128,8 @@
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "heading": "Join our list",
-        "subtext": "New arrivals, exclusive offers, and stories from the studio."
+        "heading": "Rejoignez-nous",
+        "subtext": "Nouveautés, offres exclusives et coulisses de l'atelier."
       }
     }
   },

@@ -120,7 +120,10 @@
           soldOut: {{ 'products.product.sold_out' | t | json }},
           adding: {{ 'products.product.adding' | t | json }},
           inStock: {{ 'products.product.in_stock' | t | json }},
-          lowStock: {{ 'products.product.low_stock' | t: count: '__COUNT__' | json }}
+          lowStock: {{ 'products.product.low_stock' | t: count: '__COUNT__' | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }},
+          freeShippingProgress: {{ 'general.cart.free_shipping_progress' | t: amount: '__AMOUNT__' | json }},
+          freeShippingReached: {{ 'general.cart.free_shipping_reached' | t | json }}
         }
       };
     </script>

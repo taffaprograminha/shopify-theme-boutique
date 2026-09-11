@@ -394,10 +394,11 @@ p:last-child{margin-bottom:0}
 }
 .price--large .price__regular,.price--large .price__sale{font-size:1.5rem;font-weight:500}
 .price--large .price__compare{font-size:1.125rem}
+/* Same green as the review stars, so discounts read as trust, not alarm */
 .price__save{
   font-family:var(--font-button);
   font-size:.6875rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-  background:var(--color-save-badge,#4a9d5f);color:#fff;
+  background:var(--color-save-badge,#00b67a);color:#fff;
   padding:4px 9px;border-radius:var(--radius);white-space:nowrap;
 }
 .price__unit{font-size:.6875rem;color:var(--color-muted);width:100%}

@@ -8,7 +8,7 @@
 
     {%- if search.performed -%}
       {%- if search.results_count > 0 -%}
-        <p>{{ search.results_count }} results</p>
+        <p>{{ 'general.search.results_count' | t: count: search.results_count }}</p>
         <div class="product-grid product-grid--4">
           {%- for item in search.results -%}
             {%- if item.object_type == 'product' -%}

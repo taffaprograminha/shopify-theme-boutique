@@ -1,6 +1,6 @@
 <section class="section main-list-collections">
   <div class="page-width">
-    <h1>Collections</h1>
+    <h1>{{ 'collections.general.title' | t }}</h1>
     <div class="collection-list__grid collection-list__grid--3">
       {%- for coll in collections -%}
         <a href="{{ coll.url }}" class="collection-card">

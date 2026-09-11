@@ -12,7 +12,8 @@
       "search": "Rechercher",
       "placeholder": "Rechercher dans la boutique",
       "results_for": "Résultats pour « {{ terms }} »",
-      "no_results": "Aucun résultat pour « {{ terms }} »."
+      "no_results": "Aucun résultat pour « {{ terms }} ».",
+      "results_count": "{{ count }} résultats"
     },
     "cart": {
       "title": "Panier",
@@ -27,7 +28,8 @@
       "reserved_for": "Votre panier est réservé pendant :",
       "taxes_note": "Taxes et livraison calculées au paiement.",
       "free_shipping_progress": "Encore {{ amount }} pour la livraison gratuite",
-      "free_shipping_reached": "Vous bénéficiez de la livraison gratuite"
+      "free_shipping_reached": "Vous bénéficiez de la livraison gratuite",
+      "update": "Mettre à jour"
     },
     "pagination": {
       "previous": "Précédent",
@@ -49,6 +51,11 @@
       "title": "Page introuvable",
       "subtext": "La page demandée n'existe pas.",
       "link": "Continuer mes achats"
+    },
+    "password_page": {
+      "opening_soon": "Ouverture prochaine",
+      "password_label": "Entrez le mot de passe",
+      "submit": "Entrer"
     }
   },
   "products": {
@@ -114,7 +121,9 @@
   "collections": {
     "general": {
       "no_products": "Aucun produit dans cette collection.",
-      "view_all": "Voir tout"
+      "view_all": "Voir tout",
+      "title": "Collections",
+      "onboarding_title": "Produit exemple"
     }
   },
   "blogs": {
@@ -219,7 +228,11 @@
       "subtext": "Voici votre carte cadeau !",
       "expires_on": "Expire le {{ expiry }}",
       "shop_link": "Commencer mes achats",
-      "print": "Imprimer"
+      "print": "Imprimer",
+      "card_name": "Carte cadeau",
+      "initial_value": "Valeur",
+      "balance": "Solde",
+      "expired": "Cette carte cadeau a expiré."
     }
   },
   "date_formats": {

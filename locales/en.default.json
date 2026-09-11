@@ -12,7 +12,8 @@
       "search": "Search",
       "placeholder": "Search our store",
       "results_for": "Results for \"{{ terms }}\"",
-      "no_results": "No results found for \"{{ terms }}\"."
+      "no_results": "No results found for \"{{ terms }}\".",
+      "results_count": "{{ count }} results"
     },
     "cart": {
       "title": "Cart",
@@ -27,7 +28,8 @@
       "reserved_for": "Your cart is reserved for:",
       "taxes_note": "Taxes and delivery calculated at checkout.",
       "free_shipping_progress": "Spend {{ amount }} more for free delivery",
-      "free_shipping_reached": "You have earned free delivery"
+      "free_shipping_reached": "You have earned free delivery",
+      "update": "Update"
     },
     "pagination": {
       "previous": "Previous",
@@ -49,6 +51,11 @@
       "title": "Page not found",
       "subtext": "The page you requested does not exist.",
       "link": "Continue shopping"
+    },
+    "password_page": {
+      "opening_soon": "Opening soon",
+      "password_label": "Enter password",
+      "submit": "Enter"
     }
   },
   "products": {
@@ -114,7 +121,9 @@
   "collections": {
     "general": {
       "no_products": "No products found in this collection.",
-      "view_all": "View all"
+      "view_all": "View all",
+      "title": "Collections",
+      "onboarding_title": "Example product"
     }
   },
   "blogs": {
@@ -219,7 +228,11 @@
       "subtext": "Here's your gift card!",
       "expires_on": "Expires on {{ expiry }}",
       "shop_link": "Start shopping",
-      "print": "Print"
+      "print": "Print",
+      "card_name": "Gift card",
+      "initial_value": "Value",
+      "balance": "Balance",
+      "expired": "This gift card has expired."
     }
   },
   "date_formats": {
