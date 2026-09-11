@@ -86,7 +86,8 @@
         "newsletter_note": "",
         "show_localization": true,
         "show_payment_icons": true,
-        "show_social": false
+        "show_social": false,
+        "payment_icon_limit": 4
       }
     }
   },

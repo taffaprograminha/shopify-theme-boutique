@@ -82,7 +82,7 @@
 
       <div class="footer__bottom-right">
         {%- if section.settings.show_payment_icons -%}
-          {% render 'payment-icons', align: 'right' %}
+          {% render 'payment-icons', align: 'right', limit: section.settings.payment_icon_limit, size: 'small' %}
         {%- endif -%}
       </div>
     </div>
@@ -120,6 +120,13 @@
     { "type": "header", "content": "Bottom bar" },
     { "type": "checkbox", "id": "show_localization", "label": "Show country picker", "default": true },
     { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
+    {
+      "type": "range",
+      "id": "payment_icon_limit",
+      "label": "Payment icons to show",
+      "min": 3, "max": 12, "step": 1, "default": 4,
+      "info": "Showing every enabled method wraps the bar onto two rows."
+    },
     { "type": "checkbox", "id": "show_social", "label": "Show social links", "default": false }
   ],
   "blocks": [
