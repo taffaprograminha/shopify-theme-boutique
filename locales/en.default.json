@@ -95,6 +95,13 @@
         "one": "{{ count }} product",
         "other": "{{ count }} products"
       }
+    },
+    "rating": {
+      "excellent": "Excellent",
+      "great": "Great",
+      "average": "Average",
+      "poor": "Poor",
+      "bad": "Bad"
     }
   },
   "collections": {

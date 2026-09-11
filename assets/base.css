@@ -404,12 +404,22 @@ p:last-child{margin-bottom:0}
 /* ============================================
    RATING BAR (Trustpilot style)
    ============================================ */
-.rating-bar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.75rem}
-.rating-bar__stars{display:flex;gap:2px}
-.rating-bar__star{width:15px;height:15px;background:#00b67a;display:flex;align-items:center;justify-content:center}
-.rating-bar__star .icon{width:11px;height:11px;fill:#fff;stroke:none}
-.rating-bar__label{font-weight:600;letter-spacing:.02em}
-.rating-bar__count{color:var(--color-muted)}
+.rating-bar{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;font-size:.8125rem}
+.rating-bar--center{justify-content:center}
+.rating-bar__stars{position:relative;display:inline-block;line-height:0}
+.rating-bar__stars-base,.rating-bar__stars-fill{display:flex;gap:2px}
+.rating-bar__stars-fill{
+  position:absolute;top:0;left:0;overflow:hidden;white-space:nowrap;
+}
+.rating-bar__star{
+  width:17px;height:17px;background:#00b67a;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;
+}
+.rating-bar__star--empty{background:#dcdce6}
+.rating-bar__star .icon{width:12px;height:12px;fill:#fff;stroke:none}
+.rating-bar__label{font-weight:600;color:var(--color-text)}
+.rating-bar__sep{color:var(--color-border)}
+.rating-bar__count{color:var(--color-text)}
 
 /* ============================================
    PRODUCT PAGE

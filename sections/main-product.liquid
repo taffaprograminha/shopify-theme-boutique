@@ -48,25 +48,9 @@
         {%- case block.type -%}
 
         {%- when 'rating' -%}
-          {%- if product.metafields.reviews.rating.value != blank -%}
-            {%- liquid
-              assign rating = product.metafields.reviews.rating.value.rating
-              assign count = product.metafields.reviews.rating_count
-            -%}
-            <div class="rating-bar" {{ block.shopify_attributes }}>
-              <div class="rating-bar__stars">
-                {%- for i in (1..5) -%}
-                  {%- if i <= rating -%}
-                    <span class="rating-bar__star">{% render 'icons', icon: 'star' %}</span>
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-              <span class="rating-bar__label">{{ rating }}</span>
-              <span class="rating-bar__count">
-                {{ 'products.product.review_count' | t: count: count }}
-              </span>
-            </div>
-          {%- endif -%}
+          <div {{ block.shopify_attributes }}>
+            {% render 'rating-bar', scope: block.settings.scope %}
+          </div>
 
         {%- when 'vendor' -%}
           {%- if product.vendor != blank -%}
@@ -311,7 +295,27 @@
   "name": "Product",
   "tag": "section",
   "blocks": [
-    { "type": "rating", "name": "Rating", "limit": 1 },
+    {
+      "type": "rating",
+      "name": "Rating",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "scope",
+          "label": "Source",
+          "options": [
+            { "value": "product", "label": "This product's reviews" },
+            { "value": "shop", "label": "Store-wide reviews" }
+          ],
+          "default": "product"
+        },
+        {
+          "type": "paragraph",
+          "content": "Fills in from your review app's metafields. Nothing shows until real reviews exist."
+        }
+      ]
+    },
     { "type": "vendor", "name": "Vendor", "limit": 1 },
     { "type": "title", "name": "Title", "limit": 1 },
     { "type": "price", "name": "Price", "limit": 1 },

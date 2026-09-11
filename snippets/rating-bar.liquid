@@ -1,0 +1,77 @@
+{%- comment -%}
+  Trustpilot-style rating bar.
+
+  Reads whichever real source is available, in order:
+    1. product.metafields.reviews.* (written by Judge.me, Loox, Okendo,
+       Shopify Product Reviews and most review apps)
+    2. shop.metafields.reviews.* for a store-wide figure
+
+  There is deliberately no free-text field for the score or review count.
+  An aggregate rating that no reviews back is a banned practice under the UK
+  DMCC Act 2024 and the EU Omnibus Directive, and Google delists rich results
+  for it. Install a review app and the bar fills in on its own.
+
+  Params: scope (product|shop), align
+{%- endcomment -%}
+
+{%- liquid
+  if scope == 'shop'
+    assign rating_value = shop.metafields.reviews.rating.value.rating
+    assign rating_max = shop.metafields.reviews.rating.value.scale_max | default: 5
+    assign rating_count = shop.metafields.reviews.rating_count.value | default: shop.metafields.reviews.rating_count
+  else
+    assign rating_value = product.metafields.reviews.rating.value.rating
+    assign rating_max = product.metafields.reviews.rating.value.scale_max | default: 5
+    assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count
+  endif
+
+  assign has_rating = false
+  if rating_value != blank and rating_count != blank and rating_count > 0
+    assign has_rating = true
+  endif
+
+  if has_rating
+    assign pct = rating_value | times: 100.0 | divided_by: rating_max
+    assign score = rating_value | times: 100 | divided_by: rating_max
+
+    if score >= 90
+      assign label = 'products.rating.excellent'
+    elsif score >= 76
+      assign label = 'products.rating.great'
+    elsif score >= 60
+      assign label = 'products.rating.average'
+    elsif score >= 40
+      assign label = 'products.rating.poor'
+    else
+      assign label = 'products.rating.bad'
+    endif
+  endif
+-%}
+
+{%- if has_rating -%}
+  <div class="rating-bar rating-bar--{{ align | default: 'left' }}">
+    {%- comment -%}
+      Two stacked star rows clipped by width give a true partial star,
+      rather than rounding 4.6 up to a full five.
+    {%- endcomment -%}
+    <div class="rating-bar__stars" role="img"
+         aria-label="{{ rating_value }}/{{ rating_max }}">
+      <div class="rating-bar__stars-base">
+        {%- for i in (1..5) -%}
+          <span class="rating-bar__star rating-bar__star--empty">{% render 'icons', icon: 'star' %}</span>
+        {%- endfor -%}
+      </div>
+      <div class="rating-bar__stars-fill" style="width: {{ pct }}%">
+        {%- for i in (1..5) -%}
+          <span class="rating-bar__star">{% render 'icons', icon: 'star' %}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <span class="rating-bar__label">{{ label | t }}</span>
+    <span class="rating-bar__sep">|</span>
+    <span class="rating-bar__count">
+      {{ 'products.product.review_count' | t: count: rating_count }}
+    </span>
+  </div>
+{%- endif -%}
