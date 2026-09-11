@@ -11,7 +11,18 @@
 {%- if shop.enabled_payment_types.size > 0 -%}
   <div class="payment-icons payment-icons--{{ align | default: 'center' }} payment-icons--{{ size | default: 'medium' }}">
     {%- for type in shop.enabled_payment_types limit: icon_limit -%}
-      {{ type | payment_type_svg_tag: class: 'payment-icons__item' }}
+      {%- comment -%}
+        payment_type_img_url, not payment_type_svg_tag: the inline form put
+        roughly 2.5 KB of markup per icon into every page, and this row is in
+        the footer, so it was on every page. As CDN images they are cached
+        once and reused across the whole visit.
+      {%- endcomment -%}
+      <img src="{{ type | payment_type_img_url }}"
+           class="payment-icons__item"
+           alt="{{ type }}"
+           loading="lazy"
+           width="38"
+           height="24">
     {%- endfor -%}
   </div>
 {%- endif -%}

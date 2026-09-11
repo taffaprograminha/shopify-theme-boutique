@@ -25,16 +25,31 @@
       request.page_type is used rather than comparing page_title to shop.name:
       typographic apostrophes make that comparison fail and duplicate the name.
     {%- endcomment -%}
-    <title>
-      {%- if request.page_type == 'index' -%}
-        {{ shop.name }}{% if page_description %} &ndash; {{ page_description | truncate: 60 }}{% endif %}
-      {%- else -%}
-        {{ page_title }}
-        {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
-        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-        &ndash; {{ shop.name }}
-      {%- endif -%}
-    </title>
+    {%- comment -%}
+      Assembled with append rather than laid out as markup. Written inline the
+      template's own indentation ends up inside the title, and chasing it with
+      whitespace-control dashes broke the separator spacing instead.
+    {%- endcomment -%}
+    {%- liquid
+      if request.page_type == 'index'
+        assign page_title_text = shop.name
+        if page_description != blank
+          assign desc = page_description | truncate: 60
+          assign page_title_text = page_title_text | append: ' &ndash; ' | append: desc
+        endif
+      else
+        assign page_title_text = page_title | strip
+        if current_tags
+          assign tags = current_tags | join: ', '
+          assign page_title_text = page_title_text | append: ' &ndash; ' | append: tags
+        endif
+        if current_page != 1
+          assign page_title_text = page_title_text | append: ' &ndash; Page ' | append: current_page
+        endif
+        assign page_title_text = page_title_text | append: ' &ndash; ' | append: shop.name
+      endif
+    -%}
+    <title>{{ page_title_text }}</title>
 
     {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
 
