@@ -102,7 +102,11 @@
       "average": "Moyen",
       "poor": "Médiocre",
       "bad": "Mauvais",
-      "editor_only": "Exemple, éditeur uniquement"
+      "editor_only": "Exemple, éditeur uniquement",
+      "verified": "Avis vérifié",
+      "sample_author": "Cliente",
+      "sample_date": "Exemple",
+      "sample_body": "Emplacement de l'avis client. Ce texte sera remplacé par les avis réels une fois votre application d'avis connectée."
     }
   },
   "collections": {

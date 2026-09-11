@@ -161,12 +161,22 @@
         "columns_desktop": "5",
         "view_all": true
       }
+    },
+    "reviews": {
+      "type": "reviews",
+      "settings": {
+        "heading": "Votre satisfaction est notre réussite",
+        "subtext": "Ce que disent nos clientes",
+        "reviews_to_show": 4,
+        "background": "#ffffff"
+      }
     }
   },
   "order": [
     "category-pills",
     "main",
     "story",
+    "reviews",
     "related",
     "more-products",
     "sticky-atc"

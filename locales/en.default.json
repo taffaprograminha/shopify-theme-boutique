@@ -102,7 +102,11 @@
       "average": "Average",
       "poor": "Poor",
       "bad": "Bad",
-      "editor_only": "Sample, editor only"
+      "editor_only": "Sample, editor only",
+      "verified": "Verified review",
+      "sample_author": "Customer",
+      "sample_date": "Sample",
+      "sample_body": "Customer review placeholder. This text is replaced by real reviews once your review app is connected."
     }
   },
   "collections": {
