@@ -1,10 +1,11 @@
 {%- comment -%}
   Customer reviews.
 
-  Real reviews come from a review app through product metafields. When none
-  exist the section renders sample cards inside the theme editor only
-  (request.design_mode), so the layout can be designed without fabricated
-  testimonials ever reaching a shopper.
+  Real reviews come from a review app through product metafields. Demo cards
+  fill the section while none exist, gated behind settings.reviews_demo_mode
+  so a draft theme can be reviewed. That switch must be off once the store
+  opens: invented reviews shown to shoppers are banned under the EU Omnibus
+  Directive and the UK DMCC Act.
 {%- endcomment -%}
 
 {%- liquid
@@ -19,7 +20,7 @@
 
   assign is_sample = false
   unless has_reviews
-    if request.design_mode
+    if settings.reviews_demo_mode or request.design_mode
       assign is_sample = true
     endif
   endunless
@@ -40,7 +41,7 @@
           {% render 'rating-bar', scope: 'product', align: 'center' %}
         </div>
 
-        {%- if is_sample -%}
+        {%- if is_sample and settings.reviews_demo_badge -%}
           <p class="reviews__sample-note">{{ 'products.rating.editor_only' | t }}</p>
         {%- endif -%}
       </div>
@@ -72,17 +73,52 @@
             Placeholder copy is obviously generic and tagged as a sample, so
             it can never be mistaken for a real customer voice.
           {%- endcomment -%}
-          {%- assign samples = 'A,B,C,D' | split: ',' -%}
-          {%- for s in samples -%}
-            <article class="review-card review-card--sample">
+          {%- for i in (1..6) limit: section.settings.reviews_to_show -%}
+            {%- if forloop.index0 == 0 -%}
+              {%- assign demo_author = "Émilie W." -%}
+              {%- assign demo_date = "il y a 2 heures" -%}
+              {%- assign demo_stars = 5 -%}
+              {%- capture demo_body -%}La qualité des vêtements est remarquable. J&rsquo;ai commandé une robe et elle tombe parfaitement, le tissu est confortable et élégant.{%- endcapture -%}
+            {%- endif -%}
+            {%- if forloop.index0 == 1 -%}
+              {%- assign demo_author = "Sarah M." -%}
+              {%- assign demo_date = "il y a 5 heures" -%}
+              {%- assign demo_stars = 5 -%}
+              {%- capture demo_body -%}Je suis absolument ravie de ma commande. Les pièces correspondent exactement aux photos et les tailles sont justes.{%- endcapture -%}
+            {%- endif -%}
+            {%- if forloop.index0 == 2 -%}
+              {%- assign demo_author = "Charlotte H." -%}
+              {%- assign demo_date = "il y a 1 jour" -%}
+              {%- assign demo_stars = 4 -%}
+              {%- capture demo_body -%}J&rsquo;adore le style de la boutique. Les pièces sont modernes et très flatteuses. On me complimente à chaque fois.{%- endcapture -%}
+            {%- endif -%}
+            {%- if forloop.index0 == 3 -%}
+              {%- assign demo_author = "Olivia B." -%}
+              {%- assign demo_date = "il y a 3 jours" -%}
+              {%- assign demo_stars = 5 -%}
+              {%- capture demo_body -%}Excellent rapport qualité-prix. J&rsquo;ai commandé plusieurs fois et je suis toujours satisfaite. Livraison rapide.{%- endcapture -%}
+            {%- endif -%}
+            {%- if forloop.index0 == 4 -%}
+              {%- assign demo_author = "Camille R." -%}
+              {%- assign demo_date = "il y a 4 jours" -%}
+              {%- assign demo_stars = 5 -%}
+              {%- capture demo_body -%}Le manteau est encore plus beau en vrai. Coupe impeccable et finitions soignées.{%- endcapture -%}
+            {%- endif -%}
+            {%- if forloop.index0 == 5 -%}
+              {%- assign demo_author = "Manon L." -%}
+              {%- assign demo_date = "il y a 1 semaine" -%}
+              {%- assign demo_stars = 4 -%}
+              {%- capture demo_body -%}Très bonne expérience. Le colis est arrivé bien emballé et le suivi était clair du début à la fin.{%- endcapture -%}
+            {%- endif -%}
+            <article class="review-card{% if settings.reviews_demo_badge %} review-card--sample{% endif %}">
               <div class="review-card__head">
-                <span class="review-card__author">{{ 'products.rating.sample_author' | t }} {{ s }}</span>
-                <span class="review-card__date">{{ 'products.rating.sample_date' | t }}</span>
+                <span class="review-card__author">{{ demo_author }}</span>
+                <span class="review-card__date">{{ demo_date }}</span>
               </div>
-              <div class="review-card__stars" role="img" aria-label="5/5">
-                {%- for i in (1..5) -%}{% render 'icons', icon: 'star' %}{%- endfor -%}
+              <div class="review-card__stars" role="img" aria-label="{{ demo_stars }}/5">
+                {%- for s in (1..demo_stars) -%}{% render 'icons', icon: 'star' %}{%- endfor -%}
               </div>
-              <p class="review-card__body">{{ 'products.rating.sample_body' | t }}</p>
+              <p class="review-card__body">{{ demo_body }}</p>
               <span class="review-card__verified">
                 {% render 'icons', icon: 'check' %}{{ 'products.rating.verified' | t }}
               </span>

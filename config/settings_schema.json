@@ -545,6 +545,44 @@
     ]
   },
   {
+    "name": "Demo content",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Fills the rating bar and reviews section with sample data so the layout can be checked before a review app is connected. Turn this OFF before publishing the theme: showing invented reviews to shoppers is banned under the EU Omnibus Directive and the UK DMCC Act."
+      },
+      {
+        "type": "checkbox",
+        "id": "reviews_demo_mode",
+        "label": "Show demo reviews",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "reviews_demo_badge",
+        "label": "Mark demo content on the page",
+        "default": true,
+        "info": "Adds a visible DEMO tag so sample data is never mistaken for real reviews."
+      },
+      {
+        "type": "range",
+        "id": "reviews_demo_rating",
+        "label": "Demo score",
+        "min": 30,
+        "max": 50,
+        "step": 1,
+        "default": 46,
+        "info": "Divided by 10, so 46 shows as 4.6"
+      },
+      {
+        "type": "number",
+        "id": "reviews_demo_count",
+        "label": "Demo review count",
+        "default": 1248
+      }
+    ]
+  },
+  {
     "name": "Search engines & sharing",
     "settings": [
       {

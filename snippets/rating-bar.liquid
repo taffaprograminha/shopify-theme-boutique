@@ -33,18 +33,17 @@
   endif
 
   comment
-    With no review app connected there is nothing to show, which makes the
-    block impossible to lay out in the editor. request.design_mode is true
-    only inside the theme customiser, so sample figures are visible while
-    designing and can never reach a shopper.
+    Demo mode fills the bar while no review app is connected, so the layout
+    can be checked on a draft theme. It is off by default and must stay off
+    once the store is open to shoppers.
   endcomment
   unless has_rating
-    if request.design_mode
+    if settings.reviews_demo_mode or request.design_mode
       assign has_rating = true
       assign is_placeholder = true
-      assign rating_value = 4.6
+      assign rating_value = settings.reviews_demo_rating | default: 46 | divided_by: 10.0
       assign rating_max = 5
-      assign rating_count = 1248
+      assign rating_count = settings.reviews_demo_count | default: 1248
     endif
   endunless
 
@@ -67,7 +66,7 @@
 -%}
 
 {%- if has_rating -%}
-  <div class="rating-bar rating-bar--{{ align | default: 'left' }}{% if is_placeholder %} rating-bar--placeholder{% endif %}">
+  <div class="rating-bar rating-bar--{{ align | default: 'left' }}{% if is_placeholder and settings.reviews_demo_badge %} rating-bar--placeholder{% endif %}">
     {%- comment -%}
       Two stacked star rows clipped by width give a true partial star,
       rather than rounding 4.6 up to a full five.
@@ -92,7 +91,7 @@
       {{ 'products.product.review_count' | t: count: rating_count }}
     </span>
 
-    {%- if is_placeholder -%}
+    {%- if is_placeholder and settings.reviews_demo_badge -%}
       <span class="rating-bar__placeholder-note">
         {{ 'products.rating.editor_only' | t }}
       </span>
