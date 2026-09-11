@@ -7,15 +7,36 @@
     "category-pills": {
       "type": "category-pills",
       "blocks": {
-        "c1": { "type": "category" },
-        "c2": { "type": "category" },
-        "c3": { "type": "category" },
-        "c4": { "type": "category" },
-        "c5": { "type": "category" },
-        "c6": { "type": "category" }
+        "c1": {
+          "type": "category"
+        },
+        "c2": {
+          "type": "category"
+        },
+        "c3": {
+          "type": "category"
+        },
+        "c4": {
+          "type": "category"
+        },
+        "c5": {
+          "type": "category"
+        },
+        "c6": {
+          "type": "category"
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
-      "settings": { "heading": "Categories" }
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ],
+      "settings": {
+        "heading": "Catégories"
+      }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
@@ -25,5 +46,9 @@
       }
     }
   },
-  "order": ["banner", "category-pills", "product-grid"]
+  "order": [
+    "banner",
+    "category-pills",
+    "product-grid"
+  ]
 }

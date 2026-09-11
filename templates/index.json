@@ -8,8 +8,8 @@
         "overlay_opacity": 25,
         "text_color": "#ffffff",
         "eyebrow": "",
-        "heading": "Up to -80%",
-        "subtext": "Not goodbye. Not yet.",
+        "heading": "Jusqu'à -80%",
+        "subtext": "Pas d'adieu. Pas encore.",
         "button_label": "Découvrir la collection",
         "button_link": "/collections/all"
       }
@@ -18,8 +18,8 @@
       "type": "story",
       "settings": {
         "eyebrow": "",
-        "heading": "We're not ready to say goodbye.",
-        "body": "<p>Some boutiques close quietly. We're not going quietly.</p><p>Tell the story behind your shop here. Who started it, why it exists, and what it means to the people who buy from you.</p>",
+        "heading": "Nous ne sommes pas prêts à dire adieu.",
+        "body": "<p>Certaines boutiques ferment en silence. Nous, non.</p><p>Racontez ici l'histoire de votre boutique : qui l'a créée, pourquoi elle existe, et ce qu'elle représente pour vos clientes.</p>",
         "show_tiers": true,
         "tier_note": "Les remises sont appliquées automatiquement au paiement et se cumulent sur toutes les collections.",
         "button_label": "Profiter des soldes",
@@ -29,7 +29,7 @@
     "featured-1": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Summer essentials",
+        "heading": "Les essentiels de l'été",
         "header_align": "center",
         "products_to_show": 8,
         "columns_desktop": "4",
@@ -73,7 +73,7 @@
     "featured-2": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Jackets & coats",
+        "heading": "Vestes et manteaux",
         "header_align": "center",
         "products_to_show": 8,
         "columns_desktop": "4",
@@ -84,7 +84,7 @@
     "featured-3": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Jumpers",
+        "heading": "Pulls",
         "header_align": "center",
         "products_to_show": 8,
         "columns_desktop": "4",
@@ -95,9 +95,9 @@
     "story-main": {
       "type": "story",
       "settings": {
-        "eyebrow": "Our story",
-        "heading": "This is what twenty-five years looks like.",
-        "body": "<p>Because of you, a small idea became something real.</p><p>Replace this with the real story behind your shop.</p>",
+        "eyebrow": "Notre histoire",
+        "heading": "Voilà à quoi ressemblent vingt-cinq ans.",
+        "body": "<p>Grâce à vous, une petite idée est devenue réalité.</p><p>Remplacez ce texte par la véritable histoire de votre boutique.</p>",
         "show_tiers": false,
         "button_label": "Notre histoire",
         "button_link": "/pages/about-us"
@@ -106,7 +106,7 @@
     "featured-4": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Jewellery",
+        "heading": "Bijoux",
         "header_align": "center",
         "products_to_show": 8,
         "columns_desktop": "4",
@@ -117,7 +117,7 @@
     "featured-5": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Bags",
+        "heading": "Sacs",
         "header_align": "center",
         "products_to_show": 8,
         "columns_desktop": "4",
