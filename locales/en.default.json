@@ -101,7 +101,8 @@
       "great": "Great",
       "average": "Average",
       "poor": "Poor",
-      "bad": "Bad"
+      "bad": "Bad",
+      "editor_only": "Sample, editor only"
     }
   },
   "collections": {

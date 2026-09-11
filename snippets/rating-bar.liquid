@@ -26,9 +26,27 @@
   endif
 
   assign has_rating = false
+  assign is_placeholder = false
+
   if rating_value != blank and rating_count != blank and rating_count > 0
     assign has_rating = true
   endif
+
+  comment
+    With no review app connected there is nothing to show, which makes the
+    block impossible to lay out in the editor. request.design_mode is true
+    only inside the theme customiser, so sample figures are visible while
+    designing and can never reach a shopper.
+  endcomment
+  unless has_rating
+    if request.design_mode
+      assign has_rating = true
+      assign is_placeholder = true
+      assign rating_value = 4.6
+      assign rating_max = 5
+      assign rating_count = 1248
+    endif
+  endunless
 
   if has_rating
     assign pct = rating_value | times: 100.0 | divided_by: rating_max
@@ -49,7 +67,7 @@
 -%}
 
 {%- if has_rating -%}
-  <div class="rating-bar rating-bar--{{ align | default: 'left' }}">
+  <div class="rating-bar rating-bar--{{ align | default: 'left' }}{% if is_placeholder %} rating-bar--placeholder{% endif %}">
     {%- comment -%}
       Two stacked star rows clipped by width give a true partial star,
       rather than rounding 4.6 up to a full five.
@@ -73,5 +91,11 @@
     <span class="rating-bar__count">
       {{ 'products.product.review_count' | t: count: rating_count }}
     </span>
+
+    {%- if is_placeholder -%}
+      <span class="rating-bar__placeholder-note">
+        {{ 'products.rating.editor_only' | t }}
+      </span>
+    {%- endif -%}
   </div>
 {%- endif -%}

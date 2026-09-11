@@ -396,8 +396,9 @@ p:last-child{margin-bottom:0}
 .price--large .price__compare{font-size:1.125rem}
 .price__save{
   font-family:var(--font-button);
-  font-size:.625rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  background:var(--color-sale);color:#fff;padding:3px 8px;border-radius:var(--radius);
+  font-size:.6875rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  background:var(--color-save-badge,#4a9d5f);color:#fff;
+  padding:4px 9px;border-radius:var(--radius);white-space:nowrap;
 }
 .price__unit{font-size:.6875rem;color:var(--color-muted);width:100%}
 
@@ -1064,4 +1065,12 @@ p:last-child{margin-bottom:0}
   .localization__label{display:none}
   .localization__current{padding:6px 4px}
   .localization__list{right:auto;left:50%;transform:translateX(-50%)}
+}
+
+/* Editor-only sample rating: never rendered on the live storefront */
+.rating-bar--placeholder{opacity:.85}
+.rating-bar__placeholder-note{
+  font-size:.625rem;letter-spacing:.06em;text-transform:uppercase;
+  background:#fff3cd;color:#8a6d00;border:1px solid #ffe08a;
+  padding:2px 7px;border-radius:3px;
 }

@@ -101,7 +101,8 @@
       "great": "Très bien",
       "average": "Moyen",
       "poor": "Médiocre",
-      "bad": "Mauvais"
+      "bad": "Mauvais",
+      "editor_only": "Exemple, éditeur uniquement"
     }
   },
   "collections": {

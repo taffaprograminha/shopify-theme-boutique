@@ -92,6 +92,13 @@
         "id": "color_sale",
         "label": "Sale price / badge",
         "default": "#d60000"
+      },
+      {
+        "type": "color",
+        "id": "color_save_badge",
+        "label": "Discount badge",
+        "default": "#4a9d5f",
+        "info": "The SAVE / Économisez badge. Separate from the sale price colour."
       }
     ]
   },
