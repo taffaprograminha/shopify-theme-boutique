@@ -44,36 +44,49 @@
       "type": "footer",
       "blocks": {
         "f1": {
+          "type": "text",
+          "settings": {
+            "title": "Contact",
+            "text": "<p><strong>Besoin d'aide ?</strong> Contactez notre service client.</p><p>Notre équipe vous répond du lundi au vendredi.</p><p><strong>support@allure-marseille.com</strong></p>"
+          }
+        },
+        "f2": {
           "type": "menu",
           "settings": {
             "title": "Informations",
             "menu": "footer"
           }
         },
-        "f2": {
+        "f3": {
           "type": "text",
           "settings": {
-            "title": "Contact",
-            "text": "<p>Une question sur votre commande ? Nous répondons sous un jour ouvré.</p>"
+            "title": "Détails",
+            "text": "<p>&copy; 2026 allure-marseille.com</p><p>Contact : support@allure-marseille.com</p>"
           }
         },
-        "f3": {
-          "type": "newsletter",
+        "f4": {
+          "type": "text",
           "settings": {
-            "title": "Newsletter",
-            "text": "<p>Nouveautés et actualités de la boutique.</p>"
+            "title": "Informations légales",
+            "text": "<p><strong>Raison sociale :</strong> à compléter</p><p><strong>Adresse :</strong><br>à compléter</p><p><strong>SIRET :</strong> à compléter</p>"
           }
         }
       },
       "block_order": [
         "f1",
         "f2",
-        "f3"
+        "f3",
+        "f4"
       ],
       "settings": {
-        "background": "#ffffff",
-        "text_color": "#212121",
-        "show_payment_icons": true
+        "background": "#0a0a0a",
+        "text_color": "#ffffff",
+        "show_newsletter": true,
+        "newsletter_title": "Newsletter",
+        "newsletter_note": "",
+        "show_localization": true,
+        "show_payment_icons": true,
+        "show_social": false
       }
     }
   },

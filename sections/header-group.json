@@ -25,7 +25,8 @@
       "settings": {
         "menu": "main-menu",
         "nav_below_logo": true,
-        "logo_width": 180
+        "logo_width": 180,
+        "show_localization": false
       }
     },
     "volume-bar": {
