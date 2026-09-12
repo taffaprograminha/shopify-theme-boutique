@@ -45,6 +45,14 @@
       {%- endif -%}
     </div>
 
+    {%- comment -%}
+      Naming the rule that fired beats a silent strikethrough: the shopper can
+      see it was "2+2" and not a price that moved on its own.
+    {%- endcomment -%}
+    {%- for alloc in item.line_level_discount_allocations -%}
+      <span class="cart-item__discount">{{ alloc.discount_application.title }}</span>
+    {%- endfor -%}
+
     <div class="cart-item__foot">
       {%- if form_input -%}
         {% render 'quantity-input', name: 'updates[', key: item.key, value: item.quantity, min: 0 %}

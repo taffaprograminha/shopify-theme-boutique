@@ -1,0 +1,46 @@
+{%- comment -%}
+  Names what the automatic discounts took off.
+
+  The theme does not decide discounts — Shopify does, from the rules in
+  Discounts, and reports the result on the cart. This only reports it back.
+  Nothing renders when nothing was applied, so a store with no discounts
+  looks exactly as it did before.
+
+  Line-level discounts already show as a struck price on their own line, so
+  they are summed into one row here rather than repeated per item; without
+  that row the figures above TOTAL would not add up.
+{%- endcomment -%}
+
+{%- comment -%}
+  The wrapper is always emitted, hidden when empty: global.js rewrites its
+  contents on every cart change and needs somewhere to write.
+{%- endcomment -%}
+<div class="cart-discounts" data-cart-discounts {% if cart.total_discount == 0 %}hidden{% endif %}>
+{%- if cart.total_discount > 0 -%}
+  {%- liquid
+    assign named = 0
+    for d in cart.cart_level_discount_applications
+      assign named = named | plus: d.total_allocated_amount
+    endfor
+    assign rest = cart.total_discount | minus: named
+  -%}
+    <div class="cart-discounts__row">
+      <span>{{ 'general.cart.before_discount' | t }}</span>
+      <span>{{ cart.original_total_price | money }}</span>
+    </div>
+
+    {%- for d in cart.cart_level_discount_applications -%}
+      <div class="cart-discounts__row cart-discounts__row--saving">
+        <span>{{ d.title }}</span>
+        <span>&minus;{{ d.total_allocated_amount | money }}</span>
+      </div>
+    {%- endfor -%}
+
+    {%- if rest > 0 -%}
+      <div class="cart-discounts__row cart-discounts__row--saving">
+        <span>{{ 'general.cart.other_discounts' | t }}</span>
+        <span>&minus;{{ rest | money }}</span>
+      </div>
+    {%- endif -%}
+{%- endif -%}
+</div>

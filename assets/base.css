@@ -756,6 +756,23 @@ p:last-child{margin-bottom:0}
   .cart-item .qty__btn{width:44px}
 }
 
+/* Only rendered when a discount actually fired, so a store running none looks
+   exactly as it did before. */
+.cart-discounts{display:flex;flex-direction:column;gap:.3rem}
+.cart-discounts[hidden]{display:none}
+.cart-discounts__row{
+  display:flex;align-items:baseline;justify-content:space-between;gap:.75rem;
+  font-size:.75rem;color:var(--color-muted);
+}
+.cart-discounts__row--saving{color:var(--color-accent);font-weight:500}
+.cart-discounts__row--saving span:last-child{font-variant-numeric:tabular-nums}
+
+.cart-item__discount{
+  align-self:flex-start;font-size:.625rem;font-weight:500;
+  color:var(--color-accent);background:var(--color-bg-accent);
+  border-radius:var(--radius);padding:1px 6px;
+}
+
 .cart-total{display:flex;align-items:baseline;justify-content:space-between}
 .cart-total__label{
   font-family:var(--font-heading);

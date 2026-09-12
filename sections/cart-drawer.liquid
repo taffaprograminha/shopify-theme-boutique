@@ -68,6 +68,8 @@
       </div>
     {%- endif -%}
 
+    {% render 'cart-discounts' %}
+
     <div class="cart-total">
       <span class="cart-total__label">{{ 'general.cart.subtotal' | t }}</span>
       <span class="cart-total__price" data-cart-total>{{ cart.total_price | money }}</span>

@@ -153,7 +153,9 @@
           remove: {{ 'general.cart.remove' | t | json }},
           quantity: {{ 'general.cart.quantity' | t | json }},
           increase: {{ 'general.cart.increase' | t | json }},
-          decrease: {{ 'general.cart.decrease' | t | json }}
+          decrease: {{ 'general.cart.decrease' | t | json }},
+          beforeDiscount: {{ 'general.cart.before_discount' | t | json }},
+          otherDiscounts: {{ 'general.cart.other_discounts' | t | json }}
         },
         routes: {
           allProducts: {{ routes.all_products_collection_url | json }},

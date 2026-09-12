@@ -258,6 +258,7 @@
       // promising a discount on a cart with nothing in it, and the strip would
       // keep hiding what the shopper has just taken back out.
       this.renderFreeShipping(cart.total_price);
+      this.renderDiscounts(cart);
       this.syncUpsell(cart);
 
       if (!cart.items.length) {
@@ -297,6 +298,10 @@
             )
             .join(' &middot; ')
         : '';
+      const lineDiscounts = (item.line_level_discount_allocations || [])
+        .map((a) => '<span class="cart-item__discount">' +
+          escapeHTML(a.discount_application && a.discount_application.title) + '</span>')
+        .join('');
       const compare =
         item.original_line_price > item.final_line_price
           ? '<s class="price__compare">' + formatMoney(item.original_line_price) + '</s> '
@@ -315,6 +320,7 @@
         '<div class="price">' + compare +
         '<span class="' + (compare ? 'price__sale' : 'price__regular') + '">' +
         formatMoney(item.final_line_price) + '</span></div>' +
+        lineDiscounts +
         '<div class="cart-item__foot">' +
         '<div class="qty">' +
         '<button type="button" class="qty__btn" data-cart-qty-step="-1" aria-label="' +
@@ -327,6 +333,33 @@
         escapeHTML(s.remove || 'Remove') + '</button>' +
         '</div></div></div>'
       );
+    },
+
+    renderDiscounts(cart) {
+      const wrap = this.el.querySelector('[data-cart-discounts]');
+      if (!wrap) return;
+      if (!cart.total_discount) {
+        wrap.hidden = true;
+        wrap.innerHTML = '';
+        return;
+      }
+      const s = theme.strings || {};
+      const named = cart.cart_level_discount_applications || [];
+      // Whatever the named cart-level rules did not account for came off the
+      // lines themselves; without this the rows would not add up to TOTAL.
+      const rest = named.reduce((n, d) => n - d.total_allocated_amount, cart.total_discount);
+
+      const row = (label, money, saving) =>
+        '<div class="cart-discounts__row' + (saving ? ' cart-discounts__row--saving' : '') + '">' +
+        '<span>' + escapeHTML(label) + '</span>' +
+        '<span>' + (saving ? '&minus;' : '') + escapeHTML(formatMoney(money)) + '</span></div>';
+
+      let html = row(s.beforeDiscount || 'Subtotal', cart.original_total_price, false);
+      named.forEach((d) => { html += row(d.title, d.total_allocated_amount, true); });
+      if (rest > 0) html += row(s.otherDiscounts || 'Product discounts', rest, true);
+
+      wrap.innerHTML = html;
+      wrap.hidden = false;
     },
 
     renderFreeShipping(totalPrice) {

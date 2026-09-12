@@ -32,7 +32,9 @@
       "update": "Update",
       "upsell_heading": "Complete your look",
       "choose_size": "Pick a size",
-      "add": "Add"
+      "add": "Add",
+      "before_discount": "Subtotal",
+      "other_discounts": "Product discounts"
     },
     "pagination": {
       "previous": "Previous",
