@@ -149,7 +149,15 @@
           unavailable: {{ 'products.product.unavailable' | t | json }},
           save: {{ 'products.price.save' | t | json }},
           freeShippingProgress: {{ 'general.cart.free_shipping_progress' | t: amount: '__AMOUNT__' | json }},
-          freeShippingReached: {{ 'general.cart.free_shipping_reached' | t | json }}
+          freeShippingReached: {{ 'general.cart.free_shipping_reached' | t | json }},
+          remove: {{ 'general.cart.remove' | t | json }},
+          quantity: {{ 'general.cart.quantity' | t | json }},
+          increase: {{ 'general.cart.increase' | t | json }},
+          decrease: {{ 'general.cart.decrease' | t | json }}
+        },
+        routes: {
+          allProducts: {{ routes.all_products_collection_url | json }},
+          cart: {{ routes.cart_url | json }}
         },
         {%- comment -%}
           /cart.js returns the raw imported English option data, so the cart

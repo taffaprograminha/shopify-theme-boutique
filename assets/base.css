@@ -705,7 +705,13 @@ p:last-child{margin-bottom:0}
 .cart-drawer__foot{
   border-top:1px solid var(--color-border);padding:1.25rem 1.5rem;
   display:flex;flex-direction:column;gap:.85rem;
+  /* Clears the home indicator, which otherwise sat over the taxes note. */
+  padding-bottom:calc(1.25rem + env(safe-area-inset-bottom));
 }
+
+/* Only after a slow response, so a quick tap doesn't make the list blink. */
+.cart-drawer.loading [data-cart-items]{animation:cart-busy .2s .35s forwards}
+@keyframes cart-busy{to{opacity:.55}}
 
 .cart-timer{
   background:var(--color-sale-fade);color:var(--color-sale);
@@ -714,7 +720,13 @@ p:last-child{margin-bottom:0}
 }
 .cart-timer strong{font-variant-numeric:tabular-nums;font-weight:700}
 
-.free-shipping{padding:0 1.5rem 1rem;border-bottom:1px solid var(--color-border);margin-bottom:1rem}
+/* Lives inside the padded drawer body, so it is bled back out to the edges;
+   otherwise its rule stopped 24px short on both sides while the header's
+   ran the full width. */
+.free-shipping{
+  padding:0 1.5rem 1rem;margin:0 -1.5rem 1rem;
+  border-bottom:1px solid var(--color-border);
+}
 .free-shipping__text{font-size:.75rem;text-align:center;margin-bottom:.5rem}
 .free-shipping__text strong{color:var(--color-accent)}
 .free-shipping__track{height:4px;background:var(--color-border);border-radius:99px;overflow:hidden}
@@ -724,7 +736,7 @@ p:last-child{margin-bottom:0}
 }
 
 .cart-item{
-  display:grid;grid-template-columns:72px 1fr;gap:.85rem;
+  display:grid;grid-template-columns:72px 1fr;gap:.85rem;align-items:start;
   padding-bottom:1rem;margin-bottom:1rem;border-bottom:1px solid var(--color-border);
 }
 .cart-item:last-child{border-bottom:0;margin-bottom:0}
@@ -740,6 +752,12 @@ p:last-child{margin-bottom:0}
 }
 .cart-item__remove:hover{color:var(--color-sale)}
 .cart-item .qty{transform:scale(.85);transform-origin:left center}
+/* That scale left the stepper at 34x37 on a phone, under the 44px a thumb
+   needs. Mice can have the compact one. */
+@media (max-width:749px){
+  .cart-item .qty{transform:none}
+  .cart-item .qty__btn{width:44px}
+}
 
 .cart-total{display:flex;align-items:baseline;justify-content:space-between}
 .cart-total__label{

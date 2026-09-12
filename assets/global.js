@@ -53,6 +53,8 @@
     overlay: null,
     timerId: null,
     bound: false,
+    pending: new Map(),
+    inFlight: false,
 
     init() {
       this.el = document.querySelector('[data-cart-drawer]');
@@ -93,7 +95,7 @@
       return this.el && this.el.classList.contains('is-open');
     },
 
-    open() {
+    open(opts) {
       if (!this.el) return;
       this.el.setAttribute('aria-hidden', 'false');
       this.el.classList.add('is-open');
@@ -105,6 +107,13 @@
       this.startTimer();
       const close = this.el.querySelector('[data-cart-close]');
       if (close) close.focus();
+
+      // Liquid draws the lines at page load but leaves the free shipping bar
+      // empty at 0%, because only this script knows how to fill it. Pulling
+      // the cart on open is what stops the bar opening blank, and it also
+      // catches a cart changed in another tab. Add-to-cart has already
+      // refreshed, so it opts out.
+      if (!opts || opts.refresh !== false) this.refresh().catch(() => {});
     },
 
     close() {
@@ -130,20 +139,39 @@
         e.preventDefault();
         const input = step.parentElement.querySelector('[data-cart-qty-input]');
         if (!input) return;
-        const next = parseInt(input.value, 10) + parseInt(step.dataset.cartQtyStep, 10);
-        this.changeQty(input.dataset.key, Math.max(0, next));
+        const next = Math.max(0, parseInt(input.value, 10) + parseInt(step.dataset.cartQtyStep, 10));
+        // Show the new number before the round trip. Taps land faster than the
+        // response, and reading the un-updated input meant every tap in a burst
+        // sent the same stale quantity.
+        input.value = next;
+        this.changeQty(input.dataset.key, next);
       }
     },
 
     async changeQty(key, quantity) {
       if (!key || Number.isNaN(quantity)) return;
+
+      // One request at a time, keyed by line, so a burst of taps collapses to
+      // the last quantity asked for instead of racing. Rendering only once the
+      // queue is empty also keeps the list from flickering through each step.
+      this.pending.set(key, quantity);
+      if (this.inFlight) return;
+      this.inFlight = true;
       this.el.classList.add('loading');
       try {
-        const cart = await cartFetch('/cart/change.js', { id: key, quantity });
-        this.render(cart);
+        while (this.pending.size) {
+          const [k, q] = this.pending.entries().next().value;
+          this.pending.delete(k);
+          const cart = await cartFetch('/cart/change.js', { id: k, quantity: q });
+          if (!this.pending.size) this.render(cart);
+        }
       } catch (err) {
         console.error(err);
+        this.pending.clear();
+        // The optimistic input values are now guesses; take the real cart back.
+        this.refresh().catch(() => {});
       } finally {
+        this.inFlight = false;
         this.el.classList.remove('loading');
       }
     },
@@ -161,13 +189,17 @@
       const foot = this.el.querySelector('[data-cart-foot]');
       const countEl = this.el.querySelector('[data-cart-drawer-count]');
       if (countEl) countEl.textContent = cart.item_count;
+      // Before the empty-cart return, or the bar keeps promising a discount
+      // on a cart that no longer has anything in it.
+      this.renderFreeShipping(cart.total_price);
 
       if (!cart.items.length) {
         if (body) {
           body.innerHTML =
             '<div class="cart-empty"><p class="cart-empty__text">' +
             (this.el.dataset.emptyText || 'Your cart is empty') +
-            '</p><a href="/collections/all" class="btn btn--outline">' +
+            '</p><a href="' + ((theme.routes && theme.routes.allProducts) || '/collections/all') +
+            '" class="btn btn--outline">' +
             (this.el.dataset.continueText || 'Continue shopping') +
             '</a></div>';
         }
@@ -181,8 +213,6 @@
 
       const total = this.el.querySelector('[data-cart-total]');
       if (total) total.textContent = formatMoney(cart.total_price);
-
-      this.renderFreeShipping(cart.total_price);
     },
 
     itemHTML(item) {
@@ -205,22 +235,29 @@
           ? '<s class="price__compare">' + formatMoney(item.original_line_price) + '</s> '
           : '';
 
+      // snippets/cart-item.liquid runs these through the locale file. This
+      // branch is what the shopper sees from the first quantity change onward,
+      // so it has to say the same words.
+      const s = theme.strings || {};
       return (
         '<div class="cart-item">' +
         '<div class="cart-item__img">' + img + '</div>' +
         '<div class="cart-item__info">' +
-        '<a href="' + item.url + '" class="cart-item__title">' + escapeHTML(item.product_title) + '</a>' +
+        '<a href="' + escapeHTML(item.url) + '" class="cart-item__title">' + escapeHTML(item.product_title) + '</a>' +
         (options ? '<span class="cart-item__variant">' + options + '</span>' : '') +
         '<div class="price">' + compare +
         '<span class="' + (compare ? 'price__sale' : 'price__regular') + '">' +
         formatMoney(item.final_line_price) + '</span></div>' +
         '<div class="cart-item__foot">' +
         '<div class="qty">' +
-        '<button type="button" class="qty__btn" data-cart-qty-step="-1" aria-label="Decrease quantity">&minus;</button>' +
-        '<input class="qty__input" type="number" min="0" value="' + item.quantity + '" data-cart-qty-input data-key="' + item.key + '" aria-label="Quantity">' +
-        '<button type="button" class="qty__btn" data-cart-qty-step="1" aria-label="Increase quantity">+</button>' +
+        '<button type="button" class="qty__btn" data-cart-qty-step="-1" aria-label="' +
+        escapeHTML(s.decrease || 'Decrease quantity') + '">&minus;</button>' +
+        '<input class="qty__input" type="number" min="0" value="' + item.quantity + '" data-cart-qty-input data-key="' + item.key + '" aria-label="' + escapeHTML(s.quantity || 'Quantity') + '">' +
+        '<button type="button" class="qty__btn" data-cart-qty-step="1" aria-label="' +
+        escapeHTML(s.increase || 'Increase quantity') + '">+</button>' +
         '</div>' +
-        '<button type="button" class="cart-item__remove" data-cart-remove data-key="' + item.key + '">Remove</button>' +
+        '<button type="button" class="cart-item__remove" data-cart-remove data-key="' + item.key + '">' +
+        escapeHTML(s.remove || 'Remove') + '</button>' +
         '</div></div></div>'
       );
     },
@@ -337,9 +374,9 @@
 
         if (theme.cartType === 'drawer' && CartDrawer.el) {
           await CartDrawer.refresh();
-          CartDrawer.open();
+          CartDrawer.open({ refresh: false });
         } else {
-          window.location.href = '/cart';
+          window.location.href = (theme.routes && theme.routes.cart) || '/cart';
         }
       } catch (err) {
         const errEl = form.querySelector('[data-form-error]');

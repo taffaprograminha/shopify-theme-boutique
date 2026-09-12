@@ -2,9 +2,15 @@
   <div class="page-width" style="max-width: 900px">
     <div class="section-header section-header--inline">
       <h1 class="section-header__title h3">{{ 'general.cart.title' | t }}</h1>
-      <a href="{{ routes.all_products_collection_url }}" class="section-header__link">
-        {{ 'general.cart.continue_shopping' | t }}
-      </a>
+      {%- comment -%}
+        The empty state offers the same link as a button, so showing it here
+        too printed "Continuer mes achats" twice on an empty cart.
+      {%- endcomment -%}
+      {%- if cart.item_count > 0 -%}
+        <a href="{{ routes.all_products_collection_url }}" class="section-header__link">
+          {{ 'general.cart.continue_shopping' | t }}
+        </a>
+      {%- endif -%}
     </div>
 
     {%- if cart.item_count > 0 -%}
