@@ -23,6 +23,13 @@
 -%}
 
 <div class="card {% unless show_hover %}card--no-hover{% endunless %}" style="--card-ratio: {{ pad }}">
+  {%- comment -%}
+    The quick-add button is absolutely positioned, so it needs an ancestor
+    that ends where the photo ends. Anchored to .card it reached the bottom
+    of the whole card and sat on top of the price. It cannot go inside the
+    link itself, since it is a button or a second link.
+  {%- endcomment -%}
+  <div class="card__media-wrap">
   <a href="{{ product.url }}" class="card__media" aria-label="{{ product.title | escape }}">
     {%- if product.featured_image -%}
       <img
@@ -74,6 +81,7 @@
       </a>
     {%- endif -%}
   {%- endif -%}
+  </div>
 
   <div class="card__info">
     {%- if settings.card_show_vendor and product.vendor != blank -%}

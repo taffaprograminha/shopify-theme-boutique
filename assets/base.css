@@ -369,6 +369,7 @@ p:last-child{margin-bottom:0}
 .badge--sale{background:var(--color-sale);color:#fff}
 .badge--soldout{background:#fff;color:#212121;border:1px solid var(--color-border)}
 
+.card__media-wrap{position:relative;display:block}
 .card__quick-add{
   position:absolute;left:10px;right:10px;bottom:10px;z-index:2;
   opacity:0;transform:translateY(8px);
@@ -376,6 +377,8 @@ p:last-child{margin-bottom:0}
   padding:11px 16px;font-size:.75rem;
 }
 .card:hover .card__quick-add,.card:focus-within .card__quick-add{opacity:1;transform:translateY(0)}
+/* Touch devices have no hover, so the button has to be visible from the
+   start. It sits over the photo rather than the text underneath it. */
 @media (hover:none){.card__quick-add{opacity:1;transform:none}}
 
 .card__info{padding-top:.85rem;display:flex;flex-direction:column;gap:.3rem}
