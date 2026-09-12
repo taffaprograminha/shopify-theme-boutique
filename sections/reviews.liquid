@@ -84,6 +84,9 @@
           </span>
         </div>
 
+        {%- if is_sample and settings.reviews_demo_badge -%}
+          <p class="reviews__sample-note">{{ 'products.rating.editor_only' | t }}</p>
+        {%- endif -%}
       </div>
 
       <div class="carousel reviews__carousel" data-carousel>
@@ -144,7 +147,7 @@
                 {%- capture demo_body -%}Très bonne expérience du début à la fin. Le colis est arrivé bien emballé et le suivi était clair. Je reviendrai.{%- endcapture -%}
               {%- endif -%}
 
-              <article class="review-card">
+              <article class="review-card{% if settings.reviews_demo_badge %} review-card--sample{% endif %}">
                 <div class="review-card__head">
                   <span class="review-card__author">{{ demo_author }}</span>
                   <span class="review-card__date">{{ demo_date }}</span>

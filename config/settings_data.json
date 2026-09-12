@@ -59,7 +59,7 @@
     "social_facebook": "",
     "social_tiktok": "",
     "social_pinterest": "",
-    "reviews_demo_mode": false,
+    "reviews_demo_mode": true,
     "reviews_demo_rating": 46,
     "reviews_demo_count": 1248,
     "sections": {
@@ -73,7 +73,8 @@
         }
       }
     },
-    "content_for_index": []
+    "content_for_index": [],
+    "reviews_demo_badge": true
   },
   "presets": {
     "Boutique Revival": {
