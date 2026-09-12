@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
@@ -5,27 +14,46 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_qAWBpW": {
+          "type": "announcement",
+          "settings": {
+            "text": "✨ Pièces exclusives · Édition limitée",
+            "link": ""
+          }
+        },
+        "announcement_UpN4BX": {
+          "type": "announcement",
+          "settings": {
+            "text": "🔄 Retours gratuits sous 30 jours",
+            "link": ""
+          }
+        },
         "a1": {
           "type": "announcement",
           "settings": {
-            "text": "Soldes exceptionnelles jusqu'à -80%"
+            "text": "🚚 Livraison offerte dès 80€ d'achat",
+            "link": ""
           }
         }
       },
       "block_order": [
+        "announcement_qAWBpW",
+        "announcement_UpN4BX",
         "a1"
       ],
       "settings": {
-        "auto_rotate": false,
+        "bg": "#000000",
+        "fg": "#ffffff",
+        "auto_rotate": true,
         "rotate_speed": 5
       }
     },
     "header": {
       "type": "header",
       "settings": {
+        "logo_width": 180,
         "menu": "main-menu",
         "nav_below_logo": true,
-        "logo_width": 180,
         "show_localization": true
       }
     },

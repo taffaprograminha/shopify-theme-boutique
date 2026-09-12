@@ -1,21 +1,31 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
+        "image_asset": "hero-boutique.jpg",
+        "image_asset_alt": "Une famille devant une boutique de mode dans une rue pavée française",
+        "focal_x": 30,
+        "focal_y": 50,
         "height": "large",
         "align": "center",
         "overlay_opacity": 40,
         "text_color": "#ffffff",
         "eyebrow": "",
-        "heading": "Jusqu'à -80%",
-        "subtext": "Pas d'adieu. Pas encore.",
-        "button_label": "Découvrir la collection",
-        "button_link": "/collections/all",
-        "image_asset": "hero-boutique.jpg",
-        "image_asset_alt": "Une famille devant une boutique de mode dans une rue pavée française",
-        "focal_x": 30,
-        "focal_y": 50
+        "heading": "L'élégance à la française",
+        "heading_tag": "auto",
+        "subtext": "Des pièces intemporelles, pensées pour vous.",
+        "button_label": "",
+        "button_link": "/collections/all"
       }
     },
     "story-intro": {
@@ -33,11 +43,12 @@
     "featured-1": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Les essentiels de l'été",
+        "heading": "La sélection du moment",
         "header_align": "center",
+        "collection": "robes-soldes",
         "products_to_show": 8,
-        "columns_desktop": "4",
         "layout": "scroll",
+        "columns_desktop": "4",
         "view_all": true
       }
     },
@@ -46,19 +57,31 @@
       "blocks": {
         "c1": {
           "type": "collection",
-          "settings": {}
+          "settings": {
+            "collection": "robes-soldes",
+            "title": ""
+          }
         },
         "c2": {
           "type": "collection",
-          "settings": {}
+          "settings": {
+            "collection": "pantalons-soldes",
+            "title": ""
+          }
         },
         "c3": {
           "type": "collection",
-          "settings": {}
+          "settings": {
+            "collection": "manteaux-offre-limitee",
+            "title": ""
+          }
         },
         "c4": {
           "type": "collection",
-          "settings": {}
+          "settings": {
+            "collection": "tops-blouses-prix-choc",
+            "title": ""
+          }
         }
       },
       "block_order": [
@@ -69,30 +92,32 @@
       ],
       "settings": {
         "heading": "Acheter par catégorie",
+        "header_align": "center",
         "columns": "4",
-        "ratio": "portrait",
-        "header_align": "center"
+        "ratio": "portrait"
       }
     },
     "featured-2": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Vestes et manteaux",
+        "heading": "Jupes — La nouvelle saison",
         "header_align": "center",
+        "collection": "jupes-nouveautes",
         "products_to_show": 8,
-        "columns_desktop": "4",
         "layout": "scroll",
+        "columns_desktop": "4",
         "view_all": true
       }
     },
     "featured-3": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Pulls",
+        "heading": "Vente Flash — Sandales",
         "header_align": "center",
+        "collection": "sandales-vente-flash",
         "products_to_show": 8,
-        "columns_desktop": "4",
         "layout": "scroll",
+        "columns_desktop": "4",
         "view_all": true
       }
     },
@@ -107,36 +132,40 @@
         "bg": "#ffffff",
         "eyebrow": "Notre histoire",
         "heading": "Voilà à quoi ressemblent vingt-cinq ans.",
-        "body": "<p>Quand j'ai ouvert L'Allure de Marseille, je n'avais qu'une idée en tête : que chaque femme qui pousse ma porte se sente belle, élégante et pleinement elle-même.</p><p>Grâce à vous, cette idée est devenue vingt-cinq ans de quelque chose de vrai.</p><p>Aujourd'hui, je me bats pour garder ma boutique vivante. Je ne veux pas vous dire adieu, je veux rester ouverte. Le même soin, la même qualité, la même attention derrière chaque pièce que je choisis pour vous.</p><p>Simplement des prix que je n'avais jamais proposés.</p><p>C'est ma renaissance. Et j'ai besoin de vous.</p><p><strong>Hélène</strong><br>Fondatrice, L'Allure de Marseille</p>",
+        "body": "<p>Quand j'ai ouvert L'Allure de Marseille, je n'avais qu'une idée en tête : que chaque femme qui pousse ma porte se sente belle, élégante et pleinement elle-même.</p><p>Grâce à vous, cette idée est devenue vingt-cinq ans de quelque chose de vrai.</p><p>Aujourd'hui, je me bats pour garder ma boutique vivante. Je ne veux pas vous dire adieu, je veux rester ouverte. Le même soin, la même qualité, la même attention derrière chaque pièce que je choisis pour vous.</p><p>Simplement des prix que je n'avais jamais proposés.</p><p>C'est ma renaissance. Et j'ai besoin de vous.</p><p><strong>Hélène</strong><br/>Fondatrice, L'Allure de Marseille</p>",
         "button_label": "Notre histoire",
-        "button_link": "/pages/about-us"
+        "button_link": "/pages/notre-histoire"
       }
     },
     "featured-4": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Bijoux",
+        "heading": "Pantalons — Dernières Pièces",
         "header_align": "center",
+        "collection": "pantalons-soldes",
         "products_to_show": 8,
-        "columns_desktop": "4",
         "layout": "scroll",
+        "columns_desktop": "4",
         "view_all": true
       }
     },
     "featured-5": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Sacs",
+        "heading": "Tops & Blouses — Prix Choc",
         "header_align": "center",
+        "collection": "tops-blouses-prix-choc",
         "products_to_show": 8,
-        "columns_desktop": "4",
         "layout": "scroll",
+        "columns_desktop": "4",
         "view_all": true
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
+        "bg": "#f5f2ec",
+        "fg": "#212121",
         "heading": "Rejoignez-nous",
         "subtext": "Nouveautés, offres exclusives et coulisses de l'atelier."
       }

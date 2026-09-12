@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_background": "#ffffff",
@@ -11,6 +20,7 @@
     "color_btn_bg": "#212121",
     "color_btn_text": "#ffffff",
     "color_sale": "#d60000",
+    "color_save_badge": "#00b67a",
     "font_heading": "tenor_sans_n4",
     "font_body": "montserrat_n4",
     "font_button": "karla_n7",
@@ -23,12 +33,12 @@
     "grid_gutter": 32,
     "corner_radius": 0,
     "volume_bar_enabled": true,
-    "volume_tier_1_value": "-10%",
-    "volume_tier_1_label": "2 articles achetés",
+    "volume_tier_1_value": "2+2",
+    "volume_tier_1_label": "Achetez 2, obtenez 2 à -25%",
     "volume_tier_2_value": "-15%",
-    "volume_tier_2_label": "3 articles achetés",
-    "volume_tier_3_value": "-20%",
-    "volume_tier_3_label": "4 articles ou plus",
+    "volume_tier_2_label": "BIENVENUE10 → -15% sur votre 1ère commande",
+    "volume_tier_3_value": "80€",
+    "volume_tier_3_label": "Livraison offerte dès 80€ d'achat",
     "volume_bar_link": "",
     "card_image_ratio": "portrait",
     "card_show_vendor": false,
@@ -36,33 +46,39 @@
     "card_show_quick_add": true,
     "card_show_sale_badge": true,
     "card_show_swatches": true,
+    "swatch_shape": "square",
+    "swatch_size": 56,
     "cart_type": "drawer",
     "cart_timer_enabled": false,
     "cart_timer_minutes": 15,
     "cart_free_shipping_enabled": true,
-    "cart_free_shipping_threshold": 0,
+    "cart_free_shipping_threshold": 80,
+    "carrier_name": "La Poste",
+    "carrier_note": "Livraison 2 à 4 jours ouvrés",
+    "carrier_logo_asset": "la-poste.png",
+    "guarantee_days": 30,
     "trust_1_title": "**Livraison offerte** par La Poste",
     "trust_1_text": "Toutes les commandes sont expédiées par La Poste, livrées gratuitement et assurées avec suivi.",
     "trust_2_title": "**Satisfait ou remboursé** 30 jours",
     "trust_2_text": "Achetez en toute sérénité grâce à notre garantie de 30 jours.",
     "trust_3_title": "Paiement **100% sécurisé**",
     "trust_3_text": "Payez en toute sécurité par carte, Apple Pay, Google Pay ou PayPal.",
+    "show_payment_icons_product": true,
     "social_instagram": "",
     "social_facebook": "",
     "social_tiktok": "",
     "social_pinterest": "",
-    "guarantee_days": 30,
-    "show_payment_icons_product": true,
-    "swatch_shape": "square",
-    "swatch_size": 56,
-    "carrier_name": "La Poste",
-    "carrier_note": "Livraison 2 à 4 jours ouvrés",
-    "carrier_logo_asset": "la-poste.png",
-    "color_save_badge": "#00b67a",
     "reviews_demo_mode": true,
     "reviews_demo_badge": true,
     "reviews_demo_rating": 46,
-    "reviews_demo_count": 1248
+    "reviews_demo_count": 1248,
+    "sections": {
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
   },
   "presets": {
     "Boutique Revival": {

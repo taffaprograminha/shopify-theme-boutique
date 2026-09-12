@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer group",
@@ -46,8 +55,8 @@
         "f1": {
           "type": "text",
           "settings": {
-            "title": "Contact",
-            "text": "<p><strong>Besoin d'aide ?</strong> Contactez notre service client.</p><p>Notre équipe vous répond du lundi au vendredi.</p><p><strong>support@allure-marseille.com</strong></p>"
+            "title": "Service Client",
+            "text": "<p><strong>Besoin d'aide ?</strong> Notre équipe est là pour vous.</p><p>Du lundi au vendredi, 9h–18h</p><p>📧 <strong>contact@lalluremarseille.fr</strong></p>"
           }
         },
         "f2": {
@@ -60,15 +69,15 @@
         "f3": {
           "type": "text",
           "settings": {
-            "title": "Détails",
-            "text": "<p>&copy; 2026 allure-marseille.com</p><p>Contact : support@allure-marseille.com</p>"
+            "title": "L'Allure de Marseille",
+            "text": "<p>© 2026 L'Allure de Marseille</p><p>Toutes nos pièces sont sélectionnées avec soin pour sublimer votre style au quotidien.</p>"
           }
         },
         "f4": {
           "type": "text",
           "settings": {
             "title": "Informations légales",
-            "text": "<p><strong>Raison sociale :</strong> à compléter</p><p><strong>Adresse :</strong><br>à compléter</p><p><strong>SIRET :</strong> à compléter</p>"
+            "text": "<p><strong>Raison sociale :</strong> L'Allure de Marseille</p><p><strong>Adresse :</strong> Portugal</p><p><strong>Email :</strong> contact@lalluremarseille.fr</p>"
           }
         }
       },
@@ -82,12 +91,12 @@
         "background": "#0a0a0a",
         "text_color": "#ffffff",
         "show_newsletter": true,
-        "newsletter_title": "Newsletter",
-        "newsletter_note": "",
+        "newsletter_title": "Rejoignez la communauté",
+        "newsletter_note": "Recevez nos nouveautés et offres exclusives en avant-première",
         "show_localization": true,
         "show_payment_icons": true,
-        "show_social": false,
-        "payment_icon_limit": 4
+        "payment_icon_limit": 4,
+        "show_social": true
       }
     }
   },

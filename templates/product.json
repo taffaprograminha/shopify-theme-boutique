@@ -1,25 +1,40 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "category-pills": {
       "type": "category-pills",
       "blocks": {
         "c1": {
-          "type": "category"
+          "type": "category",
+          "settings": {}
         },
         "c2": {
-          "type": "category"
+          "type": "category",
+          "settings": {}
         },
         "c3": {
-          "type": "category"
+          "type": "category",
+          "settings": {}
         },
         "c4": {
-          "type": "category"
+          "type": "category",
+          "settings": {}
         },
         "c5": {
-          "type": "category"
+          "type": "category",
+          "settings": {}
         },
         "c6": {
-          "type": "category"
+          "type": "category",
+          "settings": {}
         }
       },
       "block_order": [
@@ -38,13 +53,16 @@
       "type": "main-product",
       "blocks": {
         "rating": {
-          "type": "rating"
+          "type": "rating",
+          "settings": {}
         },
         "title": {
-          "type": "title"
+          "type": "title",
+          "settings": {}
         },
         "price": {
-          "type": "price"
+          "type": "price",
+          "settings": {}
         },
         "stock": {
           "type": "stock",
@@ -53,7 +71,8 @@
           }
         },
         "trust": {
-          "type": "trust"
+          "type": "trust",
+          "settings": {}
         },
         "variants": {
           "type": "variants",
