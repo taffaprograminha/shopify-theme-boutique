@@ -60,8 +60,16 @@ p:last-child{margin-bottom:0}
    ============================================ */
 .page-width{max-width:var(--page-width);margin:0 auto;padding:0 var(--outer)}
 .content-width{max-width:var(--content-max);margin:0 auto;padding:0 var(--outer)}
-.section{padding-block:var(--section-spacing)}
-.section-tight{padding-block:calc(var(--section-spacing) * .5)}
+/* --section-spacing is the merchant's setting and stays untouched; this is
+   the value the layout actually pads with, so a phone can breathe less
+   without anyone having to keep two numbers in step. 60px top and bottom
+   left a visible void between the offers bar and the first product. */
+:root{--section-pad:var(--section-spacing)}
+@media (max-width:749px){
+  :root{--section-pad:calc(var(--section-spacing) * .6)}
+}
+.section{padding-block:var(--section-pad)}
+.section-tight{padding-block:calc(var(--section-pad) * .5)}
 .text-center{text-align:center}
 
 .section-header{margin-bottom:2rem}
@@ -142,9 +150,18 @@ p:last-child{margin-bottom:0}
   color:var(--color-muted);
 }
 @media (max-width:749px){
-  .volume-bar__value{font-size:.9rem}
-  .volume-bar__label{font-size:.5rem;letter-spacing:.1em}
-  .volume-bar__tier{padding:9px 4px}
+  /* One tier per row. Three columns leave about 117px each, and the labels
+     had been shrunk to 8px to fit inside them, which no one can read on a
+     phone. The offers are sentences now, not two-word tags. */
+  .volume-bar{grid-template-columns:1fr}
+  .volume-bar__tier{
+    flex-direction:row;align-items:baseline;justify-content:center;
+    gap:.5rem;padding:10px 16px;
+    border-right:0;border-bottom:1px solid var(--color-border);
+  }
+  .volume-bar__tier:last-child{border-bottom:0}
+  .volume-bar__value{font-size:1rem;flex:0 0 auto}
+  .volume-bar__label{font-size:.6875rem;letter-spacing:.06em;text-align:left}
 }
 
 /* ============================================
@@ -173,7 +190,7 @@ p:last-child{margin-bottom:0}
 }
 .header__action{
   display:flex;align-items:center;justify-content:center;position:relative;
-  width:44px;height:44px;margin:0 -12px;
+  width:44px;height:44px;flex:0 0 44px;margin:0 -12px;
   color:var(--color-text);transition:opacity .2s;
 }
 .header__action:hover{opacity:.65}
@@ -241,7 +258,7 @@ p:last-child{margin-bottom:0}
   font-size:.9375rem;letter-spacing:.06em;text-transform:uppercase;
   padding:12px 0;border-bottom:1px solid var(--color-border);
 }
-.mobile-menu__close{align-self:flex-end;padding:8px;margin-bottom:8px}
+.mobile-menu__close{align-self:flex-end;padding:12px;margin-bottom:4px}
 
 /* ============================================
    CATEGORY PILLS
@@ -570,7 +587,7 @@ p:last-child{margin-bottom:0}
    ============================================ */
 .story{background:var(--color-bg-accent)}
 .story__inner{
-  max-width:var(--content-max);margin:0 auto;padding:var(--section-spacing) var(--outer);
+  max-width:var(--content-max);margin:0 auto;padding:var(--section-pad) var(--outer);
   text-align:center;
 }
 .story__eyebrow{
@@ -738,7 +755,7 @@ p:last-child{margin-bottom:0}
    ============================================ */
 .newsletter{background:var(--color-bg-accent)}
 .newsletter__inner{
-  max-width:560px;margin:0 auto;padding:var(--section-spacing) var(--outer);text-align:center;
+  max-width:560px;margin:0 auto;padding:var(--section-pad) var(--outer);text-align:center;
 }
 .newsletter__form{display:flex;gap:.5rem;margin-top:1.5rem}
 @media (max-width:480px){.newsletter__form{flex-direction:column}}
@@ -756,7 +773,7 @@ p:last-child{margin-bottom:0}
 .footer{
   background:var(--footer-bg,#0a0a0a);
   color:var(--footer-text,#fff);
-  padding-top:calc(var(--section-spacing) * 1.1);
+  padding-top:calc(var(--section-pad) * 1.1);
 }
 .footer__grid{
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -1052,6 +1069,14 @@ p:last-child{margin-bottom:0}
   border-bottom:1px solid currentColor;padding-bottom:1px;
 }
 .size-guide__trigger .icon{width:14px;height:14px}
+@media (max-width:749px){
+  /* Extend the hit area without padding, which would push the underline
+     away from the words it belongs to. */
+  .size-guide__trigger{position:relative}
+  .size-guide__trigger::after{
+    content:'';position:absolute;left:-8px;right:-8px;top:-12px;bottom:-12px;
+  }
+}
 .size-guide__trigger:hover{color:var(--color-accent)}
 
 .size-guide{
@@ -1110,6 +1135,7 @@ p:last-child{margin-bottom:0}
   border-radius:var(--radius);transition:opacity .2s;
 }
 .localization__current:hover{opacity:.65}
+
 .localization__flag{font-size:1rem;line-height:1;flex:0 0 auto}
 .localization__label{text-transform:uppercase}
 .localization__caret{width:13px;height:13px;transition:transform .2s}
@@ -1133,7 +1159,9 @@ p:last-child{margin-bottom:0}
 
 @media (max-width:989px){
   .localization__label{display:none}
-  .localization__current{padding:6px 4px}
+  /* Tall enough for a thumb. The label is hidden at this width, so the
+     target is just the flag and caret and needs the padding to carry it. */
+  .localization__current{padding:14px 10px}
   .localization__list{right:auto;left:50%;transform:translateX(-50%)}
 }
 
