@@ -130,7 +130,10 @@ p:last-child{margin-bottom:0}
    ============================================ */
 .volume-bar{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  /* However many tiers have a value: hardcoding three left a dead column and
+     a stray divider whenever one was emptied out. */
+  grid-auto-flow:column;
+  grid-auto-columns:1fr;
   border-top:1px solid var(--color-border);
   border-bottom:1px solid var(--color-border);
   background:var(--color-bg-accent);
@@ -1297,14 +1300,6 @@ p:last-child{margin-bottom:0}
   .localization__list{right:auto;left:50%;transform:translateX(-50%)}
 }
 
-/* Editor-only sample rating: never rendered on the live storefront */
-.rating-bar--placeholder{opacity:.85}
-.rating-bar__placeholder-note{
-  font-size:.625rem;letter-spacing:.06em;text-transform:uppercase;
-  background:#fff3cd;color:#8a6d00;border:1px solid #ffe08a;
-  padding:2px 7px;border-radius:3px;
-}
-
 /* ============================================
    REVIEWS
    ============================================ */
@@ -1324,13 +1319,6 @@ p:last-child{margin-bottom:0}
 }
 .reviews__score-text strong{font-weight:700;color:var(--color-text)}
 .reviews__score-sep{color:var(--color-border);margin:0 .15rem}
-.reviews__sample-note{
-  display:inline-block;margin:1rem 0 0;
-  font-size:.625rem;letter-spacing:.06em;text-transform:uppercase;
-  background:#fff3cd;color:#8a6d00;border:1px solid #ffe08a;
-  padding:3px 9px;border-radius:3px;
-}
-
 /* Cards scroll horizontally so a long review list stays one row deep */
 .reviews__carousel{position:relative}
 .reviews__track{
@@ -1363,7 +1351,6 @@ p:last-child{margin-bottom:0}
   display:flex;flex-direction:column;gap:.9rem;
   box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
-.review-card--sample{border-left-style:dashed}
 .review-card__head{display:flex;flex-direction:column;gap:.15rem}
 .review-card__author{
   font-weight:700;font-size:1.0625rem;color:var(--color-text);

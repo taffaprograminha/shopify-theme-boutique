@@ -558,13 +558,6 @@
         "default": false
       },
       {
-        "type": "checkbox",
-        "id": "reviews_demo_badge",
-        "label": "Mark demo content on the page",
-        "default": true,
-        "info": "Adds a visible DEMO tag so sample data is never mistaken for real reviews."
-      },
-      {
         "type": "range",
         "id": "reviews_demo_rating",
         "label": "Demo score",
