@@ -29,7 +29,10 @@
       "taxes_note": "Taxes et livraison calculées au paiement.",
       "free_shipping_progress": "Encore {{ amount }} pour la livraison gratuite",
       "free_shipping_reached": "Vous bénéficiez de la livraison gratuite",
-      "update": "Mettre à jour"
+      "update": "Mettre à jour",
+      "upsell_heading": "Complétez votre tenue",
+      "choose_size": "Choisissez une taille",
+      "add": "Ajouter"
     },
     "pagination": {
       "previous": "Précédent",

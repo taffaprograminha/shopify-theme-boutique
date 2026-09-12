@@ -720,13 +720,10 @@ p:last-child{margin-bottom:0}
 }
 .cart-timer strong{font-variant-numeric:tabular-nums;font-weight:700}
 
-/* Lives inside the padded drawer body, so it is bled back out to the edges;
-   otherwise its rule stopped 24px short on both sides while the header's
-   ran the full width. */
-.free-shipping{
-  padding:0 1.5rem 1rem;margin:0 -1.5rem 1rem;
-  border-bottom:1px solid var(--color-border);
-}
+/* Now the first row of the drawer footer, directly above the checkout button.
+   The footer's own border-top already separates it from the list, so it needs
+   no rule of its own. */
+.free-shipping{margin:0}
 .free-shipping__text{font-size:.75rem;text-align:center;margin-bottom:.5rem}
 .free-shipping__text strong{color:var(--color-accent)}
 .free-shipping__track{height:4px;background:var(--color-border);border-radius:99px;overflow:hidden}
@@ -769,6 +766,89 @@ p:last-child{margin-bottom:0}
 
 .cart-empty{text-align:center;padding:3rem 1rem}
 .cart-empty__text{color:var(--color-muted);margin-bottom:1.5rem}
+
+/* ============================================
+   CART SUGGESTIONS
+   ============================================ */
+.cart-upsell{
+  border-top:1px solid var(--color-border);
+  /* Bleeds out of the drawer body's padding so the rule spans the drawer and
+     the cards can run off the right edge, which is what says "scrollable". */
+  margin:1.5rem -1.5rem 0;padding:1.25rem 0 0;
+}
+.cart-upsell__head{
+  font-family:var(--font-heading);
+  font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--color-muted);margin:0 1.5rem .85rem;
+}
+.cart-upsell__track{
+  display:grid;grid-auto-flow:column;grid-auto-columns:116px;gap:.85rem;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:0 1.5rem .25rem;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.cart-upsell__track::-webkit-scrollbar{display:none}
+
+.upsell-card{scroll-snap-align:start;display:flex;flex-direction:column;gap:.35rem}
+/* display:flex would otherwise beat the browser's own [hidden] rule. */
+.upsell-card[hidden]{display:none}
+.upsell-card__media{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  background:var(--color-bg-accent);
+}
+.upsell-card__link{display:block}
+.upsell-card__media img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;display:block}
+.upsell-card__title{
+  font-size:.6875rem;line-height:1.35;
+  /* Two lines, then cut: the cards must stay the same height or the strip
+     ends up ragged. */
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.upsell-card__colour{font-size:.625rem;color:var(--color-muted)}
+.upsell-card__row{display:flex;align-items:center;justify-content:space-between;gap:.35rem}
+.upsell-card__price{font-size:.6875rem;font-weight:500}
+.upsell-card__price s{color:var(--color-muted);font-weight:400;margin-right:.15rem}
+.upsell-card__sale{color:var(--color-sale)}
+.upsell-card__add{
+  flex:0 0 28px;height:28px;border-radius:50%;
+  border:1px solid var(--color-text);background:#fff;color:var(--color-text);
+  font-size:1rem;line-height:1;display:flex;align-items:center;justify-content:center;
+  transition:background .2s,color .2s;
+}
+.upsell-card__add:hover{background:var(--color-text);color:#fff}
+
+/* The size list takes over the photo rather than growing the card, so the
+   strip does not jump when one opens. */
+.upsell-card__sizes{
+  position:absolute;inset:0;background:rgba(255,255,255,.96);
+  display:flex;flex-direction:column;justify-content:center;gap:.3rem;padding:.4rem;
+}
+.upsell-card__sizes[hidden]{display:none}
+.upsell-card__sizes-head{
+  font-size:.5625rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--color-muted);text-align:center;margin:0;
+}
+.upsell-card__size-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.25rem;
+  overflow-y:auto;scrollbar-width:none;
+}
+.upsell-card__size-grid::-webkit-scrollbar{display:none}
+.upsell-size{
+  border:1px solid var(--color-border);border-radius:var(--radius);
+  font-size:.6875rem;padding:.3rem 0;background:#fff;transition:background .15s,color .15s;
+}
+.upsell-size:hover{background:var(--color-text);color:#fff;border-color:var(--color-text)}
+.upsell-card.is-adding{opacity:.5;pointer-events:none}
+
+@media (max-width:749px){
+  /* Room for a thumb: 32px controls and wider cards so the size chips are
+     not three slivers. */
+  .cart-upsell__track{grid-auto-columns:124px}
+  .upsell-card__add{flex-basis:32px;height:32px}
+  /* 34x32 was a fiddly target. Three columns is all 124px allows, so the
+     height does the work; six sizes still fit in two rows. */
+  .upsell-size{padding:.4rem 0;min-height:38px}
+}
 
 /* ============================================
    TRUST COLUMNS

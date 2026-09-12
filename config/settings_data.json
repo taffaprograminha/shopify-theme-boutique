@@ -66,7 +66,12 @@
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",
-        "settings": {}
+        "settings": {
+          "upsell_enabled": true,
+          "upsell_collection": "tops-blouses-prix-choc",
+          "upsell_heading": "",
+          "upsell_limit": 8
+        }
       }
     },
     "content_for_index": []

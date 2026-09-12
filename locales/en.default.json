@@ -29,7 +29,10 @@
       "taxes_note": "Taxes and delivery calculated at checkout.",
       "free_shipping_progress": "Spend {{ amount }} more for free delivery",
       "free_shipping_reached": "You have earned free delivery",
-      "update": "Update"
+      "update": "Update",
+      "upsell_heading": "Complete your look",
+      "choose_size": "Pick a size",
+      "add": "Add"
     },
     "pagination": {
       "previous": "Previous",

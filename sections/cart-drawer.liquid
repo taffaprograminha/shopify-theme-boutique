@@ -26,15 +26,6 @@
   {%- endif -%}
 
   <div class="cart-drawer__body">
-    {%- if settings.cart_free_shipping_enabled and settings.cart_free_shipping_threshold > 0 -%}
-      <div class="free-shipping" data-free-shipping>
-        <p class="free-shipping__text" data-free-shipping-text></p>
-        <div class="free-shipping__track">
-          <div class="free-shipping__fill" data-free-shipping-fill style="width: 0%"></div>
-        </div>
-      </div>
-    {%- endif -%}
-
     <div data-cart-items>
       {%- if cart.item_count == 0 -%}
         <div class="cart-empty">
@@ -49,9 +40,34 @@
         {%- endfor -%}
       {%- endif -%}
     </div>
+
+    {%- if section.settings.upsell_enabled and section.settings.upsell_collection != blank -%}
+      {%- comment -%}
+        Outside [data-cart-items], which global.js replaces wholesale on every
+        change. Inside it, the strip would vanish the first time a quantity
+        moved.
+      {%- endcomment -%}
+      {% render 'cart-upsell',
+         collection: section.settings.upsell_collection,
+         heading: section.settings.upsell_heading,
+         limit: section.settings.upsell_limit %}
+    {%- endif -%}
   </div>
 
   <div class="cart-drawer__foot" data-cart-foot {% if cart.item_count == 0 %}hidden{% endif %}>
+    {%- if settings.cart_free_shipping_enabled and settings.cart_free_shipping_threshold > 0 -%}
+      {%- comment -%}
+        Sat at the top of the scrolling list before, where it scrolled away
+        exactly when the shopper was deciding. It belongs against the button.
+      {%- endcomment -%}
+      <div class="free-shipping" data-free-shipping>
+        <p class="free-shipping__text" data-free-shipping-text></p>
+        <div class="free-shipping__track">
+          <div class="free-shipping__fill" data-free-shipping-fill style="width: 0%"></div>
+        </div>
+      </div>
+    {%- endif -%}
+
     <div class="cart-total">
       <span class="cart-total__label">{{ 'general.cart.subtotal' | t }}</span>
       <span class="cart-total__price" data-cart-total>{{ cart.total_price | money }}</span>
@@ -72,6 +88,34 @@
     {
       "type": "paragraph",
       "content": "Cart type, reservation timer and free shipping bar are configured in Theme settings > Cart."
+    },
+    { "type": "header", "content": "Suggestions" },
+    {
+      "type": "checkbox",
+      "id": "upsell_enabled",
+      "label": "Show suggestions in the drawer",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "upsell_collection",
+      "label": "Collection to suggest from",
+      "info": "Anything already in the cart is skipped. Each card offers the sizes in stock for the colour shown in its photo."
+    },
+    {
+      "type": "text",
+      "id": "upsell_heading",
+      "label": "Heading",
+      "info": "Leave empty to use the translated default."
+    },
+    {
+      "type": "range",
+      "id": "upsell_limit",
+      "label": "Maximum products",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
     }
   ]
 }

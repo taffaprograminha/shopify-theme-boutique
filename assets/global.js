@@ -128,6 +128,27 @@
     },
 
     handleItemAction(e) {
+      const opener = e.target.closest('[data-upsell-open]');
+      const inPanel = e.target.closest('[data-upsell-sizes]');
+      // Any click that is not on an opener and not inside an open panel puts
+      // the photos back, so a stray tap never leaves sizes hanging open.
+      if (!opener && !inPanel) this.closeUpsellSizes();
+
+      if (opener) {
+        e.preventDefault();
+        const card = opener.closest('[data-upsell-card]');
+        this.closeUpsellSizes();
+        const panel = card && card.querySelector('[data-upsell-sizes]');
+        if (panel) panel.hidden = false;
+        return;
+      }
+      const add = e.target.closest('[data-upsell-add]');
+      if (add) {
+        e.preventDefault();
+        this.addVariant(add.dataset.variantId, add.closest('[data-upsell-card]'));
+        return;
+      }
+
       const remove = e.target.closest('[data-cart-remove]');
       if (remove) {
         e.preventDefault();
@@ -176,6 +197,50 @@
       }
     },
 
+    closeUpsellSizes() {
+      if (!this.el) return;
+      this.el.querySelectorAll('[data-upsell-sizes]').forEach((p) => { p.hidden = true; });
+    },
+
+    async addVariant(id, card) {
+      if (!id) return;
+      if (card) card.classList.add('is-adding');
+      try {
+        await cartFetch('/cart/add.js', { items: [{ id: Number(id), quantity: 1 }] });
+        await this.refresh();
+      } catch (err) {
+        // Usually the last of that size going while the drawer sat open. Say
+        // so; a button that silently does nothing is worse than the refusal.
+        this.upsellMessage(err.message);
+        this.refresh().catch(() => {});
+      } finally {
+        if (card) card.classList.remove('is-adding');
+      }
+    },
+
+    upsellMessage(text) {
+      const head = this.el.querySelector('.cart-upsell__head');
+      if (!head || !text) return;
+      if (head.dataset.label == null) head.dataset.label = head.textContent;
+      head.textContent = text;
+      clearTimeout(this.upsellMsgId);
+      this.upsellMsgId = setTimeout(() => { head.textContent = head.dataset.label; }, 5000);
+    },
+
+    syncUpsell(cart) {
+      const strip = this.el.querySelector('[data-cart-upsell]');
+      if (!strip) return;
+      const inCart = new Set((cart.items || []).map((i) => String(i.product_id)));
+      let visible = 0;
+      strip.querySelectorAll('[data-upsell-card]').forEach((card) => {
+        const hide = inCart.has(card.dataset.productId);
+        card.hidden = hide;
+        if (!hide) visible += 1;
+      });
+      this.closeUpsellSizes();
+      strip.hidden = visible === 0;
+    },
+
     async refresh() {
       const cart = await fetch('/cart.js').then((r) => r.json());
       this.render(cart);
@@ -189,9 +254,11 @@
       const foot = this.el.querySelector('[data-cart-foot]');
       const countEl = this.el.querySelector('[data-cart-drawer-count]');
       if (countEl) countEl.textContent = cart.item_count;
-      // Before the empty-cart return, or the bar keeps promising a discount
-      // on a cart that no longer has anything in it.
+      // Both before the empty-cart return: the bar would otherwise keep
+      // promising a discount on a cart with nothing in it, and the strip would
+      // keep hiding what the shopper has just taken back out.
       this.renderFreeShipping(cart.total_price);
+      this.syncUpsell(cart);
 
       if (!cart.items.length) {
         if (body) {

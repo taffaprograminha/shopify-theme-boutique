@@ -1,0 +1,174 @@
+{%- comment -%}
+  Suggestions strip at the foot of the cart drawer.
+
+  Every product in this catalogue carries both a colour and a size, so a bare
+  "+" would be picking two things on the shopper's behalf. Each card is bound
+  instead to the colour in its own photo — the first colour that actually has
+  stock — and asks only for the size. One tap to open, one tap to add, and no
+  doubt about which garment arrives.
+
+  Products already in the cart are left out; suggesting what someone just
+  added reads as a broken shop.
+
+  Params: collection (handle), heading, limit
+{%- endcomment -%}
+
+{%- liquid
+  assign coll = collections[collection]
+  assign max = limit | default: 8
+
+  comment
+    Commas on both ends so product 123 cannot match inside 4123 or 1234.
+  endcomment
+  assign in_cart = ','
+  for item in cart.items
+    assign in_cart = in_cart | append: item.product_id | append: ','
+  endfor
+-%}
+
+{%- if coll.products.size > 0 -%}
+  {%- capture cards -%}
+    {%- assign shown = 0 -%}
+    {%- for product in coll.products -%}
+      {%- assign needle = ',' | append: product.id | append: ',' -%}
+      {%- if shown < max and product.available -%}
+      {%- unless in_cart contains needle -%}
+        {%- liquid
+          comment
+            The card is sold on its photo, so prefer a variant that actually
+            has one. Falling straight back to featured_image would have shown
+            a black top above a purple variant's sizes, and eight colours in
+            this catalogue still have no photo of their own.
+          endcomment
+          assign v0 = blank
+          for v in product.variants
+            if v.available and v.image
+              assign v0 = v
+              break
+            endif
+          endfor
+          if v0 == blank
+            assign v0 = product.selected_or_first_available_variant
+          endif
+
+          assign colour_pos = 0
+          assign size_pos = 0
+          for opt in product.options_with_values
+            assign lower = opt.name | downcase
+            if lower == 'color' or lower == 'colour' or lower == 'couleur'
+              assign colour_pos = forloop.index
+            elsif lower contains 'size' or lower contains 'taille' or lower contains 'pointure'
+              assign size_pos = forloop.index
+            endif
+          endfor
+
+          case colour_pos
+            when 1
+              assign card_colour = v0.option1
+            when 2
+              assign card_colour = v0.option2
+            when 3
+              assign card_colour = v0.option3
+            else
+              assign card_colour = ''
+          endcase
+
+          assign card_image = v0.image | default: product.featured_image
+          assign shown = shown | plus: 1
+        -%}
+
+        <div class="upsell-card" data-upsell-card data-product-id="{{ product.id }}">
+          <div class="upsell-card__media">
+            <a href="{{ product.url }}" class="upsell-card__link" tabindex="-1" aria-hidden="true">
+              {%- if card_image -%}
+                <img src="{{ card_image | image_url: width: 240 }}"
+                     alt=""
+                     loading="lazy"
+                     width="120" height="120">
+              {%- endif -%}
+            </a>
+
+            {%- if size_pos > 0 -%}
+              <div class="upsell-card__sizes" data-upsell-sizes hidden>
+                <p class="upsell-card__sizes-head">{{ 'general.cart.choose_size' | t }}</p>
+                <div class="upsell-card__size-grid">
+                  {%- for v in product.variants -%}
+                    {%- liquid
+                      case colour_pos
+                        when 1
+                          assign v_colour = v.option1
+                        when 2
+                          assign v_colour = v.option2
+                        when 3
+                          assign v_colour = v.option3
+                        else
+                          assign v_colour = ''
+                      endcase
+
+                      case size_pos
+                        when 1
+                          assign v_size = v.option1
+                        when 2
+                          assign v_size = v.option2
+                        else
+                          assign v_size = v.option3
+                      endcase
+                    -%}
+                    {%- if v.available and v_colour == card_colour -%}
+                      <button type="button"
+                              class="upsell-size"
+                              data-upsell-add
+                              data-variant-id="{{ v.id }}">
+                        {%- render 'size-label', value: v_size, mode: 'fr' -%}
+                      </button>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <a href="{{ product.url }}" class="upsell-card__title">{{ product.title }}</a>
+          {%- if card_colour != blank -%}
+            {%- comment -%}
+              Named outright: the size chips add this colour and nothing on the
+              card would otherwise say which one.
+            {%- endcomment -%}
+            <span class="upsell-card__colour">
+              {%- render 'option-label', value: card_colour, kind: 'colour' -%}
+            </span>
+          {%- endif -%}
+
+          <div class="upsell-card__row">
+            <span class="upsell-card__price">
+              {%- if v0.compare_at_price > v0.price -%}
+                <s>{{ v0.compare_at_price | money }}</s>
+                <span class="upsell-card__sale">{{ v0.price | money }}</span>
+              {%- else -%}
+                {{ v0.price | money }}
+              {%- endif -%}
+            </span>
+            <button type="button"
+                    class="upsell-card__add"
+                    {% if size_pos > 0 %}data-upsell-open{% else %}data-upsell-add data-variant-id="{{ v0.id }}"{% endif %}
+                    aria-label="{{ 'general.cart.add' | t }} — {{ product.title | escape }}">+</button>
+          </div>
+        </div>
+      {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- liquid
+    assign upsell_head = heading
+    if upsell_head == blank
+      assign upsell_head = 'general.cart.upsell_heading' | t
+    endif
+  -%}
+  {%- if cards != blank -%}
+    <div class="cart-upsell" data-cart-upsell>
+      <p class="cart-upsell__head">{{ upsell_head }}</p>
+      <div class="cart-upsell__track">{{ cards }}</div>
+    </div>
+  {%- endif -%}
+{%- endif -%}
