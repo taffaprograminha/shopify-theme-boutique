@@ -800,13 +800,27 @@ p:last-child{margin-bottom:0}
   font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;
   color:var(--color-muted);margin:0 1.5rem .85rem;
 }
+.cart-upsell__carousel{padding:0 1.5rem}
 .cart-upsell__track{
   display:grid;grid-auto-flow:column;grid-auto-columns:116px;gap:.85rem;
   overflow-x:auto;scroll-snap-type:x mandatory;
-  padding:0 1.5rem .25rem;
+  padding:0 0 .25rem;
   scrollbar-width:none;-webkit-overflow-scrolling:touch;
 }
 .cart-upsell__track::-webkit-scrollbar{display:none}
+
+/* .carousel__nav's own top/left/right assume a full-bleed product carousel
+   with room to spare; the drawer has none, so this sits inset over the photo
+   rather than bleeding past the edge. */
+.cart-upsell__nav{
+  width:28px;height:28px;top:58px;
+  box-shadow:0 1px 4px rgba(0,0,0,.18);
+}
+.cart-upsell__nav .icon{width:13px;height:13px}
+.cart-upsell__nav.carousel__nav--prev{left:22px}
+.cart-upsell__nav.carousel__nav--next{right:22px}
+/* No mobile override needed: .carousel__nav already hides itself below 900px,
+   above the 749px point where the columns widen to 124px. */
 
 .upsell-card{scroll-snap-align:start;display:flex;flex-direction:column;gap:.35rem}
 /* display:flex would otherwise beat the browser's own [hidden] rule. */
@@ -1299,14 +1313,6 @@ p:last-child{margin-bottom:0}
   .localization__list{right:auto;left:50%;transform:translateX(-50%)}
 }
 
-/* Editor-only sample rating: never rendered on the live storefront */
-.rating-bar--placeholder{opacity:.85}
-.rating-bar__placeholder-note{
-  font-size:.625rem;letter-spacing:.06em;text-transform:uppercase;
-  background:#fff3cd;color:#8a6d00;border:1px solid #ffe08a;
-  padding:2px 7px;border-radius:3px;
-}
-
 /* ============================================
    REVIEWS
    ============================================ */
@@ -1326,13 +1332,6 @@ p:last-child{margin-bottom:0}
 }
 .reviews__score-text strong{font-weight:700;color:var(--color-text)}
 .reviews__score-sep{color:var(--color-border);margin:0 .15rem}
-.reviews__sample-note{
-  display:inline-block;margin:1rem 0 0;
-  font-size:.625rem;letter-spacing:.06em;text-transform:uppercase;
-  background:#fff3cd;color:#8a6d00;border:1px solid #ffe08a;
-  padding:3px 9px;border-radius:3px;
-}
-
 /* Cards scroll horizontally so a long review list stays one row deep */
 .reviews__carousel{position:relative}
 .reviews__track{
@@ -1365,7 +1364,6 @@ p:last-child{margin-bottom:0}
   display:flex;flex-direction:column;gap:.9rem;
   box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
-.review-card--sample{border-left-style:dashed}
 .review-card__head{display:flex;flex-direction:column;gap:.15rem}
 .review-card__author{
   font-weight:700;font-size:1.0625rem;color:var(--color-text);

@@ -239,6 +239,12 @@
       });
       this.closeUpsellSizes();
       strip.hidden = visible === 0;
+
+      // Hiding cards changes how far there is left to scroll without firing a
+      // real scroll event, so the arrows' disabled state would otherwise go
+      // stale — a next button could stay lit with nothing left to reach.
+      const track = strip.querySelector('[data-carousel-track]');
+      if (track) track.dispatchEvent(new Event('scroll'));
     },
 
     async refresh() {

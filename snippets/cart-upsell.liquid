@@ -168,7 +168,21 @@
   {%- if cards != blank -%}
     <div class="cart-upsell" data-cart-upsell>
       <p class="cart-upsell__head">{{ upsell_head }}</p>
-      <div class="cart-upsell__track">{{ cards }}</div>
+      {%- comment -%}
+        Same arrow pattern as the reviews carousel. Trackpad and touch could
+        already swipe this, but a mouse on a desktop has no way to move a
+        horizontal strip at all — the arrows are what makes it reachable there.
+        They hide themselves back below 900px, where the swipe already works.
+      {%- endcomment -%}
+      <div class="carousel cart-upsell__carousel" data-carousel>
+        <button type="button" class="carousel__nav carousel__nav--prev cart-upsell__nav" data-carousel-prev aria-label="{{ 'general.accessibility.previous' | t }}">
+          {% render 'icons', icon: 'arrow-left' %}
+        </button>
+        <button type="button" class="carousel__nav carousel__nav--next cart-upsell__nav" data-carousel-next aria-label="{{ 'general.accessibility.next' | t }}">
+          {% render 'icons', icon: 'arrow-right' %}
+        </button>
+        <div class="cart-upsell__track" data-carousel-track>{{ cards }}</div>
+      </div>
     </div>
   {%- endif -%}
 {%- endif -%}

@@ -66,7 +66,7 @@
 -%}
 
 {%- if has_rating -%}
-  <div class="rating-bar rating-bar--{{ align | default: 'left' }}{% if is_placeholder and settings.reviews_demo_badge %} rating-bar--placeholder{% endif %}">
+  <div class="rating-bar rating-bar--{{ align | default: 'left' }}">
     {%- comment -%}
       Two stacked star rows clipped by width give a true partial star,
       rather than rounding 4.6 up to a full five.
@@ -91,10 +91,5 @@
       {{ 'products.product.review_count' | t: count: rating_count }}
     </span>
 
-    {%- if is_placeholder and settings.reviews_demo_badge -%}
-      <span class="rating-bar__placeholder-note">
-        {{ 'products.rating.editor_only' | t }}
-      </span>
-    {%- endif -%}
   </div>
 {%- endif -%}
