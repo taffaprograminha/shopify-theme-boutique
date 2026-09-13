@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "story-main": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "",
+        "image_asset": "",
+        "image_asset_alt": "La fondatrice de L'Allure de Marseille dans sa boutique, choisissant une pièce sur le portant",
+        "focal_x": 50,
+        "focal_y": 30,
+        "layout": "image-left",
+        "bg": "#f5f2ec",
+        "eyebrow": "Notre histoire",
+        "heading": "L'Allure de Marseille est née en 1983",
+        "body": "<p>J'ai ouvert cette boutique en 1983, avec une conviction simple : que chaque femme mérite de se sentir belle sans se ruiner. Depuis, j'ai vu passer des modes, des saisons, des générations de clientes — certaines sont devenues des amies.</p><p>Aujourd'hui, les loyers ont grimpé plus vite que je ne l'aurais imaginé. Pour garder nos portes ouvertes, j'ai fait un choix : vider une partie de notre stock à prix réduits plutôt que de baisser le rideau. Ce ne sont pas des soldes de façade — c'est ma boutique qui se bat pour rester debout.</p>",
+        "button_label": "",
+        "button_link": ""
+      }
+    },
+    "story-close": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": { "text": "Pourquoi je continue" }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "body": "<p>J'ai une fille aujourd'hui adulte, et des petits-enfants qui sont ma plus grande fierté. Être grand-mère m'a appris ce que ma mère m'avait déjà montré : on tient bon pour ceux qu'on aime, et on avance même quand le chemin devient difficile.</p><p><em>« Une femme forte n'est pas celle qui ne tombe jamais. C'est celle qui rouvre son magasin chaque matin. »</em></p><p>Chaque commande que vous passez, chaque pièce que vous choisissez chez nous, m'aide à garder cette boutique en vie — et à continuer de faire ce que j'aime : vous habiller, vous conseiller, vous voir repartir avec le sourire.</p><p>Merci d'être là. Merci de croire en L'Allure de Marseille autant que moi.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": { "label": "Découvrir la collection", "link": "/collections/all" }
+        }
+      },
+      "block_order": ["heading", "text", "button"],
+      "settings": { "align": "center" }
+    }
+  },
+  "order": ["story-main", "story-close"]
+}
