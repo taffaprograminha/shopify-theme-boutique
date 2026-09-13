@@ -648,11 +648,13 @@ p:last-child{margin-bottom:0}
 .image-text--right .image-text__media{order:2}
 .image-text__media{position:relative;min-height:400px;background:var(--color-bg-accent)}
 .image-text__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-/* Portraits and product shots need "contain": nothing is cropped and the
-   letterbox picks up the same background as the text column so the bands
-   read as intentional. */
-.image-text--contain .image-text__media{background:var(--image-text-bg,var(--color-bg-accent))}
-.image-text--contain .image-text__media img{object-fit:contain}
+/* "contain" here means: let the image keep its own aspect ratio, and shrink
+   the panel to fit — the text column stretches to the same height, and the
+   image fills its column top to bottom without cropping and without letterbox
+   bands. Both columns end up as tall as the picture itself. */
+.image-text--contain{align-items:stretch}
+.image-text--contain .image-text__media{position:static;min-height:0;background:transparent}
+.image-text--contain .image-text__media img{position:static;height:auto;object-fit:initial}
 .image-text__content{
   display:flex;flex-direction:column;justify-content:center;
   padding:clamp(2rem,5vw,4rem);
