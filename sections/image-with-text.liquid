@@ -1,4 +1,4 @@
-<section class="image-text {% if section.settings.layout == 'image-right' %}image-text--right{% endif %}" {{ section.shopify_attributes }}>
+<section class="image-text {% if section.settings.layout == 'image-right' %}image-text--right{% endif %} {% if section.settings.image_fit == 'contain' %}image-text--contain{% endif %}" style="--image-text-bg: {{ section.settings.bg }}" {{ section.shopify_attributes }}>
   <div class="image-text__media">
     {%- if section.settings.image != blank -%}
       <img src="{{ section.settings.image | image_url: width: 1400 }}"
@@ -71,6 +71,17 @@
       "id": "focal_y",
       "label": "Focal point (vertical)",
       "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        { "value": "cover", "label": "Fill the column (may crop edges)" },
+        { "value": "contain", "label": "Show the whole image (may leave bands)" }
+      ],
+      "default": "cover",
+      "info": "Use Show the whole image for portraits and product shots where nothing should be cropped away."
     },
     {
       "type": "select",

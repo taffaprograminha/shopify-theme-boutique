@@ -7,14 +7,15 @@
         "image_asset": "notre-histoire.jpg",
         "image_asset_alt": "La fondatrice de L'Allure de Marseille dans sa boutique, choisissant une pièce sur le portant",
         "focal_x": 50,
-        "focal_y": 35,
+        "focal_y": 50,
         "layout": "image-left",
         "bg": "#f5f2ec",
         "eyebrow": "Notre histoire",
         "heading": "L'Allure de Marseille est née en 1983",
         "body": "<p>J'ai ouvert cette boutique en 1983, avec une conviction simple : que chaque femme mérite de se sentir belle sans se ruiner. Depuis, j'ai vu passer des modes, des saisons, des générations de clientes — certaines sont devenues des amies.</p><p>Aujourd'hui, les loyers ont grimpé plus vite que je ne l'aurais imaginé. Pour garder nos portes ouvertes, j'ai fait un choix : vider une partie de notre stock à prix réduits plutôt que de baisser le rideau. Ce ne sont pas des soldes de façade — c'est ma boutique qui se bat pour rester debout.</p>",
         "button_label": "",
-        "button_link": ""
+        "button_link": "",
+        "image_fit": "contain"
       }
     },
     "story-close": {
