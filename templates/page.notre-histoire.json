@@ -4,10 +4,10 @@
       "type": "image-with-text",
       "settings": {
         "image": "",
-        "image_asset": "",
+        "image_asset": "notre-histoire.jpg",
         "image_asset_alt": "La fondatrice de L'Allure de Marseille dans sa boutique, choisissant une pièce sur le portant",
         "focal_x": 50,
-        "focal_y": 30,
+        "focal_y": 35,
         "layout": "image-left",
         "bg": "#f5f2ec",
         "eyebrow": "Notre histoire",
@@ -22,7 +22,9 @@
       "blocks": {
         "heading": {
           "type": "heading",
-          "settings": { "text": "Pourquoi je continue" }
+          "settings": {
+            "text": "Pourquoi je continue"
+          }
         },
         "text": {
           "type": "text",
@@ -32,12 +34,24 @@
         },
         "button": {
           "type": "button",
-          "settings": { "label": "Découvrir la collection", "link": "/collections/all" }
+          "settings": {
+            "label": "Découvrir la collection",
+            "link": "/collections/all"
+          }
         }
       },
-      "block_order": ["heading", "text", "button"],
-      "settings": { "align": "center" }
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {
+        "align": "center"
+      }
     }
   },
-  "order": ["story-main", "story-close"]
+  "order": [
+    "story-main",
+    "story-close"
+  ]
 }
